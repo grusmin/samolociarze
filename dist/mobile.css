@@ -1,0 +1,66 @@
+/* Keep generous touch targets on wide phones, tablets and compact windows. */
+:root{--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
+.touchOnly,.touchHint{display:none}.extraActions{display:contents}
+.panelClose{position:absolute;right:5px;top:5px;width:44px!important;height:44px;margin:0!important;padding:0!important;text-align:center!important;font-size:24px!important;z-index:1}
+#navPanel{pointer-events:auto}#navPanel canvas{touch-action:pan-y}
+#cameraPanel,#failurePanel{padding-top:20px}#cameraPanel strong,#failurePanel strong{display:block;margin-right:34px}
+.throttle{display:grid;grid-template-columns:76px 76px;gap:8px}
+.throttle #brake{grid-column:1 / -1;touch-action:none;user-select:none;-webkit-user-select:none}
+[data-key].pressed,#brake.pressed{background:#eaa34b!important;border-color:#ffdc9a;box-shadow:inset 0 0 0 2px #ffdc9a;color:#123448}
+@media(max-width:1100px),(any-pointer:coarse){
+ body:not(.flying){overflow:auto;overflow-x:hidden}
+ body.flying{overflow:hidden;overscroll-behavior:none;touch-action:none;height:100dvh;-webkit-user-select:none;user-select:none}
+ button{min-height:44px}select{min-height:44px;font-size:16px}input[type=text]{font-size:16px}
+ .touchHint{display:inline}.desktopHint{display:none}
+ header{position:absolute;padding:calc(var(--safe-top) + 12px) max(12px,var(--safe-right)) 10px max(12px,var(--safe-left));gap:8px}
+ .logo{font-size:15px;letter-spacing:1px}.logo small{font-size:5px}.pilotStrip{gap:4px}.pilotStrip span{padding:6px}.pilotStrip span:first-child{display:none}.pilotStrip span:last-child{display:none}
+ #menu{display:block;height:auto;padding:calc(var(--safe-top) + 76px) max(12px,var(--safe-right)) calc(var(--safe-bottom) + 24px) max(12px,var(--safe-left))}
+ body:not(.flying) #world{height:470px}
+ .hero{height:auto;min-height:450px;padding-top:0}.hero h1{font-size:clamp(30px,8.7vw,38px);max-width:none;flex-shrink:0}.hero>p{font-size:11px;flex-shrink:0}.planeCaption{max-width:100%;min-width:0;margin-top:80px;margin-bottom:16px;padding:10px 12px}
+ .planeCaption strong{font-size:24px}.heroTools{gap:8px}.heroTools button{font-size:12px;padding:10px}.heroTools .quickFly{font-size:15px;order:0}
+ .panel{max-height:none;overflow:visible;width:100%;border-radius:14px}.tabs{padding:6px;gap:2px}.tabs button{font-size:12px;padding:10px 5px}.page{padding:20px 16px;overflow:visible}
+ .page h2{font-size:25px}.fine,.menuHint{font-size:12px}.planeSelect button,.jobs button{font-size:12px}.planeSelect{padding:10px;gap:6px}.planeSelect>div{min-width:0}.planeSelect button{flex-shrink:0}
+ .setting{font-size:13px}.setting input{width:24px;height:24px;flex-shrink:0}.settingButtons button{font-size:12px;padding:10px 8px}.planeCard{padding:12px 10px}.planeCard strong{font-size:13px}.planeCard small{font-size:11px}.planeCard .lock{font-size:9px}.sectionTop{letter-spacing:.6px}.cheatEntry button{padding:10px;font-size:12px}
+ footer{position:relative;left:0;bottom:0;text-align:center;font-size:7px;margin:0 12px calc(var(--safe-bottom) + 20px)}
+ .flying header{position:fixed;padding:calc(var(--safe-top) + 6px) max(12px,var(--safe-right)) 0 max(12px,var(--safe-left));height:calc(var(--safe-top) + 50px);align-items:center}
+ .flying .logo{font-size:14px}.flying #pause{min-height:44px;font-size:12px;padding:9px 12px}
+ #hud{display:grid;grid-template-rows:auto auto 1fr;gap:8px;padding:calc(var(--safe-top) + 54px) max(12px,var(--safe-right)) 0 max(12px,var(--safe-left))}
+ #missionPanel{position:relative;top:auto;left:auto;max-width:none;min-height:52px;width:100%;padding:8px 56px 8px 12px;align-self:start}
+ #phase{font-size:8px;letter-spacing:.7px}#objective{font-size:13px;line-height:1.35;margin-top:3px}#tips{right:4px;top:4px;width:44px;height:44px;font-size:18px;border-radius:8px}
+ #missionProgress{margin-top:6px}#groundGuide{display:none}#missionPanel.expanded #groundGuide:not(.hidden){display:block}
+ #instruction{font-size:12px;max-height:20dvh;overflow:auto;pointer-events:auto;touch-action:pan-y}#missionPanel.expanded{z-index:22}
+ .hudActions{position:relative;top:auto;right:auto;left:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-self:start}
+ .hudActions>button{font-size:11px;min-width:0;padding:8px 3px;white-space:nowrap}.touchOnly{display:block}kbd{display:none}
+ .extraActions{display:none;position:absolute;top:52px;right:0;width:205px;padding:8px;background:#f4f9f5;border:1px solid #cad7dc;border-radius:12px;box-shadow:0 8px 24px #102b3a40;z-index:25;pointer-events:auto}
+ .extraActions.open{display:grid;gap:6px}.extraActions button{font-size:12px;padding:10px;text-align:left}
+ #telemetry,.inCockpit #telemetry{display:flex;top:auto;bottom:calc(var(--safe-bottom) + 184px);left:max(12px,var(--safe-left));right:max(12px,var(--safe-right));transform:none;width:auto;min-width:0;min-height:52px;padding:7px 2px}
+ #telemetry>div{padding:0 6px;min-width:0;white-space:normal}#telemetry small{font-size:7px;letter-spacing:0}#telemetry b{font-size:23px}#telemetry em{font-size:8px;margin-left:2px}
+ .flightButtons,.inCockpit .flightButtons{bottom:calc(var(--safe-bottom) + 132px);left:max(12px,var(--safe-left));right:max(12px,var(--safe-right));transform:none;width:auto;max-width:none;display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;touch-action:pan-x;pointer-events:auto;scrollbar-width:thin;padding-bottom:4px}
+ .flightButtons button{min-height:44px;flex-shrink:0;font-size:12px;padding:9px 12px}
+ .throttle{bottom:calc(var(--safe-bottom) + 16px);left:max(12px,var(--safe-left));display:grid;grid-template-columns:60px 60px;grid-template-rows:48px 48px;gap:8px}
+ .throttle button{padding:5px;font-size:13px;min-height:48px}.throttle #brake{grid-column:1 / -1;background:#f6d59d;border-color:#d9a358}
+ .arrows{bottom:calc(var(--safe-bottom) + 16px);right:max(12px,var(--safe-right));grid-template-columns:44px 52px 44px;grid-template-rows:48px 48px;gap:4px}
+ .arrows button{min-height:48px;font-size:22px;padding:3px}.arrows small{font-size:7px;color:#315365}
+ #keyboardHint,#cockpitPower,.inCockpit #cockpitPower{display:none}
+ #brakeIndicator{bottom:calc(var(--safe-bottom) + 244px);font-size:10px;padding:7px 12px}
+ #warning{top:auto;bottom:calc(var(--safe-bottom) + 280px);width:max-content;max-width:90%;font-size:11px;padding:8px 12px;z-index:12}
+ #radioText{top:calc(var(--safe-top) + 174px);left:max(12px,var(--safe-left));max-width:min(360px,80%);max-height:100px;font-size:11px;padding:9px 12px;overflow:auto;pointer-events:none}
+ #radioText.show{pointer-events:auto;touch-action:pan-y}
+ #navPanel,#cameraPanel,#failurePanel{top:calc(var(--safe-top) + 170px);bottom:calc(var(--safe-bottom) + 250px);left:auto;right:max(12px,var(--safe-right));width:min(300px,calc(100% - 24px));max-height:410px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;z-index:20}
+ #navPanel canvas{height:auto;width:100%;aspect-ratio:460 / 420}#navPanel p{font-size:11px}#cameraPanel button,#failurePanel button{font-size:12px;min-height:44px;padding:10px;margin-top:6px}
+ .overlay{padding:calc(var(--safe-top) + 12px) max(12px,var(--safe-right)) calc(var(--safe-bottom) + 12px) max(12px,var(--safe-left));touch-action:pan-y}
+ .dialog{max-height:100%;padding:22px;overscroll-behavior:contain}.dialog p{font-size:13px}.dialog button{min-height:48px}#toast{bottom:calc(var(--safe-bottom) + 16px)}
+}
+@media (max-width:1100px) and (max-height:560px) and (orientation:landscape),(any-pointer:coarse) and (max-height:560px) and (orientation:landscape){
+ #hud{display:block;padding:0}.flying header{height:calc(var(--safe-top) + 48px)}
+ #missionPanel{position:absolute;top:calc(var(--safe-top) + 52px);left:max(12px,var(--safe-left));width:calc((100% - var(--safe-left) - var(--safe-right) - 24px) * .45);max-width:360px}
+ .hudActions{position:absolute;top:calc(var(--safe-top) + 52px);left:auto;right:max(12px,var(--safe-right));width:calc((100% - var(--safe-left) - var(--safe-right) - 24px) * .5);max-width:400px}
+ #telemetry,.inCockpit #telemetry{bottom:calc(var(--safe-bottom) + 68px);left:calc(var(--safe-left) + 152px);right:calc(var(--safe-right) + 164px);padding:5px 0;min-height:48px}
+ #telemetry>div{padding:0 5px}#telemetry b{font-size:21px}
+ .flightButtons,.inCockpit .flightButtons{bottom:calc(var(--safe-bottom) + 12px);left:calc(var(--safe-left) + 152px);right:calc(var(--safe-right) + 164px)}
+ .throttle,.arrows{bottom:calc(var(--safe-bottom) + 12px)}
+ #radioText{top:calc(var(--safe-top) + 118px);max-width:38%;max-height:70px;font-size:10px}
+ #navPanel,#cameraPanel,#failurePanel{top:calc(var(--safe-top) + 104px);bottom:calc(var(--safe-bottom) + 126px);max-height:none;width:min(320px,48%)}
+ #warning{top:calc(var(--safe-top) + 116px);bottom:auto;max-width:45%;font-size:10px}#brakeIndicator{bottom:calc(var(--safe-bottom) + 122px);padding:5px 10px}
+ #instruction{max-height:calc(100dvh - 230px)}
+}

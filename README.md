@@ -1,4 +1,4 @@
-# Samolociarze 1.0.5 — kariera pilota
+# Samolociarze 1.0.6 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/) — adres będzie aktywny po udanej publikacji.
 
@@ -43,6 +43,12 @@ T wybiera najbliższe z dwóch lotnisk i pozwala poprosić o opcjonalne lądowan
 
 Ten tryb nie przyznaje monet ani XP i nie nadpisuje zapisanego lotu kariery. Pauza pozwala wznowić aktualny lot, ale po odświeżeniu przycisk „Po prostu leć” zaczyna nowy przelot. „Wznów lot” pozostaje dostępne dla wcześniej zapisanej kariery.
 
+## Gra na telefonie
+
+Interfejs działa pionowo i poziomo, także na szerokich telefonach. Stery są pod prawym kciukiem; moc i hamulec pod lewym. Przytrzymuj przyciski — możesz jednocześnie skręcać, zmieniać pochylenie i moc. Pomarańczowe podświetlenie pokazuje trzymany przycisk. Pauza, obrót ekranu i utrata dotyku zwalniają stery.
+
+Parametry lotu pozostają widoczne również w kokpicie. Pasek funkcji pod parametrami przewijaj palcem w bok, aby dotrzeć do obsługi naziemnej, silników, podwozia, klap i procedur awaryjnych. „Więcej” otwiera dodatkowe kamery, awarie oraz pełny ekran, jeśli przeglądarka go obsługuje. Mapa i panele mają przycisk zamknięcia. Tryb automatyczny grafiki ogranicza rozdzielczość i cienie również po obróceniu telefonu. Układ uwzględnia wycięcie ekranu i dolny pasek systemowy.
+
 ## Zapis i kopia
 
 Postępy są w localStorage tej przeglądarki, osobno dla każdego adresu. Korzystaj stale z http://127.0.0.1:4174/ . Adres localhost ma osobny zapis. Ustawienia → Kopia postępów eksportuje JSON, który można później wczytać. Kod projektu i modele są w tym folderze; ZIP projektu nie zawiera automatycznie postępów przeglądarki.
@@ -81,11 +87,15 @@ Poprzedni trening: training.html. Three.js i loader: MIT. Modele FlightGear / Fl
 ## Sprawdzenie
 
 npm test albo kolejno: node check-flight.cjs, node check-career.mjs, node check-ground.mjs, node check-departure.mjs, node check-free-flight.mjs, node check-cheats.mjs, node check-models.mjs, node check-airport-fleet.mjs.
-Test „Po prostu leć” obejmuje 55 kombinacji samolotu i pogody, natychmiastowe sterowanie, utrzymanie pochylenia, długi lot, brak ograniczeń trasy, opcjonalne lądowania na obu lotniskach w obu kierunkach, ochronę zapisu kariery i starsze zapisy. Kod JavaScript oraz zgodność obu stron wejściowych zostały sprawdzone. Nowy wygląd przycisku nie został zweryfikowany w przeglądarce: narzędzie podglądu odrzuciło dostęp ze względu na politykę adresów URL.
+Test „Po prostu leć” obejmuje 55 kombinacji samolotu i pogody, natychmiastowe sterowanie, utrzymanie pochylenia, długi lot, brak ograniczeń trasy, opcjonalne lądowania na obu lotniskach w obu kierunkach, ochronę zapisu kariery i starsze zapisy. Kod JavaScript oraz zgodność obu stron wejściowych zostały sprawdzone. Przycisk oraz menu zweryfikowano w przeglądarce również z zastępczą czcionką.
 Test odlotu obejmuje dojazd za tyłem pasa, STOP poza pasem, numer przydzielonego pasa, odmowę zgody przy ruchu, zajęcie pasa po zgodzie, pełny rozbieg i start dla wszystkich 11 lotnisk oraz 11 typów samolotów. Sprawdza też ręczne ustawianie, migrację zapisu i czas losowych awarii.
 Test innych samolotów sprawdza oryginalną geometrię, skalę i podwozie ośmiu maszyn na dwóch lotniskach, współdzielenie zasobów, budżet rysowania i zachowanie zasobów floty podczas przebudowy scenerii.
 Test stanowisk obejmuje dojazd i wyjazd, hamulec, blokadę obsługi poza strefą lub w ruchu, przerwanie załadunku, starsze zapisy oraz rozładunek na lotnisku docelowym dla wszystkich 11 samolotów.
 Test kodów obejmuje poprawne i błędne wpisy, odblokowania, monety, zapis, kopię i przywracanie, ponowne użycie oraz błąd zapisu. Działanie formularza sprawdzone w przeglądarce na komputerze i przy szerokości 390 px.
 Sprawdzone: pełna misja przy wietrze; zakup i walidacja zapisu; wznawianie; procedury awaryjne; ruch na pasach i drugi pas; obsługa towarów w 2 s; geometria, tekstury i podwozie 11 modeli; menu, kamery, kokpit i układ 390 × 844 w przeglądarce. Test rozmiaru ekranu nie zastępuje pomiaru na rzeczywistym telefonie.
 
-Gra pozostaje lokalna. Publikacja dopiero na późniejsze wyraźne życzenie.
+Test sterowania `node check-controls.mjs` jest częścią `npm test` i sprawdza jednoczesne dotknięcia, niezależne puszczanie przycisków, przerwanie dotyku, utratę przechwycenia oraz reset przy pauzie.
+
+Test przeglądarkowy: uruchom `node server.cjs`, a następnie `node check-mobile.mjs` (lub `npm run test:mobile`). Wymaga Playwright oraz jego Chromium; opcjonalnie `BROWSER_CHANNEL=msedge` wybiera zainstalowany Edge. Zmienna `PLAYWRIGHT_MODULE` pozwala wskazać istniejący moduł Playwright, a `GAME_TEST_URL` inny serwer. Zrzuty trafiają do ignorowanego folderu `.openai/mobile/`. Test obejmuje dziewięć rozmiarów od 320 × 568 do 1024 × 768, menu, brak nakładania sterów, cele dotyku minimum 44 px, kokpit, panele, marginesy systemowe, rzeczywiste zdarzenia wielodotyku, przewijanie paska funkcji, hamulec, pauzę, zapis i wznowienie kariery oraz układ komputerowy 1366 × 768. To emulacja dotyku w przeglądarce, bez pomiaru na fizycznym telefonie.
+
+Wysłanie zmian na `main` uruchamia publikację gry przez GitHub Pages.
