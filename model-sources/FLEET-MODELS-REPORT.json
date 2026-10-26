@@ -1,0 +1,3639 @@
+[
+  {
+    "id": "b738",
+    "title": "Boeing 737-800",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/b738.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/737-800",
+    "files": [
+      "b738.gltf",
+      "b738___37-800_png_001.jpg",
+      "b738__b738.bin"
+    ],
+    "bounds": {
+      "min": [
+        -17.771,
+        -2.197,
+        -19.851
+      ],
+      "max": [
+        17.919,
+        9.918,
+        19.57
+      ],
+      "dimensions": [
+        35.69,
+        12.115,
+        39.421
+      ]
+    },
+    "parts": [
+      {
+        "name": "fuselage",
+        "min": [
+          -1.805,
+          -1.395,
+          -19.851
+        ],
+        "max": [
+          1.919,
+          2.563,
+          18.229
+        ]
+      },
+      {
+        "name": "windowslh",
+        "min": [
+          -1.773,
+          0.655,
+          -14.084
+        ],
+        "max": [
+          -1.411,
+          1.503,
+          10.6
+        ]
+      },
+      {
+        "name": "windowsrh",
+        "min": [
+          1.541,
+          0.655,
+          -14.084
+        ],
+        "max": [
+          1.903,
+          1.503,
+          10.6
+        ]
+      },
+      {
+        "name": "windows",
+        "min": [
+          -1.233,
+          0.844,
+          -18.362
+        ],
+        "max": [
+          1.347,
+          1.402,
+          -16.669
+        ]
+      },
+      {
+        "name": "engnose",
+        "min": [
+          -6.089,
+          -2.044,
+          -6.274
+        ],
+        "max": [
+          -4.122,
+          -0.287,
+          -5.918
+        ]
+      },
+      {
+        "name": "engnose_001",
+        "min": [
+          -6.176,
+          -2.178,
+          -6.036
+        ],
+        "max": [
+          -3.969,
+          -0.16,
+          -4.076
+        ]
+      },
+      {
+        "name": "fan",
+        "min": [
+          -5.983,
+          -2.055,
+          -5.211
+        ],
+        "max": [
+          -4.242,
+          -0.377,
+          -5.211
+        ]
+      },
+      {
+        "name": "fuselage_001",
+        "min": [
+          -1.117,
+          -1.175,
+          -5.7
+        ],
+        "max": [
+          -0.871,
+          -0.989,
+          -5.202
+        ]
+      },
+      {
+        "name": "No2engfancase",
+        "min": [
+          4.116,
+          -2.178,
+          -6.036
+        ],
+        "max": [
+          6.324,
+          -0.16,
+          -4.076
+        ]
+      },
+      {
+        "name": "engnose_003",
+        "min": [
+          4.27,
+          -2.044,
+          -6.274
+        ],
+        "max": [
+          6.236,
+          -0.287,
+          -5.918
+        ]
+      },
+      {
+        "name": "fan2",
+        "min": [
+          4.39,
+          -2.055,
+          -5.211
+        ],
+        "max": [
+          6.131,
+          -0.377,
+          -5.211
+        ]
+      },
+      {
+        "name": "a-light",
+        "min": [
+          -17.225,
+          1.049,
+          4.589
+        ],
+        "max": [
+          17.373,
+          1.099,
+          4.824
+        ]
+      },
+      {
+        "name": "a-light1",
+        "min": [
+          -17.232,
+          1.039,
+          4.477
+        ],
+        "max": [
+          17.38,
+          1.111,
+          4.809
+        ]
+      }
+    ],
+    "nodeNames": [
+      "Circle_006",
+      "EexitLF",
+      "EexitLR",
+      "EexitRF",
+      "EexitRR",
+      "No2engfancase",
+      "No2reverser",
+      "No2reverser_0",
+      "No2reverser_1",
+      "WingletL",
+      "a-light",
+      "a-light1",
+      "aftflapI_B",
+      "aftflapO_B",
+      "ailerontablh",
+      "ailerontabrh",
+      "apuexht",
+      "cargodoorF",
+      "cargodoorR",
+      "doorLF",
+      "doorLF_001",
+      "doorLR",
+      "doorRF",
+      "doorRR",
+      "doorrhrear",
+      "dorrhfront",
+      "dorrhfront_0",
+      "dorrhfront_001",
+      "dorrhfront_005",
+      "dorrhfront_0_001",
+      "ductinner",
+      "ductinner_001",
+      "engcore",
+      "engcore_001",
+      "engnose",
+      "engnose_001",
+      "engnose_003",
+      "fairing1",
+      "fairing2",
+      "fairing3",
+      "fairing4",
+      "fairing5",
+      "fairing6",
+      "fan",
+      "fan2",
+      "flap1",
+      "flap2",
+      "flap3",
+      "flap4",
+      "flapI_B",
+      "flapO_B",
+      "flapfairing",
+      "flapfairing_001",
+      "flapfairing_002",
+      "flapfairing_003",
+      "fuselage",
+      "fuselage_001",
+      "fwdpylon",
+      "fwdpylon_001",
+      "fwdpylon_005",
+      "fwdpylon_009",
+      "ibflapfairing",
+      "ibflapfairing_001",
+      "ible",
+      "iblerh",
+      "lhaileron",
+      "lhelevator",
+      "lhelevatortab",
+      "lhfairing",
+      "lhmgdouter",
+      "lhmgdouter_001",
+      "lhstab",
+      "lhww",
+      "lowerpanel",
+      "lowerpanel1",
+      "lowerpanel1_001",
+      "lreverserib",
+      "lreverserib_0",
+      "lreverserib_1",
+      "ngww",
+      "Y_UP_Transform",
+      "oble",
+      "obwing",
+      "obwing_001",
+      "panel1upper",
+      "panelupperob",
+      "panelupperob_001",
+      "rhaftflapI_B",
+      "rhaftflapO_B",
+      "rhaileron",
+      "rhelevator",
+      "rhelevatortab",
+      "rhflapI_B",
+      "rhflapO_B",
+      "rhgdouter",
+      "rhlowerpanel",
+      "rhnacascoop",
+      "rhoble",
+      "rhpanel1upper",
+      "rhstab",
+      "rhwtobfairing",
+      "rhww",
+      "rudder",
+      "rudder_001",
+      "slat1",
+      "slat2_001",
+      "slat3",
+      "slat4",
+      "slat5",
+      "slat6",
+      "slat7",
+      "slat8",
+      "spoiler1",
+      "spoiler10",
+      "spoiler11",
+      "spoiler12",
+      "spoiler2",
+      "spoiler3",
+      "spoiler4",
+      "spoiler5",
+      "spoiler6",
+      "spoiler7",
+      "spoiler8",
+      "spoiler9",
+      "tailpipe",
+      "tailpipe_001",
+      "vstab",
+      "vstable",
+      "windows",
+      "windowslh",
+      "windowsrh",
+      "winginbd",
+      "winginbd_001"
+    ],
+    "meshCount": 128,
+    "triangles": 24998
+  },
+  {
+    "id": "a320",
+    "title": "Airbus A320",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/a320.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/A320-family",
+    "files": [
+      "a320.gltf",
+      "a320__image1.jpg",
+      "a320__a320.bin"
+    ],
+    "bounds": {
+      "min": [
+        -16.979,
+        -0.781,
+        -15.829
+      ],
+      "max": [
+        16.931,
+        10.848,
+        22.442
+      ],
+      "dimensions": [
+        33.91,
+        11.629,
+        38.271
+      ]
+    },
+    "parts": [
+      {
+        "name": "EngineR",
+        "min": [
+          5.234,
+          -0.718,
+          -2.302
+        ],
+        "max": [
+          7.305,
+          1.506,
+          -0.599
+        ]
+      },
+      {
+        "name": "fanWheel_001",
+        "min": [
+          5.401,
+          -0.376,
+          -3.722
+        ],
+        "max": [
+          7.136,
+          1.359,
+          -3.61
+        ]
+      },
+      {
+        "name": "EngineL",
+        "min": [
+          -7.352,
+          -0.688,
+          -2.156
+        ],
+        "max": [
+          -5.28,
+          1.536,
+          -0.453
+        ]
+      },
+      {
+        "name": "fanWheel",
+        "min": [
+          -7.184,
+          -0.346,
+          -3.577
+        ],
+        "max": [
+          -5.449,
+          1.389,
+          -3.465
+        ]
+      }
+    ],
+    "nodeNames": [
+      "Core",
+      "Core_001",
+      "Cube_000",
+      "Cube_004",
+      "EngineL",
+      "EngineR",
+      "Intake",
+      "IntakeInterior",
+      "IntakeInterior_001",
+      "Intake_001",
+      "Nacelle",
+      "Nacelle_001",
+      "Nozzle",
+      "Nozzle_001",
+      "Plane",
+      "Plane_001",
+      "blades",
+      "blades_001",
+      "casing",
+      "casing_001",
+      "cone",
+      "cone2",
+      "cone2_001",
+      "cone_001",
+      "exhaust",
+      "exhaust_001",
+      "fanWheel",
+      "fanWheel_001",
+      "shroud",
+      "shroud_001",
+      "rootNode"
+    ],
+    "meshCount": 31,
+    "triangles": 23600
+  },
+  {
+    "id": "a359",
+    "title": "Airbus A350-900",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/a359.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/A350XWB",
+    "files": [
+      "a359.gltf",
+      "a359__a350xwb_png_001.jpg",
+      "a359__landinggear_png_001.jpg",
+      "a359__wings_png_001.jpg",
+      "a359__a359.bin"
+    ],
+    "bounds": {
+      "min": [
+        -32.624,
+        -0.994,
+        -28.504
+      ],
+      "max": [
+        32.124,
+        15.657,
+        38.518
+      ],
+      "dimensions": [
+        64.748,
+        16.651,
+        67.022
+      ]
+    },
+    "parts": [
+      {
+        "name": "cabin_windows",
+        "min": [
+          -3.259,
+          2.076,
+          -21.363
+        ],
+        "max": [
+          4.108,
+          4.828,
+          24.62
+        ]
+      },
+      {
+        "name": "Engine_000",
+        "min": [
+          9.614,
+          1.695,
+          -4.913
+        ],
+        "max": [
+          10.617,
+          3.186,
+          4.919
+        ]
+      },
+      {
+        "name": "Engine_001",
+        "min": [
+          -11.12,
+          1.695,
+          -4.913
+        ],
+        "max": [
+          -10.117,
+          3.186,
+          4.919
+        ]
+      },
+      {
+        "name": "engine_chrome",
+        "min": [
+          -11.342,
+          0.283,
+          -0.037
+        ],
+        "max": [
+          10.842,
+          1.723,
+          1.393
+        ]
+      },
+      {
+        "name": "fan2_eng1",
+        "min": [
+          -12.079,
+          -0.454,
+          -5.29
+        ],
+        "max": [
+          -9.17,
+          2.455,
+          -5.29
+        ]
+      },
+      {
+        "name": "fan2_eng2",
+        "min": [
+          8.67,
+          -0.454,
+          -5.29
+        ],
+        "max": [
+          11.579,
+          2.455,
+          -5.29
+        ]
+      },
+      {
+        "name": "fan_eng1",
+        "min": [
+          -12.079,
+          -0.441,
+          -5.302
+        ],
+        "max": [
+          -9.164,
+          2.449,
+          -5.061
+        ]
+      },
+      {
+        "name": "fan_eng2",
+        "min": [
+          8.664,
+          -0.441,
+          -5.302
+        ],
+        "max": [
+          11.58,
+          2.449,
+          -5.061
+        ]
+      },
+      {
+        "name": "Fuselage",
+        "min": [
+          -3.293,
+          0.583,
+          -27.703
+        ],
+        "max": [
+          2.793,
+          7.438,
+          36.874
+        ]
+      },
+      {
+        "name": "Fuselage_000",
+        "min": [
+          -2.035,
+          4.262,
+          -26.833
+        ],
+        "max": [
+          1.535,
+          5.142,
+          -24.839
+        ]
+      },
+      {
+        "name": "Fuselage_002",
+        "min": [
+          -0.605,
+          5.754,
+          24.678
+        ],
+        "max": [
+          0.105,
+          15.545,
+          37.212
+        ]
+      },
+      {
+        "name": "Fuselage_003",
+        "min": [
+          -1.128,
+          1.716,
+          -28.504
+        ],
+        "max": [
+          0.628,
+          3.645,
+          -27.691
+        ]
+      }
+    ],
+    "nodeNames": [
+      "Cube",
+      "Cube_001",
+      "Cube_002",
+      "Cube_003",
+      "Cube_004",
+      "Cube_005",
+      "Cube_006",
+      "Cube_007",
+      "Cube_008",
+      "Cube_009",
+      "Cube_010",
+      "Cube_011",
+      "Cube_012",
+      "Cube_013",
+      "Cube_014",
+      "Cube_030",
+      "Cylinder_000",
+      "Cylinder_001",
+      "Cylinder_012",
+      "Engine_000",
+      "Engine_001",
+      "Fuselage",
+      "Fuselage_000",
+      "Fuselage_002",
+      "Fuselage_003",
+      "Nacelle",
+      "Windshield",
+      "aileron1",
+      "aileron2",
+      "cabin_windows",
+      "cone_eng1",
+      "cone_eng2",
+      "doors",
+      "elevator_1",
+      "elevator_2",
+      "eng_reverser",
+      "engine_chrome",
+      "fan2_eng1",
+      "fan2_eng2",
+      "fan_eng1",
+      "fan_eng2",
+      "flap1",
+      "flap10",
+      "flap2",
+      "flap3",
+      "flap4",
+      "flap5",
+      "flap6",
+      "flap7",
+      "flap8",
+      "flap9",
+      "hstab",
+      "hstab_003",
+      "left_main_door_2",
+      "left_main_door_3",
+      "left_wing_lamp",
+      "lgdoor_left_front",
+      "lgdoor_left_front_2",
+      "lgdoor_right_front",
+      "lgdoor_right_front_2",
+      "Y_UP_Transform",
+      "right_main_door_001",
+      "right_main_door_004",
+      "right_main_door_2",
+      "right_main_door_3",
+      "right_wing_lamp",
+      "rudder",
+      "sb1",
+      "sb10",
+      "sb11",
+      "sb12",
+      "sb13",
+      "sb14",
+      "sb2",
+      "sb3",
+      "sb4",
+      "sb5",
+      "sb6",
+      "sb7",
+      "sb8",
+      "sb9",
+      "sensors",
+      "sensors_001",
+      "sensors_002",
+      "slat1",
+      "slat1_part2",
+      "slat2",
+      "slat3",
+      "slat4",
+      "slat4_part2",
+      "wing_left_1",
+      "wing_left_2",
+      "wing_left_3",
+      "wing_right_1",
+      "wing_right_2",
+      "wing_right_3",
+      "wing_text",
+      "winglet_left",
+      "winglet_right",
+      "wiper1",
+      "wiper2"
+    ],
+    "meshCount": 100,
+    "triangles": 42554
+  },
+  {
+    "id": "b772",
+    "title": "Boeing 777-200",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/b772.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/777",
+    "files": [
+      "b772.gltf",
+      "b772__paint1_png.jpg",
+      "b772__b772.bin"
+    ],
+    "bounds": {
+      "min": [
+        -30.199,
+        -0.393,
+        -25.148
+      ],
+      "max": [
+        30.519,
+        16.83,
+        39.283
+      ],
+      "dimensions": [
+        60.718,
+        17.223,
+        64.431
+      ]
+    },
+    "parts": [
+      {
+        "name": "Engines",
+        "min": [
+          -11.605,
+          -0.393,
+          -3.815
+        ],
+        "max": [
+          11.925,
+          3.349,
+          4.582
+        ]
+      },
+      {
+        "name": "Engines_001",
+        "min": [
+          -11.389,
+          -0.182,
+          -1.115
+        ],
+        "max": [
+          11.709,
+          3.133,
+          2.859
+        ]
+      },
+      {
+        "name": "Fuselage",
+        "min": [
+          -2.944,
+          0.748,
+          -25.148
+        ],
+        "max": [
+          3.264,
+          7.918,
+          37.761
+        ]
+      },
+      {
+        "name": "Fuselage_002",
+        "min": [
+          -1.986,
+          3.904,
+          -23.872
+        ],
+        "max": [
+          2.306,
+          6.465,
+          -20.055
+        ]
+      },
+      {
+        "name": "Fuselage_004",
+        "min": [
+          -2.905,
+          1.093,
+          4.194
+        ],
+        "max": [
+          3.225,
+          3.043,
+          8.898
+        ]
+      },
+      {
+        "name": "LandingLights",
+        "min": [
+          -3.766,
+          2.788,
+          -3.34
+        ],
+        "max": [
+          4.086,
+          3.15,
+          -3.072
+        ]
+      },
+      {
+        "name": "Lfan",
+        "min": [
+          -11.192,
+          0.02,
+          -3.255
+        ],
+        "max": [
+          -8.276,
+          2.936,
+          -2.93
+        ]
+      },
+      {
+        "name": "Lmain_geardoor",
+        "min": [
+          -2.923,
+          1.037,
+          4.198
+        ],
+        "max": [
+          -0.15,
+          2.522,
+          8.894
+        ]
+      },
+      {
+        "name": "Lwing_geardoor",
+        "min": [
+          -5.875,
+          2.638,
+          6.055
+        ],
+        "max": [
+          -5.032,
+          2.903,
+          7.131
+        ]
+      },
+      {
+        "name": "Rfan",
+        "min": [
+          8.596,
+          0.02,
+          -3.287
+        ],
+        "max": [
+          11.512,
+          2.936,
+          -2.962
+        ]
+      },
+      {
+        "name": "Rmain_geardoor",
+        "min": [
+          0.457,
+          1.037,
+          4.198
+        ],
+        "max": [
+          3.243,
+          2.521,
+          8.894
+        ]
+      },
+      {
+        "name": "Rwing_geardoor",
+        "min": [
+          5.352,
+          2.638,
+          6.055
+        ],
+        "max": [
+          6.195,
+          2.903,
+          7.131
+        ]
+      },
+      {
+        "name": "Wheelwell",
+        "min": [
+          -0.395,
+          1.529,
+          -22.414
+        ],
+        "max": [
+          0.715,
+          3.124,
+          -18.823
+        ]
+      }
+    ],
+    "nodeNames": [
+      "Engines",
+      "Engines_001",
+      "Fuselage",
+      "Fuselage_002",
+      "Fuselage_004",
+      "Glass",
+      "Inlets",
+      "LFdoor",
+      "LHEngChrome",
+      "LHelevator",
+      "LHstab",
+      "LRdoor",
+      "Laileron",
+      "LandingLights",
+      "Lbrake",
+      "Lbrake1",
+      "Lfan",
+      "Lflap1",
+      "Lflap2",
+      "Lflap4",
+      "Lflaperon",
+      "Lils",
+      "Lmain_geardoor",
+      "Lramdoor",
+      "Lslat",
+      "Lwing_geardoor",
+      "Lwiper",
+      "RFdoor",
+      "RHEngChrome",
+      "RHelevator",
+      "RHstab",
+      "RRdoor",
+      "Raileron",
+      "Raileron_0",
+      "Raileron_1",
+      "Rbrake",
+      "Rbrake1",
+      "Reversers",
+      "Rfan",
+      "Rflap1",
+      "Rflap2",
+      "Rflap4",
+      "Rflap4_001",
+      "Rflaperon",
+      "Rmain_geardoor",
+      "Rramdoor",
+      "Rslat",
+      "Rudder",
+      "Rwing_geardoor",
+      "Rwiper",
+      "Tail",
+      "Wheaters",
+      "Wheelwell",
+      "Wings",
+      "Wings_002",
+      "hinge1",
+      "Y_UP_Transform"
+    ],
+    "meshCount": 55,
+    "triangles": 12203
+  },
+  {
+    "id": "b788",
+    "title": "Boeing 787-8",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/b788.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/787-8",
+    "files": [
+      "b788.gltf",
+      "b788__BOE_png_001.jpg",
+      "b788__windows-lights_png_001.png",
+      "b788__wings_png_001.jpg",
+      "b788__b788.bin"
+    ],
+    "bounds": {
+      "min": [
+        -30.6,
+        0.121,
+        -25.583
+      ],
+      "max": [
+        29,
+        15.041,
+        31.102
+      ],
+      "dimensions": [
+        59.6,
+        14.92,
+        56.685
+      ]
+    },
+    "parts": [
+      {
+        "name": "fuselage",
+        "min": [
+          0.608,
+          3.131,
+          -23.665
+        ],
+        "max": [
+          0.788,
+          3.239,
+          -23.318
+        ]
+      },
+      {
+        "name": "windows-light",
+        "min": [
+          -3.638,
+          4.699,
+          -17.893
+        ],
+        "max": [
+          2.057,
+          5.295,
+          16.973
+        ]
+      },
+      {
+        "name": "lights_002",
+        "min": [
+          -1.581,
+          4.913,
+          28.136
+        ],
+        "max": [
+          -0.001,
+          5.032,
+          28.315
+        ]
+      },
+      {
+        "name": "rhlight",
+        "min": [
+          28.897,
+          6.755,
+          14.251
+        ],
+        "max": [
+          29,
+          6.814,
+          14.284
+        ]
+      },
+      {
+        "name": "tlight",
+        "min": [
+          -1.581,
+          4.913,
+          28.004
+        ],
+        "max": [
+          -0.002,
+          5.032,
+          28.158
+        ]
+      },
+      {
+        "name": "nwlightedfuse",
+        "min": [
+          -1.622,
+          1.668,
+          -23.101
+        ],
+        "max": [
+          0.042,
+          2.648,
+          -21.36
+        ]
+      },
+      {
+        "name": "fuselage_001",
+        "min": [
+          -3.669,
+          1.283,
+          -25.583
+        ],
+        "max": [
+          2.087,
+          7.205,
+          28.721
+        ]
+      },
+      {
+        "name": "rhfnosedoor",
+        "min": [
+          -0.791,
+          1.459,
+          -23.101
+        ],
+        "max": [
+          0.041,
+          1.969,
+          -21.36
+        ]
+      },
+      {
+        "name": "fuselage_002",
+        "min": [
+          -1.02,
+          4.762,
+          29.642
+        ],
+        "max": [
+          -0.562,
+          5.234,
+          30.327
+        ]
+      },
+      {
+        "name": "lhfnosedoor",
+        "min": [
+          -1.622,
+          1.459,
+          -23.101
+        ],
+        "max": [
+          -0.791,
+          1.969,
+          -21.36
+        ]
+      },
+      {
+        "name": "lhgearibdoor",
+        "min": [
+          -3.964,
+          1.112,
+          0.64
+        ],
+        "max": [
+          -1.084,
+          2.188,
+          3.703
+        ]
+      },
+      {
+        "name": "lights_000",
+        "min": [
+          -1.581,
+          4.913,
+          28.136
+        ],
+        "max": [
+          -0.001,
+          5.032,
+          28.315
+        ]
+      },
+      {
+        "name": "rhgearibdoor",
+        "min": [
+          -0.497,
+          1.112,
+          0.64
+        ],
+        "max": [
+          2.383,
+          2.188,
+          3.703
+        ]
+      },
+      {
+        "name": "tlight_001",
+        "min": [
+          -1.581,
+          4.913,
+          28.004
+        ],
+        "max": [
+          -0.002,
+          5.032,
+          28.158
+        ]
+      },
+      {
+        "name": "lhnosedoor",
+        "min": [
+          -1.377,
+          1.343,
+          -21.36
+        ],
+        "max": [
+          -0.791,
+          1.559,
+          -20.072
+        ]
+      },
+      {
+        "name": "rhnosedoor",
+        "min": [
+          -0.791,
+          1.343,
+          -21.36
+        ],
+        "max": [
+          -0.204,
+          1.559,
+          -20.072
+        ]
+      },
+      {
+        "name": "lhlight",
+        "min": [
+          -30.6,
+          6.755,
+          14.251
+        ],
+        "max": [
+          -30.497,
+          6.814,
+          14.284
+        ]
+      },
+      {
+        "name": "lights_001",
+        "min": [
+          -28.287,
+          6.321,
+          10.123
+        ],
+        "max": [
+          -28.15,
+          6.339,
+          10.266
+        ]
+      },
+      {
+        "name": "lights_003",
+        "min": [
+          26.613,
+          6.322,
+          10.148
+        ],
+        "max": [
+          26.746,
+          6.342,
+          10.296
+        ]
+      },
+      {
+        "name": "eng1fan",
+        "min": [
+          -12.195,
+          0.354,
+          -7.138
+        ],
+        "max": [
+          -8.824,
+          3.713,
+          -5.973
+        ]
+      },
+      {
+        "name": "eng1fanb",
+        "min": [
+          -12.262,
+          0.283,
+          -7.138
+        ],
+        "max": [
+          -8.759,
+          3.785,
+          -5.971
+        ]
+      },
+      {
+        "name": "eng2fan",
+        "min": [
+          7.245,
+          0.354,
+          -7.138
+        ],
+        "max": [
+          10.616,
+          3.713,
+          -5.973
+        ]
+      },
+      {
+        "name": "eng2fanb",
+        "min": [
+          7.178,
+          0.283,
+          -7.138
+        ],
+        "max": [
+          10.681,
+          3.785,
+          -5.971
+        ]
+      },
+      {
+        "name": "fuselage_003",
+        "min": [
+          0.738,
+          3.736,
+          -23.439
+        ],
+        "max": [
+          0.905,
+          3.777,
+          -23.137
+        ]
+      }
+    ],
+    "nodeNames": [
+      "APU_Inlet",
+      "antennae",
+      "bodyfairing",
+      "chrome",
+      "eng1fan",
+      "eng1fanb",
+      "eng2fan",
+      "eng2fanb",
+      "fin",
+      "fuselage",
+      "fuselage_001",
+      "fuselage_002",
+      "fuselage_003",
+      "lbeacon",
+      "lbeaconbase",
+      "lbeaconlenz",
+      "lchrome",
+      "lhelevator",
+      "lhfdoor",
+      "lhfnosedoor",
+      "lhgearibdoor",
+      "lhibaileron",
+      "lhibdoor",
+      "lhibfairing",
+      "lhibflap",
+      "lhibflap1_",
+      "lhibflap1_0",
+      "lhibflapa",
+      "lhibslat",
+      "lhibslat_",
+      "lhibspoilera",
+      "lhibspoilera_001",
+      "lhkflap",
+      "lhkflap_001",
+      "lhlight",
+      "lhmfairing",
+      "lhnavlite",
+      "lhnosedoor",
+      "lhobaileron",
+      "lhobdoor",
+      "lhobfairing",
+      "lhobflapa",
+      "lhobflapb",
+      "lhobslat_a",
+      "lhobslat_b",
+      "lhobslat_c",
+      "lhobslata",
+      "lhobslatb",
+      "lhobslatc",
+      "lhobspoilera",
+      "lhobspoilerb",
+      "lhreverser",
+      "lhspoilera",
+      "lhturnoffl",
+      "lhturnofflt",
+      "lhvortexdev",
+      "lights_000",
+      "lights_001",
+      "lights_002",
+      "lights_003",
+      "llandlt",
+      "llandlt_001",
+      "lltcover",
+      "lltcover_0",
+      "lltcover_001",
+      "lltcover_002",
+      "logolts",
+      "lreverse",
+      "lstab",
+      "lstab_lead2",
+      "ltailcone",
+      "lwing",
+      "lwinga",
+      "lwingb",
+      "lwingc",
+      "no1enge",
+      "no1engl",
+      "no1pylon",
+      "no2enge",
+      "no2engl",
+      "no2pylon",
+      "Y_UP_Transform",
+      "nwlightedfuse",
+      "pilot_tubes",
+      "rchrome",
+      "rhelevator",
+      "rhfdoor",
+      "rhfnosedoor",
+      "rhgearibdoor",
+      "rhibaileron",
+      "rhibdoor",
+      "rhibfairing",
+      "rhibflap",
+      "rhibflapa",
+      "rhibslat",
+      "rhibslat_",
+      "rhibspoilera",
+      "rhibspoilera_001",
+      "rhkflap",
+      "rhkflap_001",
+      "rhlight",
+      "rhmfairing",
+      "rhnavlite",
+      "rhnosedoor",
+      "rhobaileron",
+      "rhobdoor",
+      "rhobfairing",
+      "rhobflapa",
+      "rhobflapb",
+      "rhobslat_a",
+      "rhobslat_b",
+      "rhobslat_c",
+      "rhobslata",
+      "rhobslatb",
+      "rhobslatc",
+      "rhobspoilera",
+      "rhobspoilerb",
+      "rhreverser",
+      "rhspoilera",
+      "rhturnoffl",
+      "rhturnofflt",
+      "rhvortexdev",
+      "rlandlt",
+      "rlandlt_001",
+      "rreverse",
+      "rstab",
+      "rstab_lead2",
+      "rtailcone",
+      "rudder",
+      "rwing",
+      "rwinga",
+      "rwingb",
+      "rwingc",
+      "tailchrome",
+      "tlight",
+      "tlight_001",
+      "ubeacon",
+      "ubeaconbase",
+      "ubeaconlenz",
+      "windows-light",
+      "winglts",
+      "wings_lightmap",
+      "wiper_l",
+      "wiper_r"
+    ],
+    "meshCount": 142,
+    "triangles": 14878
+  },
+  {
+    "id": "b763",
+    "title": "Boeing 767-300",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/b763.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/767-300",
+    "files": [
+      "b763.gltf",
+      "b763__TFL_png_001.jpg",
+      "b763__Wings_png_001.jpg",
+      "b763__b763.bin"
+    ],
+    "bounds": {
+      "min": [
+        -23.527,
+        -0.483,
+        -24.043
+      ],
+      "max": [
+        22.783,
+        14.634,
+        31.161
+      ],
+      "dimensions": [
+        46.31,
+        15.117,
+        55.204
+      ]
+    },
+    "parts": [
+      {
+        "name": "enginerear",
+        "min": [
+          -9.444,
+          -0.129,
+          -1.097
+        ],
+        "max": [
+          8.623,
+          2.133,
+          2.186
+        ]
+      },
+      {
+        "name": "RpieceTurbofan",
+        "min": [
+          6.267,
+          1.931,
+          -2.467
+        ],
+        "max": [
+          6.306,
+          1.965,
+          -2.352
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_001",
+        "min": [
+          6.181,
+          1.865,
+          -3.036
+        ],
+        "max": [
+          6.372,
+          2.027,
+          -2.354
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_002",
+        "min": [
+          6.337,
+          1.808,
+          -3.24
+        ],
+        "max": [
+          6.367,
+          1.866,
+          -3.059
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_003",
+        "min": [
+          6.132,
+          2.029,
+          -2.433
+        ],
+        "max": [
+          6.197,
+          2.085,
+          -2.35
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_004",
+        "min": [
+          6.115,
+          1.931,
+          -3.225
+        ],
+        "max": [
+          6.277,
+          2.095,
+          -2.348
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_005",
+        "min": [
+          6.12,
+          1.865,
+          -3.227
+        ],
+        "max": [
+          6.343,
+          2.095,
+          -2.388
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_006",
+        "min": [
+          6.115,
+          1.866,
+          -3.274
+        ],
+        "max": [
+          6.337,
+          2.095,
+          -2.571
+        ]
+      },
+      {
+        "name": "LpieceTurbofan",
+        "min": [
+          -7.12,
+          1.874,
+          -3.165
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "LpieceTurbofan2",
+        "min": [
+          -6.872,
+          2.095,
+          -2.662
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_001",
+        "min": [
+          -7.089,
+          1.874,
+          -3.312
+        ],
+        "max": [
+          -6.872,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "LpieceTurbofan2_001",
+        "min": [
+          -6.872,
+          2.095,
+          -2.473
+        ],
+        "max": [
+          -6.868,
+          2.095,
+          -2.388
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_002",
+        "min": [
+          -7.061,
+          1.91,
+          -3.17
+        ],
+        "max": [
+          -6.866,
+          2.095,
+          -2.352
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_003",
+        "min": [
+          -7.12,
+          1.874,
+          -3.274
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.348
+        ]
+      },
+      {
+        "name": "LdoorNoseGear",
+        "min": [
+          -0.938,
+          1.09,
+          -20.452
+        ],
+        "max": [
+          -0.369,
+          1.438,
+          -19.493
+        ]
+      },
+      {
+        "name": "RCapaturbofan",
+        "min": [
+          6.331,
+          0.301,
+          -0.315
+        ],
+        "max": [
+          6.628,
+          1.698,
+          -0.109
+        ]
+      },
+      {
+        "name": "LCapaturbofan",
+        "min": [
+          -7.376,
+          0.301,
+          -0.316
+        ],
+        "max": [
+          -7.079,
+          1.698,
+          -0.109
+        ]
+      },
+      {
+        "name": "LmConeTurbofan",
+        "min": [
+          -9.501,
+          -0.265,
+          -1.35
+        ],
+        "max": [
+          -6.962,
+          2.181,
+          1.123
+        ]
+      },
+      {
+        "name": "LmbConeTurbofan",
+        "min": [
+          -7.424,
+          0.301,
+          -0.264
+        ],
+        "max": [
+          -7.122,
+          1.432,
+          -0.109
+        ]
+      },
+      {
+        "name": "LbConeTurbofan",
+        "min": [
+          -8.938,
+          0.354,
+          0.666
+        ],
+        "max": [
+          -7.641,
+          1.659,
+          1.422
+        ]
+      },
+      {
+        "name": "RmConeTurbofan",
+        "min": [
+          6.214,
+          -0.265,
+          -1.35
+        ],
+        "max": [
+          8.753,
+          2.181,
+          1.123
+        ]
+      },
+      {
+        "name": "RmbConeTurbofan",
+        "min": [
+          6.374,
+          0.301,
+          -0.264
+        ],
+        "max": [
+          6.677,
+          1.432,
+          -0.109
+        ]
+      },
+      {
+        "name": "RbConeTurbofan",
+        "min": [
+          6.894,
+          0.354,
+          0.666
+        ],
+        "max": [
+          8.191,
+          1.545,
+          1.422
+        ]
+      },
+      {
+        "name": "CylInternalTurbofan",
+        "min": [
+          -9.433,
+          -0.155,
+          -2.443
+        ],
+        "max": [
+          8.689,
+          2.195,
+          -0.98
+        ]
+      },
+      {
+        "name": "RCapaturbofan_001",
+        "min": [
+          6.111,
+          -0.306,
+          -1.858
+        ],
+        "max": [
+          8.82,
+          2.275,
+          -0.117
+        ]
+      },
+      {
+        "name": "LCapaturbofan_001",
+        "min": [
+          -9.567,
+          -0.306,
+          -1.858
+        ],
+        "max": [
+          -6.858,
+          2.275,
+          -0.117
+        ]
+      },
+      {
+        "name": "Fuselage",
+        "min": [
+          -2.868,
+          0.855,
+          -24.043
+        ],
+        "max": [
+          2.12,
+          6.258,
+          29.614
+        ]
+      },
+      {
+        "name": "Glass_Fuselage",
+        "min": [
+          -2.866,
+          1.035,
+          -16.827
+        ],
+        "max": [
+          2.118,
+          6.258,
+          16.766
+        ]
+      },
+      {
+        "name": "CylInternalTurbofan_001",
+        "min": [
+          -8.838,
+          1.638,
+          -2.391
+        ],
+        "max": [
+          7.806,
+          2.235,
+          -0.994
+        ]
+      },
+      {
+        "name": "RCapaturbofan_002",
+        "min": [
+          6.202,
+          1.405,
+          -1.786
+        ],
+        "max": [
+          7.925,
+          2.292,
+          -0.143
+        ]
+      },
+      {
+        "name": "LCapaturbofan_002",
+        "min": [
+          -9.061,
+          1.379,
+          -1.794
+        ],
+        "max": [
+          -6.95,
+          2.292,
+          -0.143
+        ]
+      },
+      {
+        "name": "Rmiddlefan",
+        "min": [
+          7.14,
+          0.683,
+          -3.622
+        ],
+        "max": [
+          7.677,
+          1.22,
+          -3.229
+        ]
+      },
+      {
+        "name": "RdiskFan",
+        "min": [
+          6.251,
+          -0.123,
+          -3.256
+        ],
+        "max": [
+          8.572,
+          2.021,
+          -3.174
+        ]
+      },
+      {
+        "name": "Lmiddlefan",
+        "min": [
+          -8.424,
+          0.683,
+          -3.622
+        ],
+        "max": [
+          -7.887,
+          1.22,
+          -3.229
+        ]
+      },
+      {
+        "name": "LdiskFan",
+        "min": [
+          -9.319,
+          -0.123,
+          -3.256
+        ],
+        "max": [
+          -6.999,
+          2.021,
+          -3.174
+        ]
+      },
+      {
+        "name": "LSuportTurbofan",
+        "min": [
+          -8.659,
+          1.661,
+          -3.327
+        ],
+        "max": [
+          -7.737,
+          2.85,
+          4.589
+        ]
+      },
+      {
+        "name": "LlightWing2",
+        "min": [
+          -23.219,
+          4.405,
+          9.276
+        ],
+        "max": [
+          -22.944,
+          4.553,
+          9.726
+        ]
+      },
+      {
+        "name": "RSuportTurbofan",
+        "min": [
+          6.99,
+          1.661,
+          -3.327
+        ],
+        "max": [
+          7.911,
+          2.85,
+          4.589
+        ]
+      },
+      {
+        "name": "RlightWing2",
+        "min": [
+          22.197,
+          4.405,
+          9.276
+        ],
+        "max": [
+          22.472,
+          4.553,
+          9.726
+        ]
+      },
+      {
+        "name": "WindowsFrontMetal",
+        "min": [
+          -0.372,
+          4.175,
+          -22.797
+        ],
+        "max": [
+          1.349,
+          4.788,
+          -20.931
+        ]
+      },
+      {
+        "name": "WindowsFrontMetal_001",
+        "min": [
+          -2.096,
+          4.175,
+          -22.797
+        ],
+        "max": [
+          1.349,
+          4.888,
+          -20.931
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_004",
+        "min": [
+          -7.157,
+          1.81,
+          -3.061
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "LpieceTurbofan2_002",
+        "min": [
+          -6.872,
+          2.085,
+          -2.768
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.388
+        ]
+      },
+      {
+        "name": "LmConeTurbofan_001",
+        "min": [
+          -8.716,
+          1.713,
+          -1.323
+        ],
+        "max": [
+          -7.745,
+          2.278,
+          1.109
+        ]
+      },
+      {
+        "name": "LCapaturbofan_003",
+        "min": [
+          -8.94,
+          1.611,
+          -2.938
+        ],
+        "max": [
+          -7.046,
+          2.309,
+          -1.732
+        ]
+      },
+      {
+        "name": "LmbConeTurbofan_001",
+        "min": [
+          -8.913,
+          1.405,
+          -0.316
+        ],
+        "max": [
+          -7.188,
+          2.154,
+          -0.113
+        ]
+      },
+      {
+        "name": "LdiskFan_001",
+        "min": [
+          -8.6,
+          2.021,
+          -3.229
+        ],
+        "max": [
+          -7.714,
+          2.109,
+          -3.199
+        ]
+      },
+      {
+        "name": "LSuportTurbofan_001",
+        "min": [
+          -8.561,
+          1.579,
+          -3.327
+        ],
+        "max": [
+          -7.737,
+          2.387,
+          2.57
+        ]
+      },
+      {
+        "name": "LFtrimTire1_001",
+        "min": [
+          -4.272,
+          -0.396,
+          2.465
+        ],
+        "max": [
+          -4.272,
+          -0.396,
+          2.487
+        ]
+      },
+      {
+        "name": "LFtrimTire2_001",
+        "min": [
+          -4.934,
+          -0.396,
+          2.465
+        ],
+        "max": [
+          -4.934,
+          -0.396,
+          2.487
+        ]
+      },
+      {
+        "name": "LBtrimTire2_001",
+        "min": [
+          -4.934,
+          -0.396,
+          3.973
+        ],
+        "max": [
+          -4.934,
+          -0.396,
+          3.995
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_005",
+        "min": [
+          -7.048,
+          1.931,
+          -2.972
+        ],
+        "max": [
+          -6.866,
+          2.095,
+          -2.35
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_006",
+        "min": [
+          -7.159,
+          1.808,
+          -3.35
+        ],
+        "max": [
+          -6.864,
+          2.095,
+          -2.354
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_007",
+        "min": [
+          6.12,
+          1.84,
+          -3.35
+        ],
+        "max": [
+          6.39,
+          2.095,
+          -2.352
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_008",
+        "min": [
+          6.115,
+          1.874,
+          -3.312
+        ],
+        "max": [
+          6.372,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "RpieceTurbofan2",
+        "min": [
+          6.115,
+          2.095,
+          -2.662
+        ],
+        "max": [
+          6.124,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "LpieceTurbofan_007",
+        "min": [
+          -7.159,
+          1.808,
+          -3.35
+        ],
+        "max": [
+          -6.862,
+          2.095,
+          -2.342
+        ]
+      },
+      {
+        "name": "LCapaturbofan_004",
+        "min": [
+          -9.555,
+          -0.376,
+          -4.36
+        ],
+        "max": [
+          -6.776,
+          2.309,
+          -1.726
+        ]
+      },
+      {
+        "name": "LmbConeTurbofan_002",
+        "min": [
+          -9.405,
+          -0.124,
+          -1.476
+        ],
+        "max": [
+          -7.19,
+          2.082,
+          -0.119
+        ]
+      },
+      {
+        "name": "LfConeTurbofan",
+        "min": [
+          -9.253,
+          -0.156,
+          -4.36
+        ],
+        "max": [
+          -6.989,
+          2.05,
+          -3.121
+        ]
+      },
+      {
+        "name": "LdiskFan_002",
+        "min": [
+          -8.6,
+          -0.211,
+          -3.229
+        ],
+        "max": [
+          -7.714,
+          -0.123,
+          -3.199
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_009",
+        "min": [
+          6.337,
+          1.808,
+          -3.35
+        ],
+        "max": [
+          6.411,
+          1.882,
+          -2.342
+        ]
+      },
+      {
+        "name": "RCapaturbofan_003",
+        "min": [
+          6.029,
+          -0.376,
+          -4.36
+        ],
+        "max": [
+          8.808,
+          2.309,
+          -1.726
+        ]
+      },
+      {
+        "name": "RmbConeTurbofan_001",
+        "min": [
+          6.443,
+          -0.124,
+          -1.476
+        ],
+        "max": [
+          8.658,
+          2.129,
+          -0.117
+        ]
+      },
+      {
+        "name": "RfConeTurbofan",
+        "min": [
+          6.242,
+          -0.156,
+          -4.36
+        ],
+        "max": [
+          8.505,
+          2.05,
+          -3.121
+        ]
+      },
+      {
+        "name": "RdiskFan_001",
+        "min": [
+          6.966,
+          -0.211,
+          -3.229
+        ],
+        "max": [
+          7.855,
+          -0.123,
+          -3.199
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_010",
+        "min": [
+          6.115,
+          1.808,
+          -3.35
+        ],
+        "max": [
+          6.409,
+          2.095,
+          -2.628
+        ]
+      },
+      {
+        "name": "RpieceTurbofan2_001",
+        "min": [
+          6.115,
+          2.085,
+          -2.768
+        ],
+        "max": [
+          6.124,
+          2.095,
+          -2.388
+        ]
+      },
+      {
+        "name": "RmConeTurbofan_001",
+        "min": [
+          6.781,
+          1.492,
+          -1.322
+        ],
+        "max": [
+          7.968,
+          2.278,
+          1.119
+        ]
+      },
+      {
+        "name": "RCapaturbofan_004",
+        "min": [
+          6.177,
+          1.434,
+          -2.938
+        ],
+        "max": [
+          7.911,
+          2.309,
+          -1.728
+        ]
+      },
+      {
+        "name": "RmbConeTurbofan_002",
+        "min": [
+          6.441,
+          1.405,
+          -0.3
+        ],
+        "max": [
+          7.712,
+          2.154,
+          -0.113
+        ]
+      },
+      {
+        "name": "RdiskFan_002",
+        "min": [
+          6.966,
+          2.021,
+          -3.229
+        ],
+        "max": [
+          7.855,
+          2.109,
+          -3.199
+        ]
+      },
+      {
+        "name": "RbConeTurbofan_001",
+        "min": [
+          7.187,
+          1.466,
+          0.675
+        ],
+        "max": [
+          7.902,
+          1.659,
+          1.401
+        ]
+      },
+      {
+        "name": "RSuportTurbofan_001",
+        "min": [
+          6.99,
+          1.579,
+          -3.327
+        ],
+        "max": [
+          7.814,
+          2.243,
+          2.57
+        ]
+      },
+      {
+        "name": "RBtrimTire1_001",
+        "min": [
+          3.525,
+          -0.396,
+          3.973
+        ],
+        "max": [
+          3.525,
+          -0.396,
+          3.995
+        ]
+      },
+      {
+        "name": "RBtrimTire2_001",
+        "min": [
+          4.187,
+          -0.396,
+          3.973
+        ],
+        "max": [
+          4.187,
+          -0.396,
+          3.995
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_011",
+        "min": [
+          6.12,
+          1.906,
+          -3.261
+        ],
+        "max": [
+          6.304,
+          2.095,
+          -2.346
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_012",
+        "min": [
+          6.115,
+          1.874,
+          -3.312
+        ],
+        "max": [
+          6.337,
+          2.095,
+          -2.388
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_013",
+        "min": [
+          6.277,
+          1.808,
+          -3.312
+        ],
+        "max": [
+          6.368,
+          1.931,
+          -3.036
+        ]
+      },
+      {
+        "name": "RpieceTurbofan_014",
+        "min": [
+          6.118,
+          1.815,
+          -3.312
+        ],
+        "max": [
+          6.368,
+          2.095,
+          -2.516
+        ]
+      }
+    ],
+    "nodeNames": [
+      "CylInternalTurbofan",
+      "CylInternalTurbofan_001",
+      "FFbarNG_001",
+      "FL1barNG_001",
+      "FR1barNG_001",
+      "Fuselage",
+      "GDL",
+      "GDR",
+      "Glass_Front",
+      "Glass_Fuselage",
+      "Group12",
+      "Group13",
+      "Group13_001",
+      "Group13_002",
+      "Group13_003",
+      "Group13_004",
+      "Group13_005",
+      "Group13_006",
+      "Group13_007",
+      "Group13_008",
+      "Group13_009",
+      "Group13_010",
+      "Group13_011",
+      "Group13_012",
+      "Group13_013",
+      "Group13_014",
+      "Group32",
+      "Group32_001",
+      "Group32_002",
+      "Group32_003",
+      "Group32_004",
+      "Group32_005",
+      "Group32_006",
+      "Group32_007",
+      "Group32_008",
+      "Group32_009",
+      "Group32_010",
+      "Group32_011",
+      "Group32_012",
+      "Group32_013",
+      "Group32_014",
+      "Group32_015",
+      "Group32_016",
+      "Group32_017",
+      "Group32_018",
+      "Group32_019",
+      "Group32_020",
+      "Group32_021",
+      "Group42_001",
+      "LBtrimTire2_001",
+      "LCapaturbofan",
+      "LCapaturbofan_001",
+      "LCapaturbofan_002",
+      "LCapaturbofan_003",
+      "LCapaturbofan_004",
+      "LFflapwing1",
+      "LFflapwing2",
+      "LFtrimTire1_001",
+      "LFtrimTire2_001",
+      "LHStab",
+      "LHStab_001",
+      "LHelev",
+      "LSuportTurbofan",
+      "LSuportTurbofan_001",
+      "LWing",
+      "LWing_001",
+      "LbConeTurbofan",
+      "LdiskFan",
+      "LdiskFan_001",
+      "LdiskFan_002",
+      "LdoorNoseGear",
+      "LfConeTurbofan",
+      "LgomoWingInt",
+      "LgomoWingIntF",
+      "LiEixo1_001",
+      "LiEixo2_001",
+      "LlightWing2",
+      "LmConeTurbofan",
+      "LmConeTurbofan_001",
+      "LmbConeTurbofan",
+      "LmbConeTurbofan_001",
+      "LmbConeTurbofan_002",
+      "Lmiddlefan",
+      "LpieceTurbofan",
+      "LpieceTurbofan2",
+      "LpieceTurbofan2_001",
+      "LpieceTurbofan2_002",
+      "LpieceTurbofan_001",
+      "LpieceTurbofan_002",
+      "LpieceTurbofan_003",
+      "LpieceTurbofan_004",
+      "LpieceTurbofan_005",
+      "LpieceTurbofan_006",
+      "LpieceTurbofan_007",
+      "Ltrimpiece5",
+      "Ltrimpiece6",
+      "Mesh14",
+      "Mesh17",
+      "Mesh19",
+      "Mesh20",
+      "Mesh21",
+      "Mesh22",
+      "Mesh23",
+      "Mesh24",
+      "Mesh24_001",
+      "Mesh25",
+      "Mesh25_001",
+      "Mesh26",
+      "Mesh26_001",
+      "Mesh29",
+      "Mesh29_001",
+      "Mesh29_002",
+      "Mesh29_003",
+      "Mesh29_004",
+      "Mesh29_005",
+      "Mesh36",
+      "Mesh57",
+      "Mesh57_001",
+      "Mesh57_002",
+      "Mesh57_003",
+      "Mesh57_004",
+      "Mesh57_005",
+      "Mesh64",
+      "Mesh85",
+      "Mesh87",
+      "Mesh87_001",
+      "Orelinhas",
+      "Orelinhas_001",
+      "Orelinhas_002",
+      "Orelinhas_003",
+      "Orelinhas_004",
+      "RBtrimTire1_001",
+      "RBtrimTire2_001",
+      "RCapaturbofan",
+      "RCapaturbofan_001",
+      "RCapaturbofan_002",
+      "RCapaturbofan_003",
+      "RCapaturbofan_004",
+      "RFflapwing1",
+      "RFflapwing2",
+      "RHStab",
+      "RHelev",
+      "RSuportTurbofan",
+      "RSuportTurbofan_001",
+      "RWing",
+      "RWing_002",
+      "RbConeTurbofan",
+      "RbConeTurbofan_001",
+      "RdiskFan",
+      "RdiskFan_001",
+      "RdiskFan_002",
+      "RfConeTurbofan",
+      "RgomoWing0",
+      "RgomoWing0b",
+      "RgomoWing1",
+      "RgomoWing1b",
+      "RgomoWing2",
+      "RgomoWing2b",
+      "RgomoWing3",
+      "RgomoWing3b",
+      "RgomoWingInt",
+      "RgomoWingIntF",
+      "RiEixo1_001",
+      "RiEixo2_001",
+      "RlightWing2",
+      "RmConeTurbofan",
+      "RmConeTurbofan_001",
+      "RmbConeTurbofan",
+      "RmbConeTurbofan_001",
+      "RmbConeTurbofan_002",
+      "Rmiddlefan",
+      "RpieceTurbofan",
+      "RpieceTurbofan2",
+      "RpieceTurbofan2_001",
+      "RpieceTurbofan_001",
+      "RpieceTurbofan_002",
+      "RpieceTurbofan_003",
+      "RpieceTurbofan_004",
+      "RpieceTurbofan_005",
+      "RpieceTurbofan_006",
+      "RpieceTurbofan_007",
+      "RpieceTurbofan_008",
+      "RpieceTurbofan_009",
+      "RpieceTurbofan_010",
+      "RpieceTurbofan_011",
+      "RpieceTurbofan_012",
+      "RpieceTurbofan_013",
+      "RpieceTurbofan_014",
+      "Rtrimpiece5",
+      "Rtrimpiece7_001",
+      "VRudder",
+      "VStab",
+      "VStab_001",
+      "VStab_002",
+      "WindowsFrontMetal",
+      "WindowsFrontMetal_001",
+      "_White_",
+      "aileron_ext_L",
+      "aileron_ext_R",
+      "aileron_int_L",
+      "aileron_int_R",
+      "enginerear",
+      "engines",
+      "engines_001",
+      "engines_002",
+      "engines_003",
+      "engines_004",
+      "engines_005",
+      "engines_006",
+      "engines_007",
+      "engines_008",
+      "engines_009",
+      "fanl",
+      "fanl_001",
+      "fanr",
+      "fanr_001",
+      "flap_ext_L",
+      "flap_ext_R",
+      "flapl",
+      "flapr",
+      "fuselage",
+      "glass",
+      "Y_UP_Transform",
+      "object",
+      "object_001",
+      "object_002",
+      "object_003",
+      "object_004",
+      "object_005",
+      "object_006",
+      "object_007",
+      "object_008",
+      "object_009",
+      "object_010",
+      "object_011",
+      "object_012",
+      "object_021",
+      "object_022",
+      "object_028",
+      "object_029",
+      "object_030",
+      "object_031",
+      "object_032",
+      "object_033",
+      "object_034",
+      "object_035",
+      "object_036",
+      "object_037",
+      "object_038",
+      "object_039",
+      "object_040",
+      "object_041",
+      "object_042",
+      "object_043",
+      "object_044",
+      "object_045",
+      "object_046",
+      "object_047",
+      "object_048",
+      "object_049",
+      "object_050",
+      "object_051",
+      "object_052",
+      "object_053",
+      "object_054",
+      "object_055",
+      "object_056",
+      "object_057",
+      "object_058",
+      "object_059",
+      "object_060",
+      "object_061",
+      "object_062",
+      "object_063",
+      "object_064",
+      "object_065",
+      "object_066",
+      "object_067",
+      "object_068",
+      "object_069",
+      "object_070",
+      "object_071",
+      "object_072",
+      "object_073",
+      "object_074",
+      "object_075",
+      "object_076",
+      "object_081",
+      "object_082",
+      "object_083",
+      "object_084",
+      "object_085",
+      "object_086",
+      "object_087",
+      "object_088",
+      "object_089",
+      "object_090",
+      "object_093",
+      "object_094",
+      "object_095",
+      "object_096",
+      "object_097",
+      "object_098",
+      "object_099",
+      "object_100",
+      "object_101",
+      "object_102",
+      "object_103",
+      "object_104",
+      "object_105",
+      "object_106",
+      "object_107",
+      "object_108",
+      "object_109",
+      "object_110",
+      "object_111",
+      "object_112",
+      "object_113",
+      "object_114",
+      "object_115",
+      "object_116",
+      "object_117",
+      "object_118",
+      "object_122",
+      "object_123",
+      "object_124",
+      "object_125",
+      "object_126",
+      "object_127",
+      "object_128",
+      "object_129",
+      "object_130",
+      "object_131",
+      "object_132",
+      "object_133",
+      "object_134",
+      "object_135",
+      "object_136",
+      "object_137",
+      "object_138",
+      "object_139",
+      "object_140",
+      "object_141",
+      "object_142",
+      "reverser",
+      "reverser_001",
+      "reverser_002",
+      "reverser_003",
+      "right_gear2",
+      "speedbrake_LE",
+      "speedbrake_LE_001",
+      "speedbrake_LE_002",
+      "speedbrake_LE_003",
+      "speedbrake_RE",
+      "speedbrake_RE_001",
+      "speedbrake_RE_002",
+      "speedbrake_RE_003",
+      "speedbrakel",
+      "speedbrakel_001",
+      "speedbraker",
+      "speedbraker_001",
+      "tail",
+      "tail_001",
+      "window",
+      "wings",
+      "wings_001",
+      "wings_002",
+      "wings_004",
+      "wings_005",
+      "wings_006",
+      "wings_007",
+      "wings_008",
+      "wings_009",
+      "wings_010"
+    ],
+    "meshCount": 166,
+    "triangles": 13381
+  },
+  {
+    "id": "a343",
+    "title": "Airbus A340-300",
+    "engines": 4,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/a343.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/A340-313X",
+    "files": [
+      "a343.gltf",
+      "a343__House_png_001.png",
+      "a343__House_png_002.png",
+      "a343__House_png_003.png",
+      "a343__House_png_004.png",
+      "a343__Wings_png_001.png",
+      "a343__gear_png_001.png",
+      "a343__metal_png_001.png",
+      "a343__a343.bin"
+    ],
+    "bounds": {
+      "min": [
+        -30.272,
+        -3.972,
+        -35.176
+      ],
+      "max": [
+        29.921,
+        11.145,
+        31.767
+      ],
+      "dimensions": [
+        60.193,
+        15.117,
+        66.943
+      ]
+    },
+    "parts": [
+      {
+        "name": "Fuselage_001",
+        "min": [
+          -3.2,
+          -2.795,
+          -32.002
+        ],
+        "max": [
+          2.577,
+          2.845,
+          30.882
+        ]
+      },
+      {
+        "name": "GearCAftDoorL",
+        "min": [
+          -1.317,
+          -3.215,
+          0.482
+        ],
+        "max": [
+          -0.278,
+          -3.115,
+          1.396
+        ]
+      },
+      {
+        "name": "GearCAftDoorR",
+        "min": [
+          -0.282,
+          -3.215,
+          0.477
+        ],
+        "max": [
+          0.756,
+          -3.115,
+          1.392
+        ]
+      },
+      {
+        "name": "GearCDoorC",
+        "min": [
+          -0.435,
+          -3.215,
+          -0.293
+        ],
+        "max": [
+          -0.133,
+          -3.205,
+          0.266
+        ]
+      },
+      {
+        "name": "GearCFwdDoorL",
+        "min": [
+          -1.327,
+          -3.215,
+          -1.792
+        ],
+        "max": [
+          -0.282,
+          -3.115,
+          0.486
+        ]
+      },
+      {
+        "name": "GearCFwdDoorR",
+        "min": [
+          -0.293,
+          -3.215,
+          -1.796
+        ],
+        "max": [
+          0.753,
+          -3.115,
+          0.482
+        ]
+      },
+      {
+        "name": "GearLDoor",
+        "min": [
+          -3.328,
+          -3.215,
+          -2.552
+        ],
+        "max": [
+          -1.385,
+          -1.895,
+          1.406
+        ]
+      },
+      {
+        "name": "GearMainWell",
+        "min": [
+          -3.102,
+          -2.795,
+          -2.725
+        ],
+        "max": [
+          2.508,
+          -0.988,
+          1.559
+        ]
+      },
+      {
+        "name": "GearMainWellFrame",
+        "min": [
+          -3.316,
+          -3.215,
+          -2.573
+        ],
+        "max": [
+          2.747,
+          -1.894,
+          1.406
+        ]
+      },
+      {
+        "name": "GearNAftDoorL",
+        "min": [
+          -1.101,
+          -2.643,
+          -25.781
+        ],
+        "max": [
+          -0.404,
+          -2.469,
+          -25.23
+        ]
+      },
+      {
+        "name": "GearNAftDoorR",
+        "min": [
+          -0.401,
+          -2.643,
+          -25.784
+        ],
+        "max": [
+          0.295,
+          -2.469,
+          -25.233
+        ]
+      },
+      {
+        "name": "GearNDoorC",
+        "min": [
+          -0.556,
+          -2.583,
+          -26.459
+        ],
+        "max": [
+          -0.255,
+          -2.479,
+          -25.78
+        ]
+      },
+      {
+        "name": "GearNFwdDoorL",
+        "min": [
+          -1.111,
+          -2.577,
+          -28.193
+        ],
+        "max": [
+          -0.41,
+          -2.045,
+          -25.776
+        ]
+      },
+      {
+        "name": "GearNFwdDoorR",
+        "min": [
+          -0.412,
+          -2.577,
+          -28.196
+        ],
+        "max": [
+          0.292,
+          -2.045,
+          -25.78
+        ]
+      },
+      {
+        "name": "GearRDoor",
+        "min": [
+          0.81,
+          -3.215,
+          -2.568
+        ],
+        "max": [
+          2.753,
+          -1.895,
+          1.388
+        ]
+      },
+      {
+        "name": "_LightGr_006",
+        "min": [
+          -9.6,
+          -0.934,
+          -1.44
+        ],
+        "max": [
+          -9.526,
+          -0.794,
+          -0.052
+        ]
+      },
+      {
+        "name": "CockpitWindows",
+        "min": [
+          -1.983,
+          0.684,
+          -30.628
+        ],
+        "max": [
+          1.148,
+          1.265,
+          -28.688
+        ]
+      },
+      {
+        "name": "GearLeftDoor",
+        "min": [
+          -6.795,
+          -1.899,
+          -2.013
+        ],
+        "max": [
+          -4,
+          -1.352,
+          -0.191
+        ]
+      },
+      {
+        "name": "GearNWell",
+        "min": [
+          -1.115,
+          -2.62,
+          -28.2
+        ],
+        "max": [
+          0.299,
+          -0.825,
+          -25.227
+        ]
+      },
+      {
+        "name": "GearRightDoor",
+        "min": [
+          3.129,
+          -1.921,
+          -2.02
+        ],
+        "max": [
+          5.927,
+          -1.388,
+          -0.199
+        ]
+      },
+      {
+        "name": "Windows",
+        "min": [
+          -3.134,
+          0.664,
+          -24.873
+        ],
+        "max": [
+          2.508,
+          1.251,
+          17.872
+        ]
+      },
+      {
+        "name": "_LightGr",
+        "min": [
+          8.66,
+          -0.985,
+          -1.451
+        ],
+        "max": [
+          8.736,
+          -0.846,
+          -0.063
+        ]
+      },
+      {
+        "name": "_LightGr_005",
+        "min": [
+          -1.883,
+          -3.121,
+          -0.553
+        ],
+        "max": [
+          -1.795,
+          -3.116,
+          1.342
+        ]
+      },
+      {
+        "name": "_LightGr_022",
+        "min": [
+          -9.918,
+          -1.204,
+          -0.216
+        ],
+        "max": [
+          -9.839,
+          -1.065,
+          1.21
+        ]
+      },
+      {
+        "name": "_LightGr_023",
+        "min": [
+          8.977,
+          -1.204,
+          -0.215
+        ],
+        "max": [
+          9.056,
+          -1.065,
+          1.212
+        ]
+      },
+      {
+        "name": "fuselage_016",
+        "min": [
+          12.207,
+          8.62,
+          -35.176
+        ],
+        "max": [
+          12.207,
+          8.62,
+          -35.176
+        ]
+      }
+    ],
+    "nodeNames": [
+      "AftNacelle",
+      "AftNacelle_001",
+      "AftNacelle_002",
+      "AftNacelle_003",
+      "AftNacelle_004",
+      "AftNacelle_005",
+      "AftNacelle_006",
+      "AftNacelle_007",
+      "AileronL1",
+      "AileronL2",
+      "AileronR1",
+      "AileronR2",
+      "Belly",
+      "Blades",
+      "Blades_001",
+      "Blades_002",
+      "Blades_003",
+      "Cargo1",
+      "Cargo2",
+      "Cargo3",
+      "Case",
+      "Case_001",
+      "Case_002",
+      "Case_003",
+      "ChromeIntake",
+      "ChromeIntake_001",
+      "ChromeIntake_002",
+      "ChromeIntake_003",
+      "CockpitWindows",
+      "Color_00_004",
+      "Cone",
+      "ConeSpiral",
+      "ConeSpiral_001",
+      "ConeSpiral_002",
+      "ConeSpiral_003",
+      "Cone_001",
+      "Cone_002",
+      "Cone_003",
+      "Core",
+      "Core_001",
+      "Core_002",
+      "Core_003",
+      "Core_004",
+      "Core_005",
+      "Core_006",
+      "Core_007",
+      "DoorL1",
+      "DoorL2",
+      "DoorL3",
+      "DoorL4",
+      "DoorR1",
+      "DoorR2",
+      "DoorR3",
+      "DoorR4",
+      "ElevatorL",
+      "ElevatorR",
+      "FairingL1",
+      "FairingL2",
+      "FairingL3",
+      "FairingL4",
+      "FairingPylons",
+      "FairingR1",
+      "FairingR2",
+      "FairingR3",
+      "FairingR4",
+      "FlapL1",
+      "FlapL2",
+      "FlapR1",
+      "FlapR2",
+      "Fuselage",
+      "Fuselage_001",
+      "FwdNacelle",
+      "FwdNacelle_001",
+      "FwdNacelle_002",
+      "FwdNacelle_003",
+      "GearCAftDoorL",
+      "GearCAftDoorR",
+      "GearCDoorC",
+      "GearCFwdDoorL",
+      "GearCFwdDoorR",
+      "GearLDoor",
+      "GearLeftDoor",
+      "GearMainWell",
+      "GearMainWellFrame",
+      "GearNAftDoorL",
+      "GearNAftDoorR",
+      "GearNDoorC",
+      "GearNFwdDoorL",
+      "GearNFwdDoorR",
+      "GearNWell",
+      "GearRDoor",
+      "GearRightDoor",
+      "Group21",
+      "Group21_001",
+      "Group26_001",
+      "Group27",
+      "Group27_001",
+      "HstabEdges",
+      "Hstabs",
+      "Intake",
+      "IntakeInt",
+      "IntakeInt_001",
+      "IntakeInt_002",
+      "IntakeInt_003",
+      "Intake_001",
+      "Intake_002",
+      "Intake_003",
+      "Mesh15",
+      "Mesh15_002",
+      "Mesh20",
+      "Mesh20_001",
+      "Mesh20_002",
+      "Mesh20_003",
+      "Mesh26",
+      "Mesh26_001",
+      "Mesh26_002",
+      "Mesh27",
+      "Mesh27_001",
+      "Mesh27_002",
+      "Mesh46_001",
+      "Mesh46_002",
+      "Mesh46_004",
+      "Mesh47_001",
+      "Mesh47_002",
+      "Mesh47_004",
+      "Mesh63",
+      "Mesh63_001",
+      "Mesh63_002",
+      "Mesh63_003",
+      "Nozzle",
+      "Nozzle_001",
+      "Nozzle_002",
+      "Nozzle_003",
+      "Object01",
+      "Plane",
+      "Plane_001",
+      "ReverserDownL",
+      "ReverserDownLInt",
+      "ReverserDownLInt_001",
+      "ReverserDownLInt_002",
+      "ReverserDownLInt_003",
+      "ReverserDownL_001",
+      "ReverserDownL_002",
+      "ReverserDownL_003",
+      "ReverserDownR",
+      "ReverserDownRInt",
+      "ReverserDownRInt_001",
+      "ReverserDownRInt_002",
+      "ReverserDownRInt_003",
+      "ReverserDownR_001",
+      "ReverserDownR_002",
+      "ReverserDownR_003",
+      "ReverserUpL",
+      "ReverserUpLInt",
+      "ReverserUpLInt_001",
+      "ReverserUpLInt_002",
+      "ReverserUpLInt_003",
+      "ReverserUpL_001",
+      "ReverserUpL_002",
+      "ReverserUpL_003",
+      "ReverserUpR",
+      "ReverserUpRInt",
+      "ReverserUpRInt_001",
+      "ReverserUpRInt_002",
+      "ReverserUpRInt_003",
+      "ReverserUpR_001",
+      "ReverserUpR_002",
+      "ReverserUpR_003",
+      "Rudder",
+      "SlatL1",
+      "SlatL2",
+      "SlatL3",
+      "SlatL4",
+      "SlatL5",
+      "SlatL6",
+      "SlatL7",
+      "SlatR1",
+      "SlatR2",
+      "SlatR3",
+      "SlatR4",
+      "SlatR5",
+      "SlatR6",
+      "SlatR7",
+      "SpoilerL1",
+      "SpoilerL2",
+      "SpoilerL3",
+      "SpoilerL4",
+      "SpoilerL5",
+      "SpoilerL6",
+      "SpoilerR1",
+      "SpoilerR2",
+      "SpoilerR3",
+      "SpoilerR4",
+      "SpoilerR5",
+      "SpoilerR6",
+      "Vstab",
+      "Vstab_001",
+      "Windows",
+      "Wingbox",
+      "Wings",
+      "Wings_001",
+      "_LightGr",
+      "_LightGr_005",
+      "_LightGr_006",
+      "_LightGr_022",
+      "_LightGr_023",
+      "flapl1",
+      "flapl1_001",
+      "flapr2",
+      "flapr2_001",
+      "fuselage_005",
+      "fuselage_006",
+      "fuselage_007",
+      "fuselage_008",
+      "fuselage_016",
+      "group",
+      "group_002",
+      "humo",
+      "leftwing_1",
+      "mitad",
+      "mitad_001",
+      "mitad_002",
+      "mitad_003",
+      "Y_UP_Transform",
+      "right_gear_002",
+      "shroud",
+      "shroud_001",
+      "shroud_002",
+      "shroud_003",
+      "wingletl",
+      "wingletr",
+      "wingprops_002"
+    ],
+    "meshCount": 211,
+    "triangles": 61184
+  },
+  {
+    "id": "beluga",
+    "title": "Airbus A300-600ST Beluga",
+    "engines": 2,
+    "source": "https://github.com/Flightradar24/fr24-3d-models/blob/dd53267690c6a4ecbb290a3acf0284333a5d68a9/models/beluga.glb",
+    "license": "GPL-2.0",
+    "upstream": "https://github.com/FGMEMBERS/A300-600ST",
+    "files": [
+      "beluga.gltf",
+      "beluga__MBdoorArms_png_001.jpg",
+      "beluga__TextureMain_png_001.jpg",
+      "beluga__beluga.bin"
+    ],
+    "bounds": {
+      "min": [
+        -20.941,
+        -1.086,
+        -25.094
+      ],
+      "max": [
+        24.116,
+        15.759,
+        30.447
+      ],
+      "dimensions": [
+        45.057,
+        16.845,
+        55.541
+      ]
+    },
+    "parts": [
+      {
+        "name": "eng1Fan",
+        "min": [
+          -7.668,
+          -0.603,
+          -6.571
+        ],
+        "max": [
+          -5.442,
+          1.622,
+          -6.393
+        ]
+      },
+      {
+        "name": "eng2Fan",
+        "min": [
+          8.618,
+          -0.603,
+          -6.571
+        ],
+        "max": [
+          10.844,
+          1.622,
+          -6.393
+        ]
+      }
+    ],
+    "nodeNames": [
+      "eng1Fan",
+      "eng2Fan",
+      "rootNode"
+    ],
+    "meshCount": 3,
+    "triangles": 44696
+  }
+]

@@ -1,0 +1,29 @@
+SAMOLOCIARZE — KOPIA GRY I PAKIET NA GITHUB PAGES
+Wersja gry: 1.0.5
+Kopia przygotowana: 26 października 2026
+
+To osobna, kompletna kopia kodu, modeli 3D, tekstur i instrukcji gry.
+Dotychczasowy projekt pozostaje w swoim folderze.
+Gra nie została jeszcze opublikowana w internecie.
+
+PUBLIKACJA ZA DARMO
+Otwórz INSTRUKCJA-GITHUB-PAGES.md.
+Zawiera kroki dla GitHub Desktop, publicznego repozytorium i GitHub Pages.
+Gotowy plik publikacji: .github/workflows/pages.yml.
+Do repozytorium skopiuj zawartość tego folderu, razem z .github i .gitignore.
+GitHub Pages będzie udostępniać zawartość dist/ jako stronę gry.
+
+GRANIE LOKALNIE
+Dwuklik URUCHOM-GRE.cmd; potrzebny Node.js.
+Gdy oryginalna gra już działa na porcie 4174, skrót otworzy tę działającą grę.
+Własną kopię na innym porcie uruchom według instrukcji w pliku Markdown.
+Sterowanie i opis gry: README.md oraz ZACZNIJ-TUTAJ.txt.
+
+TWOJE POSTĘPY
+Postępy nie są plikami projektu: przeglądarka przechowuje je osobno.
+W dotychczasowej grze kliknij Ustawienia → Kopia postępów.
+Zachowaj pobrany Samolociarze-postepy.json obok swojej kopii zapasowej.
+Na nowym adresie wybierz Ustawienia → Wczytaj postępy.
+Eksport obejmuje karierę; rozpoczęty lot trzeba rozpocząć ponownie.
+
+Plik SUMY-SHA256.json zawiera sumy kontrolne plików tej kopii w dniu jej utworzenia.

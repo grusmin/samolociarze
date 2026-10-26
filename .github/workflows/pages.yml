@@ -1,0 +1,45 @@
+name: Publikacja Samolociarzy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Pobierz projekt
+        uses: actions/checkout@v6
+
+      - name: Przygotuj GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Sprawdz komplet plikow gry
+        run: |
+          test -f dist/index.html
+          test -f dist/app.js
+          test -f dist/models/a380.gltf
+          test -f dist/models/b747.gltf
+          test -f dist/models/an225.gltf
+
+      - name: Wyslij gotowa gre
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+      - name: Opublikuj gre
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,11 @@
+{
+  "name": "samolociarze",
+  "version": "1.0.5",
+  "private": true,
+  "description": "Lokalna gra lotnicza Samolociarze",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node check-flight.cjs && node check-career.mjs && node check-ground.mjs && node check-departure.mjs && node check-free-flight.mjs && node check-cheats.mjs && node check-models.mjs && node check-airport-fleet.mjs"
+  },
+  "type": "module"
+}

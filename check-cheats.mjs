@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {PLANES} from './dist/catalog.js';
+import {freshProfile,applyCheat,restoreCheatBackup,hasCheatBackup,readProfile,levelFor,CHEAT_BACKUP_KEY,SAVE_KEY} from './dist/career.js';
+const values=new Map(),storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};
+const p=freshProfile(3);p.visited=['WAW'];p.current={plan:{from:'WAW',to:'LHR'},state:{x:220,stage:'boarding'}};
+const original=JSON.stringify(p);
+assert.throws(()=>applyCheat(storage,p,'WRONG'));assert.equal(JSON.stringify(p),original);assert.equal(values.size,0,'Unknown codes do not touch the save');
+applyCheat(storage,p,'  samolociarze  ');assert(levelFor(p.xp)>=6);assert.equal(p.owned.length,Object.keys(PLANES).length);assert.equal(p.flights,3,'Unlocking levels does not invent completed flights');assert.deepEqual(p.current,JSON.parse(original).current);assert.equal(values.get(CHEAT_BACKUP_KEY),original);assert(hasCheatBackup(storage));
+applyCheat(storage,p,'MONETY');assert.equal(p.credits,100000);applyCheat(storage,p,'MONETY');assert.equal(p.credits,100000,'The money code is repeatable without accidental stacking');assert.equal(values.get(CHEAT_BACKUP_KEY),original,'Repeated codes preserve the first backup');
+const reloaded=readProfile(storage);assert.equal(reloaded.owned.length,11);assert(levelFor(reloaded.xp)>=6);assert.equal(reloaded.credits,100000);
+const restored=restoreCheatBackup(storage);assert.equal(JSON.stringify(restored),original);assert(!hasCheatBackup(storage));assert.deepEqual(JSON.parse(values.get(SAVE_KEY)),JSON.parse(original));
+const failedProfile=freshProfile(),unchanged=JSON.stringify(failedProfile);assert.throws(()=>applyCheat({getItem(){return null},setItem(){throw Error('Quota')}},failedProfile,'SAMOLOCIARZE'));assert.equal(JSON.stringify(failedProfile),unchanged,'A failed save does not mutate progress');
+const advanced=freshProfile();advanced.xp=20000;advanced.credits=200000;applyCheat(storage,advanced,'POZIOMY');applyCheat(storage,advanced,'MONETY');assert.equal(advanced.xp,20000);assert.equal(advanced.credits,200000,'Codes never reduce existing progress');
+console.log('PASS: valid/invalid codes, case and whitespace, all unlocks, persistence, no fake flights, repeatability, backup/restore and storage failures');

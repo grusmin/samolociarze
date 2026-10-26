@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "dependencies": {
+    "gltf-pipeline": "4.3.1"
+  },
+  "scripts": {
+    "rebuild": "node rebuild-models.cjs"
+  }
+}

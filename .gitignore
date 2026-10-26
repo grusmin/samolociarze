@@ -1,0 +1,12 @@
+# Pliki lokalne; kod, modele i ich zrodla pozostaja w repozytorium.
+node_modules/
+.openai/
+*.log
+.DS_Store
+Thumbs.db
+
+# Indywidualne zapisy kariery przechowuj osobno.
+Samolociarze-postepy*.json
+
+# Lokalny status publikacji; bez danych logowania.
+.publikacja/
