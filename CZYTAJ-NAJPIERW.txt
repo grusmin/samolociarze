@@ -1,10 +1,10 @@
 SAMOLOCIARZE — KOPIA GRY I PAKIET NA GITHUB PAGES
-Wersja gry: 1.0.5
+Wersja gry: 1.0.7
 Kopia przygotowana: 26 października 2026
 
 To osobna, kompletna kopia kodu, modeli 3D, tekstur i instrukcji gry.
 Dotychczasowy projekt pozostaje w swoim folderze.
-Gra nie została jeszcze opublikowana w internecie.
+Gra jest publikowana na https://grusmin.github.io/samolociarze/ .
 
 PUBLIKACJA ZA DARMO
 Otwórz INSTRUKCJA-GITHUB-PAGES.md.

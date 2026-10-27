@@ -63,15 +63,15 @@ export function prepareAircraft(imported,type){
  if(type!=='an225')addGear(gear,type);
  root.position.set(0,7,380);
  // Particle origins are in the same local coordinates as the normalized aircraft.
- const engine=type==='a380'?[-25.5,2.6+dy,9.4-center.z]:type==='b747'?[-21.2,-2+dy,9.94-center.z]:type==='an225'?[-24.8,.41+dy,9.9-center.z]:[-specs[type].span*.2,-3.3,-specs[type].length*.04];
+ const engine=type==='a380'?[-25.5,2.6+dy,9.4-center.z]:type==='b747'?[-21.2,-2+dy,9.94-center.z]:type==='an225'?[-24.8,.41+dy,9.9-center.z]:type==='conc'?[-5.9,-3.3,11]:[-specs[type].span*.2,-3.3,-specs[type].length*.04];
  root.userData.engineSmoke=engine;
- root.userData.brakeWheels=type==='an225'?[[-4,-6.65,4],[4,-6.65,4]]:[[-4.3,-6.65,3],[4.3,-6.65,3]];
+ root.userData.brakeWheels=type==='conc'?[[-3.2,-6.65,7.8],[3.2,-6.65,7.8]]:type==='an225'?[[-4,-6.65,4],[4,-6.65,4]]:[[-4.3,-6.65,3],[4.3,-6.65,3]];
  return root;
 }
 function addGear(parent,type){
  const rubber=new T.MeshStandardMaterial({color:'#171b20',roughness:.86}),metal=new T.MeshStandardMaterial({color:'#a2a9ad',metalness:.7,roughness:.3});
  const make=(geometry,mat,x,y,z)=>{const m=new T.Mesh(geometry,mat);m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m;};
- const units=type==='a380'?[[-4.4,1,2],[4.4,1,2],[-2,7,3],[2,7,3],[0,-28,1]]:type==='b747'?[[-4.2,1,2],[4.2,1,2],[-1.5,5,2],[1.5,5,2],[0,-26,1]]:[[-specs[type].span*.07,3,type==='b772'?3:specs[type].span>40?2:1],[specs[type].span*.07,3,type==='b772'?3:specs[type].span>40?2:1],[0,-specs[type].length*.34,1]];
+ const units=type==='conc'?[[-3.2,7.8,2],[3.2,7.8,2],[0,-23.4,1]]:type==='a380'?[[-4.4,1,2],[4.4,1,2],[-2,7,3],[2,7,3],[0,-28,1]]:type==='b747'?[[-4.2,1,2],[4.2,1,2],[-1.5,5,2],[1.5,5,2],[0,-26,1]]:[[-specs[type].span*.07,3,type==='b772'?3:specs[type].span>40?2:1],[specs[type].span*.07,3,type==='b772'?3:specs[type].span>40?2:1],[0,-specs[type].length*.34,1]];
  for(const [x,z,rows] of units){make(new T.CylinderGeometry(.14,.17,2.5,12),metal,x,-5.15,z);for(let row=0;row<rows;row++)for(const s of [-1,1]){const zz=z+(row-(rows-1)/2)*1.2;const tyre=make(new T.CylinderGeometry(.63,.63,.45,20),rubber,x+s*.45,-6.37,zz);tyre.rotation.z=Math.PI/2;const hub=make(new T.CylinderGeometry(.31,.31,.46,16),metal,x+s*.46,-6.37,zz);hub.rotation.z=Math.PI/2;}}
  const parts=[...parent.children],batches=new Map();
  for(const part of parts){part.updateMatrix();const g=part.geometry.clone().applyMatrix4(part.matrix);if(!batches.has(part.material))batches.set(part.material,[]);batches.get(part.material).push(g);parent.remove(part);part.geometry.dispose();}

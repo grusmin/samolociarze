@@ -15,13 +15,14 @@ export const PLANES={
  a380:{name:'Airbus A380',livery:'Emirates',engines:4,span:79.8,length:72.7,range:15200,seats:525,cargo:80,rotate:72,stall:56,cruise:165,price:0,level:1},
  b747:{name:'Boeing 747-400',livery:'KLM',engines:4,span:65.4,length:70.9,range:13400,seats:416,cargo:112,rotate:70,stall:55,cruise:160,price:0,level:1},
  an225:{name:'Antonow An-225 Mrija',livery:'Malowanie historyczne',engines:6,span:87.9,length:82.2,range:15000,seats:0,cargo:250,rotate:74,stall:57,cruise:148,price:0,level:1},
- b738:{name:'Boeing 737-800',livery:'Malowanie modelu FlightGear',engines:2,span:35.69,length:39.4,range:5400,seats:189,cargo:20,rotate:62,stall:48,cruise:145,price:1800,level:1},
+ b738:{name:'Boeing 737-800',livery:'Ryanair',engines:2,span:35.69,length:39.4,range:5400,seats:189,cargo:20,rotate:62,stall:48,cruise:145,price:1800,level:1},
  a320:{name:'Airbus A320',livery:'Malowanie modelu FlightGear',engines:2,span:33.91,length:37.6,range:6100,seats:180,cargo:18,rotate:61,stall:47,cruise:145,price:2200,level:1},
  b763:{name:'Boeing 767-300',livery:'Malowanie modelu FlightGear',engines:2,span:46.31,length:54.9,range:11000,seats:269,cargo:54,rotate:66,stall:51,cruise:150,price:4200,level:2},
  beluga:{name:'Airbus Beluga ST',livery:'Transport ponadgabarytowy',engines:2,span:45.06,length:56.2,range:2800,seats:0,cargo:47,rotate:60,stall:46,cruise:130,price:5000,level:2},
  b788:{name:'Boeing 787-8',livery:'Malowanie modelu FlightGear',engines:2,span:59.6,length:56.7,range:13600,seats:242,cargo:50,rotate:65,stall:50,cruise:160,price:7000,level:3},
  a343:{name:'Airbus A340-300',livery:'Malowanie modelu FlightGear',engines:4,span:60.19,length:63.7,range:13000,seats:295,cargo:65,rotate:68,stall:52,cruise:155,price:8000,level:3},
  b772:{name:'Boeing 777-200',livery:'Malowanie modelu FlightGear',engines:2,span:60.72,length:63.7,range:9700,seats:305,cargo:75,rotate:68,stall:52,cruise:160,price:10000,level:4},
+ conc:{name:'Concorde',livery:'Air France',engines:4,span:25.56,length:61.66,range:7250,seats:100,cargo:10,rotate:91,stall:72,cruise:260,price:9000,level:3},
  a359:{name:'Airbus A350-900',livery:'Malowanie modelu FlightGear',engines:2,span:64.75,length:66.8,range:15000,seats:325,cargo:75,rotate:67,stall:51,cruise:165,price:12000,level:4}
 };
 export const WEATHER={sun:{name:'Słoneczny dzień',icon:'☀',wind:1,fog:26000,night:false,rain:false},wind:{name:'Wiatr boczny',icon:'➜',wind:1.7,fog:24000,night:false,rain:false},rain:{name:'Deszcz i turbulencje',icon:'☂',wind:1.4,fog:11500,night:false,rain:true},sunset:{name:'Zachód słońca',icon:'◐',wind:.85,fog:22000,night:false,rain:false},night:{name:'Lot nocny',icon:'☾',wind:1.1,fog:17000,night:true,rain:false}};

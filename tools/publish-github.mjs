@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
+import {PLANES} from '../dist/catalog.js';
 
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
 const owner='grusmin', repository='samolociarze';
@@ -13,6 +14,7 @@ const statusFile=path.join(root,'.publikacja','status.json');
 const gitExe=process.env.SAMOLOCIARZE_GIT_EXE||'git';
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
+function publishedMatches(name,remoteBytes){const local=fs.readFileSync(path.join(root,'dist',name));const normal=bytes=>/\.(html|js|css|gltf|json|xml|txt|md)$/i.test(name)?Buffer.from(bytes.toString('utf8').replace(/\r\n/g,'\n')):bytes;return digest(normal(remoteBytes))===digest(normal(local));}
 let token='',basic='',gitEnvironment={...process.env},status={repository:remote,folder:root};
 
 function redact(text){return String(text).replaceAll(token||'\0','[TOKEN]').replaceAll(basic||'\0','[AUTH]');}
@@ -44,7 +46,7 @@ function checkFiles(){
  for(const name of ['index.html','career.html','app.js','three.module.js','models/CREDITS.md','models/GPL-2.0.txt'])if(!fs.existsSync(path.join(dist,name)))throw Error(`Brak pliku gry: ${name}`);
  if(digest(fs.readFileSync(path.join(dist,'index.html')))!==digest(fs.readFileSync(path.join(dist,'career.html'))))throw Error('index.html i career.html różnią się. Ujednolić strony przed publikacją.');
  const modelFiles=fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.gltf'));
- if(modelFiles.length!==11)throw Error('Oczekiwano wszystkich 11 modeli samolotów.');
+ if(Object.keys(PLANES).some(type=>!modelFiles.includes(type+'.gltf')))throw Error('Brak modelu samolotu z katalogu.');
  for(const name of modelFiles){
   const file=path.join(dist,'models',name),model=JSON.parse(fs.readFileSync(file,'utf8'));
   for(const resource of [...(model.buffers||[]),...(model.images||[])]){
@@ -61,7 +63,7 @@ function checkFiles(){
   if(result.error||result.status!==0)throw Error(`Test ${match[1]} nie przeszedł:\n${result.error?.message||result.stdout+'\n'+result.stderr}`);
   console.log('OK: '+match[1]);
  }
- console.log('OK: komplet 11 modeli, ich zasoby i wszystkie testy gry.');
+ console.log('OK: komplet '+Object.keys(PLANES).length+' modeli, ich zasoby i wszystkie testy gry.');
 }
 function refreshManifest(){
  const names=git(['ls-files','-co','--exclude-standard','-z']).text.split('\0').filter(Boolean);
@@ -153,18 +155,18 @@ async function publish(){
  for(let attempt=0;attempt<24;attempt++){
   try{
    const response=await fetch(new URL(`?v=${commit}`,site),{signal:AbortSignal.timeout(20000)});
-   if(response.ok&&digest(Buffer.from(await response.arrayBuffer()))===digest(fs.readFileSync(path.join(root,'dist/index.html')))){ready=true;break;}
+   if(response.ok&&publishedMatches('index.html',Buffer.from(await response.arrayBuffer()))){ready=true;break;}
   }catch{}
   await sleep(5000);
  }
  if(!ready)throw Error('Actions zakończyły się poprawnie, ale strona nie zwróciła jeszcze aktualnego index.html. Odczekaj kilka minut.');
- for(const name of ['app.js','career.css','three.module.js','models/a380.gltf','models/a380.bin','models/b747.gltf','models/b747.bin','models/an225.gltf','models/an225.bin']){
+ for(const name of ['app.js','career.css','three.module.js','models/a380.gltf','models/a380.bin','models/b747.gltf','models/b747.bin','models/an225.gltf','models/an225.bin','models/conc.gltf','models/conc.bin','airport-fence.js','crash-effect.js']){
   const url=new URL(name,site);url.searchParams.set('v',commit);
   const response=await fetch(url,{signal:AbortSignal.timeout(60000)});
-  if(!response.ok||digest(Buffer.from(await response.arrayBuffer()))!==digest(fs.readFileSync(path.join(root,'dist',name))))throw Error(`Nie udało się zweryfikować opublikowanego pliku: ${name}`);
+  if(!response.ok||!publishedMatches(name,Buffer.from(await response.arrayBuffer())))throw Error(`Nie udało się zweryfikować opublikowanego pliku: ${name}`);
  }
  const finalPages=await api(`${apiRoot}/pages`);
- progress('complete','GOTOWE! Gra działa pod adresem: '+site,{siteUrl:site,commit,workflowUrl:deploymentRun.html_url,pagesStatus:finalPages.status,verifiedFiles:10,completedAt:new Date().toISOString()});
+ progress('complete','GOTOWE! Gra działa pod adresem: '+site,{siteUrl:site,commit,workflowUrl:deploymentRun.html_url,pagesStatus:finalPages.status,verifiedFiles:14,completedAt:new Date().toISOString()});
  console.log('Postępy kariery przeniesiesz przez Ustawienia → Kopia postępów / Wczytaj postępy.');
 }
 

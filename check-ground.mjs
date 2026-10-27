@@ -30,4 +30,4 @@ for(const [plane,spec] of Object.entries(PLANES))for(const job of ['cargo',...(s
  f.action('service');for(let i=0;i<150&&!f.finished;i++)f.update(.05);assert(f.won);
 }
 const manual=new Flight(makePlan({weather:'sun'}));manual.action('engine');manual.throttle=.25;const start=manual.z;for(let i=0;i<200;i++)manual.update(.05);assert(manual.z>start+10,'Manual taxi works before loading');assert.equal(manual.stage,'toService');assert(!manual.serviceActive);
-console.log('PASS: terminal/cargo separation, stopped/idle gates, interrupted service, legacy saves, manual taxi, H brake, assistance to both stands and runway for all 11 aircraft, destination unloading, passengers load in 20 seconds and cargo in 2');
+console.log('PASS: terminal/cargo separation, stopped/idle gates, interrupted service, legacy saves, manual taxi, H brake, assistance to both stands and runway for all catalog aircraft, destination unloading, passengers load in 20 seconds and cargo in 2');

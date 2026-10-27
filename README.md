@@ -1,6 +1,6 @@
-# Samolociarze 1.0.6 — kariera pilota
+# Samolociarze 1.0.7 — kariera pilota
 
-**Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/) — adres będzie aktywny po udanej publikacji.
+**Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
 Repozytorium: [grusmin/samolociarze](https://github.com/grusmin/samolociarze). Publikacja i kolejne aktualizacje: dwuklik **OPUBLIKUJ-GITHUB.cmd**, instrukcja w [PUBLIKACJA.md](PUBLIKACJA.md). Skrypt prosi o login i PAT w osobnym oknie, wysyła commit do `main`, włącza Pages i sprawdza wynik. Token nie jest zapisywany na dysku.
 
@@ -11,9 +11,11 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
+Najnowsze dodatki: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
+
 ## Co jest w tej wersji
 
-- 11 modeli samolotów: A380 Emirates, 747 KLM, An-225 Mrija, 737-800, A320, 767-300, Beluga ST, 787-8, A340-300, 777-200, A350-900. Osiem nowych maszyn ma malowania dostarczone z modelami FlightGear. A380, 747 i An-225 dostępne od początku; pozostałe odblokowuje się monetami i poziomami.
+- 12 modeli samolotów: Concorde Air France, A380 Emirates, 747 KLM, An-225 Mrija, 737-800 Ryanair, A320, 767-300, Beluga ST, 787-8, A340-300, 777-200, A350-900. Osiem nowych maszyn ma malowania dostarczone z modelami FlightGear. A380, 747 i An-225 dostępne od początku; pozostałe odblokowuje się monetami i poziomami.
 - 11 lotnisk: Warszawa, Londyn Heathrow, JFK, Frankfurt, Paryż CDG, Barcelona, LAX, Tokio Haneda, Pekin, Seul Incheon, Bogota. Każde ma dwa równoległe pasy w stylizowanym świecie gry.
 - Pełen cykl kontraktu: uruchomienie silników, dojazd do terminalu pasażerskiego lub strefy cargo, załadunek, zgoda na kołowanie, podjazd do pasa, zgoda na start, przelot, zgoda na lądowanie, hamowanie, powrót do właściwego stanowiska i rozładunek.
 - Misje pasażerskie/towarowe, swobodne loty, monety, poziomy, odznaki, dziennik lotów, automatyczny zapis oraz wznawianie lotu po zamknięciu strony. Kopię postępów pobierzesz w Ustawieniach.
@@ -35,11 +37,11 @@ Asysta kołowania jest opcjonalna i działa tylko na ziemi. Na poziomie Kapitan 
 
 ## Po prostu leć
 
-Duży złoty przycisk „Po prostu leć” znajduje się pod nazwą samolotu w głównym menu. Wybierz model w Hangarze i pogodę w planie lotu. Ten tryb pozwala wypróbować każdy z 11 modeli, także jeszcze niekupiony w karierze.
+Duży złoty przycisk „Po prostu leć” znajduje się pod nazwą samolotu w głównym menu. Wybierz model w Hangarze i pogodę w planie lotu. Ten tryb pozwala wypróbować każdy z 12 modeli, także jeszcze niekupiony w karierze.
 
-Samolot od razu leci 900 m nad ziemią, w pobliżu wybranego lotniska. Silniki pracują, podwozie i klapy są schowane, prędkość jest bezpieczna do lotu. Nie trzeba ładować pasażerów ani towarów, kołować, przechodzić punktów misji ani wybierać poprawnej trasy kariery. Paliwo nie kończy się i nie ma automatycznych awarii. Nadal możesz sam wywołać awarię do ćwiczeń. Sterowanie WASD/strzałkami, kokpit C, kamery V i przyciski na telefonie działają tak samo jak w karierze.
+Samolot stoi na początku pasa wybranego lotniska, bez dojazdu do pasa. Silniki pracują, podwozie jest wysunięte, klapy ustawione na 1, zgoda na start wydana. Dodaj moc do 100% i unieś nos przy prędkości wskazanej w instrukcji lotu. Nie trzeba ładować pasażerów ani towarów, kołować, przechodzić punktów misji ani wybierać poprawnej trasy kariery. Paliwo nie kończy się i nie ma automatycznych awarii. Nadal możesz sam wywołać awarię do ćwiczeń. Sterowanie WASD/strzałkami, kokpit C, kamery V i przyciski na telefonie działają tak samo jak w karierze.
 
-T wybiera najbliższe z dwóch lotnisk i pozwala poprosić o opcjonalne lądowanie; R zmienia pas. Po zatrzymaniu samolotu można kliknąć „Po prostu leć jeszcze raz”, aby ponownie zacząć w powietrzu, bez rozładunku i kołowania. Widoczny teren podąża za dalekim lotem, więc nie ma końca obszaru misji.
+T wybiera najbliższe z dwóch lotnisk i pozwala poprosić o opcjonalne lądowanie; R zmienia pas. Po zatrzymaniu samolotu można kliknąć „Po prostu leć jeszcze raz”, aby ponownie ustawić się na początku pasa, bez rozładunku i kołowania. Widoczny teren podąża za dalekim lotem, więc nie ma końca obszaru misji.
 
 Ten tryb nie przyznaje monet ani XP i nie nadpisuje zapisanego lotu kariery. Pauza pozwala wznowić aktualny lot, ale po odświeżeniu przycisk „Po prostu leć” zaczyna nowy przelot. „Wznów lot” pozostaje dostępne dla wcześniej zapisanej kariery.
 
@@ -63,7 +65,7 @@ Po lądowaniu rozładunek również odbywa się przy odpowiednim stanowisku lotn
 
 W Ustawieniach wpisz kod i kliknij „Włącz kod” albo naciśnij Enter. Wielkość liter nie ma znaczenia.
 
-- SAMOLOCIARZE: najwyższa ranga (Dowódca floty, poziom 6) i wszystkie 11 samolotów.
+- SAMOLOCIARZE: najwyższa ranga (Dowódca floty, poziom 6) i wszystkie 12 samolotów.
 - POZIOMY: najwyższa ranga i odblokowanie wymagań poziomów.
 - HANGAR: wszystkie samoloty bez kupowania.
 - MONETY: podnosi saldo do co najmniej 100 000 monet.
@@ -87,12 +89,12 @@ Poprzedni trening: training.html. Three.js i loader: MIT. Modele FlightGear / Fl
 ## Sprawdzenie
 
 npm test albo kolejno: node check-flight.cjs, node check-career.mjs, node check-ground.mjs, node check-departure.mjs, node check-free-flight.mjs, node check-cheats.mjs, node check-models.mjs, node check-airport-fleet.mjs.
-Test „Po prostu leć” obejmuje 55 kombinacji samolotu i pogody, natychmiastowe sterowanie, utrzymanie pochylenia, długi lot, brak ograniczeń trasy, opcjonalne lądowania na obu lotniskach w obu kierunkach, ochronę zapisu kariery i starsze zapisy. Kod JavaScript oraz zgodność obu stron wejściowych zostały sprawdzone. Przycisk oraz menu zweryfikowano w przeglądarce również z zastępczą czcionką.
+Test „Po prostu leć” obejmuje 60 kombinacji samolotu i pogody, start z pasa i rzeczywiste oderwanie od ziemi, utrzymanie pochylenia, długi lot, brak ograniczeń trasy, opcjonalne lądowania na obu lotniskach w obu kierunkach, ochronę zapisu kariery i starsze zapisy. Kod JavaScript oraz zgodność obu stron wejściowych zostały sprawdzone. Przycisk oraz menu zweryfikowano w przeglądarce również z zastępczą czcionką.
 Test odlotu obejmuje dojazd za tyłem pasa, STOP poza pasem, numer przydzielonego pasa, odmowę zgody przy ruchu, zajęcie pasa po zgodzie, pełny rozbieg i start dla wszystkich 11 lotnisk oraz 11 typów samolotów. Sprawdza też ręczne ustawianie, migrację zapisu i czas losowych awarii.
 Test innych samolotów sprawdza oryginalną geometrię, skalę i podwozie ośmiu maszyn na dwóch lotniskach, współdzielenie zasobów, budżet rysowania i zachowanie zasobów floty podczas przebudowy scenerii.
-Test stanowisk obejmuje dojazd i wyjazd, hamulec, blokadę obsługi poza strefą lub w ruchu, przerwanie załadunku, starsze zapisy oraz rozładunek na lotnisku docelowym dla wszystkich 11 samolotów.
+Test stanowisk obejmuje dojazd i wyjazd, hamulec, blokadę obsługi poza strefą lub w ruchu, przerwanie załadunku, starsze zapisy oraz rozładunek na lotnisku docelowym dla wszystkich 12 samolotów.
 Test kodów obejmuje poprawne i błędne wpisy, odblokowania, monety, zapis, kopię i przywracanie, ponowne użycie oraz błąd zapisu. Działanie formularza sprawdzone w przeglądarce na komputerze i przy szerokości 390 px.
-Sprawdzone: pełna misja przy wietrze; zakup i walidacja zapisu; wznawianie; procedury awaryjne; ruch na pasach i drugi pas; obsługa towarów w 2 s; geometria, tekstury i podwozie 11 modeli; menu, kamery, kokpit i układ 390 × 844 w przeglądarce. Test rozmiaru ekranu nie zastępuje pomiaru na rzeczywistym telefonie.
+Sprawdzone: pełna misja przy wietrze; zakup i walidacja zapisu; wznawianie; procedury awaryjne; ruch na pasach i drugi pas; obsługa towarów w 2 s; geometria, tekstury i podwozie 12 modeli; menu, kamery, kokpit i układ 390 × 844 w przeglądarce. Test rozmiaru ekranu nie zastępuje pomiaru na rzeczywistym telefonie.
 
 Test sterowania `node check-controls.mjs` jest częścią `npm test` i sprawdza jednoczesne dotknięcia, niezależne puszczanie przycisków, przerwanie dotyku, utratę przechwycenia oraz reset przy pauzie.
 

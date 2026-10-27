@@ -1,9 +1,9 @@
-SAMOLOCIARZE 1.0.5 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.7 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
 
-PO PROSTU LEĆ: złoty przycisk pod nazwą samolotu w menu. Zaczynasz od razu w powietrzu, bez załadunku i misji. Każdy samolot można wypróbować bez kupowania. C włącza kokpit, T pozwala poprosić o opcjonalne lądowanie. Zapis kariery pozostaje zachowany. Swobodny lot po odświeżeniu zaczyna się od nowa.
+PO PROSTU LEĆ: złoty przycisk pod nazwą samolotu w menu. Zaczynasz na początku pasa, z włączonymi silnikami, klapami 1 i zgodą na start. Dodaj moc i wystartuj. Nie ma załadunku ani kołowania. Każdy samolot można wypróbować bez kupowania. C włącza kokpit, T pozwala poprosić o lądowanie. Po zatrzymaniu hamulcem H lot jest zakończony. Zapis kariery pozostaje zachowany. Swobodny lot po odświeżeniu zaczyna się od nowa.
 
 Wybierz samolot, trasę, pogodę i trudność. Przyjmij kontrakt.
 Silniki E → Dojazd do terminalu (pasażerowie) lub strefy cargo (towary) → Zatrzymaj H i moc 0% → Obsługa → Wieża T → Trasa A za tyłem pasa → STOP → Wieża T → Strzałka START na początku pasa → Start.

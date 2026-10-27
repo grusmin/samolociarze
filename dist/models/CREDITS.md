@@ -12,3 +12,9 @@ Zmiany w Samolociarzach: konwersja glTF 1 → glTF 2 przez gltf-pipeline 4.3.1; 
 Pełny tekst licencji: GPL-2.0.txt. Oryginalne modele, źródła i skrypty konwersji: ../../model-sources/ w zapisanym projekcie.
 
 Znaki Emirates i KLM identyfikują malowania samolotów. Projekt nie jest oficjalnym produktem tych linii.
+
+## Concorde Air France i Boeing 737 Ryanair (1.0.7)
+
+Concorde: FlightGear / FGMEMBERS/Concorde, GPLv2, commit af22b7012bec173884a259eb84da1c29de72c23f. Źródło: https://github.com/FGMEMBERS/Concorde . Model i rozwój: Bogey (pierwotny autor opisany jako nieznany), C. Schmitt, E. Huminiuc, późniejsza opieka godarklight / islandmonkey; szczegóły w oryginalnym ReadmeModel.txt. Air France F-BVFB: Models/Liveries/AF.png. Konwersja AC3D do glTF 2, wybór zewnętrznych części bez zdublowanego podwozia i kabiny, dopasowanie osi oraz wymiarów 25,56 × 61,66 m; podwozie dodane w grze. Źródła, licencja, konwerter i wskazanie pobranych plików: model-sources/concorde/ w repozytorium gry.
+
+Boeing 737-800 Ryanair: malowanie RYR-800.png / XML z https://github.com/FGMEMBERS/737-800/tree/9126249dd0236479ad723f3e7c4c7139455c7d81/Models/Liveries-800 , GPLv2. Zachowano oryginalną teksturę i licencję w model-sources/concorde/. Znaki linii lotniczych identyfikują malowanie; gra nie jest oficjalnym produktem przewoźników.

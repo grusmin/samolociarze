@@ -4,6 +4,8 @@
     "gltf-pipeline": "4.3.1"
   },
   "scripts": {
-    "rebuild": "node rebuild-models.cjs"
+    "rebuild": "node rebuild-models.cjs",
+    "rebuild:concorde": "node rebuild-concorde.cjs",
+    "rebuild:fleet": "node rebuild-fleet.cjs"
   }
 }

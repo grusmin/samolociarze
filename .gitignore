@@ -10,3 +10,6 @@ Samolociarze-postepy*.json
 
 # Lokalny status publikacji; bez danych logowania.
 .publikacja/
+
+# Powtarzalne pliki robocze konwersji; gotowy model jest w dist/models.
+model-sources/concorde/converted*/

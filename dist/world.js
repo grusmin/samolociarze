@@ -5,6 +5,7 @@ import {trafficState,RUNWAY_X} from './traffic.js';
 import {SERVICE_STANDS,TAXI_LAYOUT,departureRunway} from './ground.js';
 import {addAirportFleet} from './airport-fleet.js';
 import {disposeScenery} from './scene-resources.js';
+import {addAirportFence} from './airport-fence.js';
 
 export function createWorld(scene){
  let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain;
@@ -63,7 +64,7 @@ export function createWorld(scene){
   // Apron vehicles and luggage carts have real wheel and body geometry.
   for(let i=0;i<3;i++){const van=new T.Group();root.add(van);van.position.set(285+i*38,0,1150);box(van,4,3,8,i===0?white:yellow,0,2,0);box(van,3.8,1.5,3,glass,0,3,-2);for(const x of [-2.1,2.1])for(const zz of [-2.4,2.4]){const tyre=new T.Mesh(new T.CylinderGeometry(.65,.65,.5,10),dark);tyre.rotation.z=Math.PI/2;tyre.position.set(x,.7,zz);van.add(tyre);}vehicles.push({root:van,z,baseX:van.position.x,baseZ:van.position.z});}
   const people=new T.Group();root.add(people);for(let i=0;i<18;i++){const person=new T.Group();people.add(person);box(person,.65,1.05,.4,material(['#cc7446','#456882','#7c627e'][i%3]),0,1,0);const head=new T.Mesh(new T.SphereGeometry(.22,8,6),material('#d3ab8b'));head.position.y=1.76;person.add(head);box(person,.19,.65,.21,dark,-.17,.3,0);box(person,.19,.65,.21,dark,.17,.3,0);passengers.push({root:person,z,index:i});}
-  addAirportFleet(root);
+  addAirportFleet(root);addAirportFence(root);
   return root;
  }
  function build(nextPlan){

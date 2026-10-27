@@ -4,6 +4,7 @@ export function disposeScenery(root){
  const geometries=new Set(),materials=new Set(),textures=new Set();
  function visit(o){
   if(o.userData?.sharedFleet)return;
+  if(o.isInstancedMesh)o.dispose();
   if(o.geometry)geometries.add(o.geometry);
   for(const m of o.material?Array.isArray(o.material)?o.material:[o.material]:[]){materials.add(m);for(const value of Object.values(m))if(value?.isTexture)textures.add(value);}
   for(const child of o.children||[])visit(child);

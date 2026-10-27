@@ -8,15 +8,15 @@ export const FAILURE_TYPES={left:'Awaria lewego silnika',right:'Awaria prawego s
 export class Flight{
  constructor(plan){
   this.plan=makePlan(plan);this.id='flight-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);this.spec=PLANES[this.plan.plane];this.rules=DIFFICULTY[this.plan.difficulty];
-  Object.assign(this,{x:220,y:7,z:1250,yaw:Math.PI/2,pitch:0,roll:0,velocity:0,throttle:0,fuel:100,flaps:0,gear:true,engines:false,airborne:false,stage:'boarding',elapsed:0,wp:0,cleared:false,landingClearance:false,serviceProgress:0,serviceActive:false,autotaxi:false,taxiIndex:0,brake:false,finished:false,won:false,landingScore:null,landingSink:0,handledFailures:0,damagedEngine:false,diverted:false,arrivedAirport:plan.to,failure:null,comfort:100,verticalSpeed:0,navDistance:0,autoFailureTriggered:false});
+  Object.assign(this,{x:220,y:7,z:1250,yaw:Math.PI/2,pitch:0,roll:0,velocity:0,throttle:0,fuel:100,flaps:0,gear:true,engines:false,airborne:false,stage:'boarding',elapsed:0,wp:0,cleared:false,landingClearance:false,serviceProgress:0,serviceActive:false,autotaxi:false,taxiIndex:0,brake:false,finished:false,won:false,crashed:false,landingScore:null,landingSink:0,handledFailures:0,damagedEngine:false,diverted:false,arrivedAirport:plan.to,failure:null,comfort:100,verticalSpeed:0,navDistance:0,autoFailureTriggered:false});
   this.runwayIndex=0;this.runwayX=0;this.reservedUntil=0;this.departureReservedUntil=0;this.targetZ=-this.plan.distance;this.windX=this.rules.wind*WEATHER[plan.weather].wind;this.windZ=-this.rules.wind*.35;this.events=[];
   this.taxiLayoutVersion=TAXI_LAYOUT.version;this.airTime=0;
   this.waypoints=[{x:0,y:420,z:-3500},{x:700,y:850,z:-this.plan.distance*.45},{x:-400,y:550,z:this.targetZ+6500},{x:0,y:145,z:this.targetZ+2500}];
   Object.assign(this,APRON_SPAWN,{stage:'toService',yaw:this.plan.job==='cargo'?0:Math.PI});this.arrivedAirport=this.plan.to;
   this.serviceRoute();this.message('Witaj, Samolociarze 01. Uruchom silniki [E] i podjedź do '+this.serviceZone.name+'. Zatrzymaj się w oznaczonym polu; możesz użyć asysty kołowania.');
   if(this.plan.mode==='free'){
-   Object.assign(this,{x:800,y:907,z:-2500,yaw:0,pitch:0,roll:0,velocity:this.spec.cruise*.72,throttle:.72,gear:false,flaps:0,engines:true,airborne:true,stage:'cruise',wp:4,cleared:true,serviceActive:false,serviceProgress:0,taxiPath:[]});
-   this.events=[];this.message('Po prostu leć! Silniki pracują, jesteś 900 m nad ziemią. WASD / strzałki sterują, C włącza kokpit. T wybiera najbliższe lotnisko do lądowania.');
+   Object.assign(this,{x:this.departureRunway.start.x,y:7,z:this.departureRunway.start.z,yaw:0,pitch:0,roll:0,velocity:0,throttle:0,gear:true,flaps:1,engines:true,airborne:false,stage:'takeoff',wp:4,cleared:true,serviceActive:false,serviceProgress:0,taxiPath:[]});this.departureReservedUntil=180;
+   this.events=[];this.message('Po prostu leć! Jesteś na początku pasa '+this.departureRunway.number+'. Silniki pracują, klapy 1, zgoda na start jest wydana. Dodaj moc do 100%, potem S / ↓ przy '+Math.round(this.spec.rotate*1.944)+' kt. Po locie T wybiera lotnisko do lądowania.');
   }
  }
  get failed(){return !!this.failure?.active;}
@@ -66,6 +66,7 @@ export class Flight{
   }
  }
  radio(){
+  if(this.plan.mode==='free'&&this.stage==='takeoff')return this.message('Wieża: zgoda na start z pasa '+this.departureRunway.number+'. Klapy 1, moc 100%. Po starcie schowaj podwozie [G].');
   if(this.plan.mode==='free'&&this.airborne&&this.stage!=='approach'){const airport=this.nearestAirport;this.targetZ=airport.z;this.arrivedAirport=airport.code;this.stage='approach';this.landingClearance=false;}
   if(['toService','boarding'].includes(this.stage))return this.message('Wieża: podjedź do '+this.serviceZone.name+', zatrzymaj się i załaduj samolot.');
   if(!this.engines&&!this.airborne)return this.message('Wieża: najpierw załadunek i silniki.');
@@ -96,7 +97,7 @@ export class Flight{
   if(['left','right','bird'].includes(type))this.damagedEngine=true;
   this.failure.active=false;this.handledFailures++;this.message(this.damagedEngine?'Silnik zabezpieczony. Dym zanika. Pozostałe silniki pracują, dostępna moc ograniczona. Możesz poprosić o lądowanie awaryjne.':'Procedura zakończona. System wrócił do działania.');
  }
- finish(won,message){if(this.finished)return;this.finished=true;this.won=won;this.resultMessage=message;this.stage=won?'complete':'failed';this.throttle=0;this.message(message);}
+ finish(won,message,crashed=false){if(this.finished)return;this.finished=true;this.won=won;this.crashed=!won&&crashed;if(this.crashed){this.impactSpeed=this.velocity;this.velocity=0;this.engines=false;this.airborne=false;}this.resultMessage=message;this.stage=won?'complete':'failed';this.throttle=0;this.message(message);}
  groundAllowed(){return [0,-this.plan.distance].some(z=>airportGroundAllowed(this.x,this.z-z));}
  update(dt,input={}){
   if(this.finished)return;dt=clamp(dt,0,.05);this.elapsed+=dt;if(this.airborne)this.airTime+=dt;
@@ -137,9 +138,9 @@ export class Flight{
    const ready=(this.wp>=4||this.plan.mode==='free'||this.diverted)&&this.landingClearance;
    if(onRunway&&ready&&this.gear&&this.velocity>stall-2&&this.velocity<this.spec.stall+34&&climb>-this.rules.sink&&Math.abs(this.roll)<this.rules.roll&&alignment){
     this.airborne=false;this.stage='rollout';this.throttle=0;this.pitch=0;this.landingSink=Math.abs(climb);this.landingScore=Math.round(clamp(100-this.landingSink*9-Math.abs(this.x-this.runwayX)*.5-Math.abs(this.roll)*75-(100-this.comfort)*.2,10,100));this.message(`Przyziemienie ${this.landingSink.toFixed(1)} m/s. Hamuj [H]. Ocena: ${this.landingScore}/100.`);
-   }else{this.finish(false,!onRunway?'Przyziemienie poza pasem. Sprawdź mapę i wróć na podejście.':!this.gear?'Podwozie nie było wysunięte.':!ready?'Brak zgody lub nieukończona trasa. Poproś wieżę o lądowanie.':!alignment?'Samolot był ustawiony bokiem do pasa.':Math.abs(this.roll)>=this.rules.roll?'Wyrównaj skrzydła tuż przed przyziemieniem.':climb<=-this.rules.sink?'Za twarde przyziemienie. Wyrównaj lot bliżej pasa i zmniejsz opadanie.':'Nieprawidłowa prędkość lądowania. Podejdź z klapami 2 i mocą około 40–50%.');return;}
+   }else{this.finish(false,!onRunway?'Przyziemienie poza pasem. Sprawdź mapę i wróć na podejście.':!this.gear?'Podwozie nie było wysunięte.':!ready?'Brak zgody lub nieukończona trasa. Poproś wieżę o lądowanie.':!alignment?'Samolot był ustawiony bokiem do pasa.':Math.abs(this.roll)>=this.rules.roll?'Wyrównaj skrzydła tuż przed przyziemieniem.':climb<=-this.rules.sink?'Za twarde przyziemienie. Wyrównaj lot bliżej pasa i zmniejsz opadanie.':'Nieprawidłowa prędkość lądowania. Podejdź z klapami 2 i mocą około 40–50%.',!onRunway||!this.gear||!alignment||Math.abs(this.roll)>=this.rules.roll||climb<=-this.rules.sink||this.velocity<=stall-2||this.velocity>=this.spec.stall+34);return;}
   }
-  if(!this.airborne&&this.velocity>15&&!this.groundAllowed()){this.finish(false,'Samolot opuścił pas lub drogę kołowania. Na ziemi jedź wolniej.');return;}
+  if(!this.airborne&&this.velocity>15&&!this.groundAllowed()){this.finish(false,'Samolot opuścił pas lub drogę kołowania. Na ziemi jedź wolniej.',true);return;}
   if(onRollout&&this.velocity<2){if(this.plan.mode==='free')return this.finish(true,'Udane lądowanie! Możesz od razu rozpocząć kolejny swobodny lot.');this.stage='taxiin';this.arrivalRoute();this.message('Samolot zatrzymany. Kołuj do '+this.serviceZone.name+'; możesz włączyć asystę naziemną.');}
   if(this.stage==='toService'&&!this.autotaxi&&this.atServiceZone&&this.velocity<.5){this.stage='boarding';this.throttle=0;this.message('Jesteś przy stanowisku. Rozpocznij załadunek.');}
   if(this.stage==='boarding'&&!this.atServiceZone){this.stage='toService';this.serviceRoute();}

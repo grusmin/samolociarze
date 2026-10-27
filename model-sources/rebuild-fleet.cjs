@@ -11,6 +11,7 @@ const ids=['b738','a320','a359','b772','b788','b763','a343','beluga'];
     const names=new Map(Object.keys(result.separateResources).map(name=>[name,id+'__'+path.basename(name)]));
     for(const type of ['buffers','images'])for(const item of result.gltf[type]||[])if(names.has(item.uri))item.uri=names.get(item.uri);
     for(const [name,buffer]of Object.entries(result.separateResources))fs.writeFileSync(path.join(out,names.get(name)),buffer);
+    if(id==='b738'){result.gltf.images[0].uri='b738-ryanair.png';result.gltf.images[0].mimeType='image/png';fs.copyFileSync(path.join(__dirname,'concorde/b738-ryanair.png'),path.join(out,'b738-ryanair.png'));}
     fs.writeFileSync(path.join(out,id+'.gltf'),JSON.stringify(result.gltf));
     console.log('Converted '+id);
   }
