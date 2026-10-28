@@ -1,4 +1,4 @@
-SAMOLOCIARZE 1.0.7 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.8 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
@@ -21,3 +21,6 @@ Kokpit: fotel kapitana bliżej szyb i w lewo, widoczny pas, poruszający się st
 Postępy zapisują się w tej przeglądarce. Korzystaj zawsze z tego samego adresu (127.0.0.1). W Ustawieniach pobierzesz kopię postępów. ZIP projektu zawiera kod i modele; postępy wyeksportuj osobno.
 Kody: Ustawienia → Kody do gry. SAMOLOCIARZE odblokowuje wszystkie poziomy i samoloty. MONETY daje co najmniej 100 000 monet. Jest przycisk przywrócenia postępów sprzed użycia kodów.
 Gra lokalna, bez publikacji. Więcej informacji: README.md.
+
+ŁATWIEJSZE LĄDOWANIE: po zgodzie wieży T kliknij Pomóż w lądowaniu albo naciśnij L. Asysta ląduje i hamuje. Sterowanie strzałkami/WASD lub zmiana mocy wyłącza pomoc.
+LOTNISKO 3D: gdy stoisz na ziemi, w menu kamer wybierz Lotnisko 3D.

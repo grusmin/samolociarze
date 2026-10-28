@@ -1,4 +1,4 @@
-# Samolociarze 1.0.7 — kariera pilota
+# Samolociarze 1.0.8 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -11,7 +11,9 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
-Najnowsze dodatki: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
+Najnowsze: przestrzenne lotniska, jeziora i asysta lądowania L. Szczegóły: [ZMIANY-1.0.8.md](ZMIANY-1.0.8.md).
+
+Wersja 1.0.7: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
 
 ## Co jest w tej wersji
 
@@ -101,3 +103,9 @@ Test sterowania `node check-controls.mjs` jest częścią `npm test` i sprawdza 
 Test przeglądarkowy: uruchom `node server.cjs`, a następnie `node check-mobile.mjs` (lub `npm run test:mobile`). Wymaga Playwright oraz jego Chromium; opcjonalnie `BROWSER_CHANNEL=msedge` wybiera zainstalowany Edge. Zmienna `PLAYWRIGHT_MODULE` pozwala wskazać istniejący moduł Playwright, a `GAME_TEST_URL` inny serwer. Zrzuty trafiają do ignorowanego folderu `.openai/mobile/`. Test obejmuje dziewięć rozmiarów od 320 × 568 do 1024 × 768, menu, brak nakładania sterów, cele dotyku minimum 44 px, kokpit, panele, marginesy systemowe, rzeczywiste zdarzenia wielodotyku, przewijanie paska funkcji, hamulec, pauzę, zapis i wznowienie kariery oraz układ komputerowy 1366 × 768. To emulacja dotyku w przeglądarce, bez pomiaru na fizycznym telefonie.
 
 Wysłanie zmian na `main` uruchamia publikację gry przez GitHub Pages.
+
+## Łatwiejsze lądowanie i oglądanie lotniska
+
+Po ukończeniu przelotu poproś wieżę T o zgodę. Po jej uzyskaniu kliknij „Pomóż w lądowaniu” albo naciśnij L. Asysta ustawia samolot na osi pasa, reguluje moc, wysuwa podwozie i klapy, a po przyziemieniu hamuje. Użycie sterów lub zmiana mocy wyłącza pomoc. Asysta może najpierw wykonać dodatkowy krąg, jeżeli samolot jest za blisko pasa lub leci w niewłaściwym kierunku.
+
+Gdy stoisz na ziemi, otwórz Kamery i wybierz „Lotnisko 3D”. Po starcie widok wróci za samolot.

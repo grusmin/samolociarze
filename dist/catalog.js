@@ -1,3 +1,4 @@
+export const GAME_VERSION='1.0.8';
 export const AIRPORTS={
  WAW:{name:'Warszawa Okęcie',city:'Warszawa',country:'Polska',lat:52.17,lon:20.97,biome:'fields',runway:'33',color:'#81966a'},
  LHR:{name:'Londyn Heathrow',city:'Londyn',country:'Wielka Brytania',lat:51.47,lon:-.45,biome:'river',runway:'27',color:'#75956f'},

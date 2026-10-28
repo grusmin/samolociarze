@@ -1,7 +1,7 @@
 import * as T from './three.module.js';
 import {GLTFLoader} from './vendor/GLTFLoader.js';
 import {mergeGeometries} from './vendor/BufferGeometryUtils.js';
-import {PLANES} from './catalog.js';
+import {PLANES,GAME_VERSION} from './catalog.js';
 
 const templates=new Map();
 const specs=PLANES,pending=new Map();
@@ -15,7 +15,8 @@ export async function loadFleet(types=['a380','b747','an225']){
  await Promise.all(types.map(async type=>{
   if(templates.has(type))return;if(pending.has(type))return pending.get(type);
   const task=(async()=>{
-  const asset=await loader.loadAsync(new URL(`./models/${type}.gltf`,import.meta.url).href);
+  const modelUrl=new URL(`./models/${type}.gltf`,import.meta.url);modelUrl.searchParams.set('v',GAME_VERSION);
+  const asset=await loader.loadAsync(modelUrl.href);
   templates.set(type,prepareAircraft(asset.scene,type));
   })();pending.set(type,task);try{await task;}finally{pending.delete(type);}
  }));

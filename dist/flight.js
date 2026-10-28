@@ -1,4 +1,5 @@
 import {PLANES,DIFFICULTY,WEATHER,clamp,makePlan} from './catalog.js';
+import {landingAssistInput} from './landing-assist.js';
 import {RUNWAY_X,trafficState} from './traffic.js';
 import {APRON_SPAWN,serviceStand,TAXI_LAYOUT,departureRunway,airportGroundAllowed} from './ground.js';
 const wrap=n=>Math.atan2(Math.sin(n),Math.cos(n));
@@ -8,7 +9,7 @@ export const FAILURE_TYPES={left:'Awaria lewego silnika',right:'Awaria prawego s
 export class Flight{
  constructor(plan){
   this.plan=makePlan(plan);this.id='flight-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);this.spec=PLANES[this.plan.plane];this.rules=DIFFICULTY[this.plan.difficulty];
-  Object.assign(this,{x:220,y:7,z:1250,yaw:Math.PI/2,pitch:0,roll:0,velocity:0,throttle:0,fuel:100,flaps:0,gear:true,engines:false,airborne:false,stage:'boarding',elapsed:0,wp:0,cleared:false,landingClearance:false,serviceProgress:0,serviceActive:false,autotaxi:false,taxiIndex:0,brake:false,finished:false,won:false,crashed:false,landingScore:null,landingSink:0,handledFailures:0,damagedEngine:false,diverted:false,arrivedAirport:plan.to,failure:null,comfort:100,verticalSpeed:0,navDistance:0,autoFailureTriggered:false});
+  Object.assign(this,{x:220,y:7,z:1250,yaw:Math.PI/2,pitch:0,roll:0,velocity:0,throttle:0,fuel:100,flaps:0,gear:true,engines:false,airborne:false,stage:'boarding',elapsed:0,wp:0,cleared:false,landingClearance:false,serviceProgress:0,serviceActive:false,autotaxi:false,taxiIndex:0,brake:false,finished:false,won:false,crashed:false,landingAssist:false,landingAssistPhase:'intercept',landingDirection:1,landingScore:null,landingSink:0,handledFailures:0,damagedEngine:false,diverted:false,arrivedAirport:plan.to,failure:null,comfort:100,verticalSpeed:0,navDistance:0,autoFailureTriggered:false});
   this.runwayIndex=0;this.runwayX=0;this.reservedUntil=0;this.departureReservedUntil=0;this.targetZ=-this.plan.distance;this.windX=this.rules.wind*WEATHER[plan.weather].wind;this.windZ=-this.rules.wind*.35;this.events=[];
   this.taxiLayoutVersion=TAXI_LAYOUT.version;this.airTime=0;
   this.waypoints=[{x:0,y:420,z:-3500},{x:700,y:850,z:-this.plan.distance*.45},{x:-400,y:550,z:this.targetZ+6500},{x:0,y:145,z:this.targetZ+2500}];
@@ -49,6 +50,7 @@ export class Flight{
    if(!this.engines&&this.fuel>0){this.engines=true;this.throttle=.08;this.message('Silniki pracują. Wieża [T] potwierdzi dalsze instrukcje.');}
   }
   if(name==='tower')this.radio();
+  if(name==='landingAssist'){if(!this.airborne)return this.message('Asysta lądowania jest dostępna po starcie.');if(this.stage!=='approach'||!this.landingClearance)return this.message('Najpierw poproś wieżę [T] o zgodę na lądowanie.');this.landingAssist=!this.landingAssist;this.landingDirection=this.plan.mode==='free'||this.diverted?(this.z>=this.targetZ?1:-1):1;this.landingAssistPhase='intercept';const along=(this.z-this.targetZ)*this.landingDirection;if(along>0&&along<5300&&Math.abs(this.x-this.runwayX)<180&&Math.abs(Math.atan2(Math.sin((this.landingDirection===1?0:Math.PI)-this.yaw),Math.cos((this.landingDirection===1?0:Math.PI)-this.yaw)))<.35)this.landingAssistPhase='final';this.message(this.landingAssist?'Asysta lądowania włączona: ustawiamy kurs, moc, podwozie i klapy. Strzałki lub WASD oddają Ci sterowanie.':'Asysta lądowania wyłączona.');}
   if(name==='gear'){
    if(!this.airborne)return this.message('Podwozie chowamy dopiero po starcie.');
    if(this.failed&&this.failure.type==='gear')return this.message('Podwozie zacięte. Użyj procedury awaryjnego wysunięcia.');
@@ -100,7 +102,7 @@ export class Flight{
  finish(won,message,crashed=false){if(this.finished)return;this.finished=true;this.won=won;this.crashed=!won&&crashed;if(this.crashed){this.impactSpeed=this.velocity;this.velocity=0;this.engines=false;this.airborne=false;}this.resultMessage=message;this.stage=won?'complete':'failed';this.throttle=0;this.message(message);}
  groundAllowed(){return [0,-this.plan.distance].some(z=>airportGroundAllowed(this.x,this.z-z));}
  update(dt,input={}){
-  if(this.finished)return;dt=clamp(dt,0,.05);this.elapsed+=dt;if(this.airborne)this.airTime+=dt;
+  if(this.finished)return;input=landingAssistInput(this,input);dt=clamp(dt,0,.05);this.elapsed+=dt;if(this.airborne)this.airTime+=dt;
   this.throttle=clamp(this.throttle+(input.power||0)*dt*.25,0,1);this.brake=!!input.brake;
   if(this.serviceActive){if(!this.canService){this.serviceActive=false;this.serviceProgress=0;this.message('Obsługa przerwana. Zatrzymaj się w oznaczonym polu i ustaw moc na 0%.');}else{this.velocity=0;this.serviceProgress+=dt/this.serviceDuration;if(this.serviceProgress>=1){this.serviceActive=false;this.serviceProgress=0;if(this.stage==='boarding'){this.stage='prep';this.message('Załadunek zakończony. Skontaktuj się z wieżą [T] przed kołowaniem do pasa.');}else if(this.stage==='unloading')this.finish(true,'Rozładunek zakończony. Kontrakt wykonany!');}return;}}
   if(['unloading','prep'].includes(this.stage)){this.velocity=0;return;}
@@ -117,10 +119,10 @@ export class Flight{
    if(this.brake){this.velocity=0;this.throttle=0;return;}
    const point=this.taxiPath[this.taxiIndex];if(point){const dist=hypot(this,point),desired=Math.atan2(this.x-point.x,this.z-point.z);this.yaw+=clamp(wrap(desired-this.yaw),-dt*.7,dt*.7);this.velocity=Math.min(8,Math.max(3,dist));this.throttle=.2;if(dist<5)this.taxiIndex++;}
    if(this.taxiIndex>=this.taxiPath.length){this.autotaxi=false;this.velocity=0;this.throttle=0;if(this.stage==='taxi'){this.stage='hold';this.yaw=Math.PI/2;this.message('STOP przed pasem '+this.departureRunway.number+'. Poproś wieżę [T] o zgodę na zajęcie pasa i start.');}else if(this.stage==='lineup'){this.stage='takeoff';this.yaw=0;this.message('Ustawiony na początku pasa '+this.departureRunway.number+'. Moc 100%, klapy 1 [F], unieś nos przy '+Math.round(this.spec.rotate*1.944)+' kt.');}else{this.stage=this.stage==='toService'?'boarding':'unloading';this.message('Stanowisko osiągnięte. Moc 0%. Rozpocznij '+(this.stage==='boarding'?'załadunek.':'rozładunek.'));}return;}
-  }else this.yaw+=steer*dt*(this.airborne?.15:.65)*authority*clamp(this.velocity/(this.airborne?35:5),0,1);
+  }else this.yaw+=steer*dt*(this.airborne?(this.landingAssist?.26:.15):.65)*authority*clamp(this.velocity/(this.airborne?35:5),0,1);
   if(this.engineFault)this.yaw+=dt*this.failureSide*(.011+Math.sin(this.elapsed*1.9)*.004);
   const turbulence=WEATHER[this.plan.weather].rain?Math.sin(this.elapsed*3.3)*.035:Math.sin(this.elapsed*1.4)*.006;
-  const rollTarget=this.airborne?steer*.32+(this.engineFault?.09*this.failureSide:0)+turbulence:0;this.roll+=(rollTarget-this.roll)*(1-Math.exp(-dt*3));
+  const rollTarget=this.airborne?steer*.32+(this.engineFault?.09*this.failureSide:0)+turbulence:0;this.roll+=(rollTarget-this.roll)*(1-Math.exp(-dt*3));if(this.landingAssist&&this.y<35)this.roll*=Math.exp(-dt*8);
   this.pitch=clamp(this.pitch+elev*dt*.16*authority,-.22,.28);if(!this.airborne&&this.velocity<this.spec.rotate)this.pitch=0;
   let climb=this.velocity*Math.sin(this.pitch);const stall=this.spec.stall-this.flaps*3;
   if(this.airborne&&this.velocity<stall+7)climb-=Math.min(18,(stall+7-this.velocity)*.7);
@@ -151,7 +153,7 @@ export class Flight{
   if(this.plan.mode==='career'&&(Math.abs(this.x)>22000||this.z>14000||this.z< -this.plan.distance-16000))this.finish(false,'Opuściłeś obszar tej misji. Mapa pokazuje trasę i dwa lotniska.');
   this.navDistance=Math.hypot(this.target.x-this.x,this.target.z-this.z);
  }
- snapshot(){const state={};for(const key of ['id','x','y','z','yaw','pitch','roll','velocity','throttle','fuel','flaps','gear','engines','airborne','stage','elapsed','airTime','wp','cleared','landingClearance','serviceProgress','serviceActive','autotaxi','taxiIndex','taxiPath','taxiLayoutVersion','landingScore','landingSink','handledFailures','damagedEngine','diverted','arrivedAirport','failure','comfort','targetZ','autoFailureTriggered','runwayIndex','runwayX','reservedUntil','departureReservedUntil'])state[key]=this[key];return {plan:this.plan,state};}
+ snapshot(){const state={};for(const key of ['id','x','y','z','yaw','pitch','roll','velocity','throttle','fuel','flaps','gear','engines','airborne','stage','elapsed','airTime','wp','cleared','landingClearance','serviceProgress','serviceActive','autotaxi','taxiIndex','taxiPath','taxiLayoutVersion','landingScore','landingSink','handledFailures','damagedEngine','diverted','arrivedAirport','failure','comfort','targetZ','autoFailureTriggered','runwayIndex','runwayX','reservedUntil','departureReservedUntil','landingAssist','landingAssistPhase','landingDirection'])state[key]=this[key];return {plan:this.plan,state};}
  static restore(saved){const f=new Flight(saved.plan),s=saved.state;if(!s||!STAGES[s.stage]||['complete','failed'].includes(s.stage)||!['x','y','z','yaw','pitch','roll','velocity','elapsed'].every(k=>Number.isFinite(s[k])))throw Error('Nieprawidłowy zapis lotu.');if(Math.abs(s.x)>22000||s.y<7||s.y>4000||Math.abs(s.z)>70000||s.velocity<0||s.velocity>300)throw Error('Nieprawidłowa pozycja samolotu.');for(const key of Object.keys(f.snapshot().state))if(s[key]!==undefined)f[key]=s[key];
   // Older saves may park cargo at the passenger terminal. Keep their position,
   // but guide them to the new cargo stand before allowing service.

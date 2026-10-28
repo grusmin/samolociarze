@@ -1,5 +1,5 @@
 SAMOLOCIARZE — KOPIA GRY I PAKIET NA GITHUB PAGES
-Wersja gry: 1.0.7
+Wersja gry: 1.0.8
 Kopia przygotowana: 26 października 2026
 
 To osobna, kompletna kopia kodu, modeli 3D, tekstur i instrukcji gry.

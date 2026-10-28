@@ -6,9 +6,11 @@ import {SERVICE_STANDS,TAXI_LAYOUT,departureRunway} from './ground.js';
 import {addAirportFleet} from './airport-fleet.js';
 import {disposeScenery} from './scene-resources.js';
 import {addAirportFence} from './airport-fence.js';
+import {addAirportBuildings} from './airport-buildings.js';
+import {addLakes} from './lakes.js';
 
 export function createWorld(scene){
- let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain;
+ let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain,lakes;
  const guideDummy=new T.Object3D();
  const palette={white:'#e9eee9',dark:'#25323d',glass:'#345665',metal:'#a7b3b8',yellow:'#edc967',red:'#cb554d'};
  function material(color,roughness=.8){return new T.MeshStandardMaterial({color,roughness,metalness:roughness<.5?.25:.05});}
@@ -42,12 +44,7 @@ export function createWorld(scene){
   instanced(new T.BoxGeometry(1,1,1),lightMat,lights,second);
   // Runway approach indicator: four lamps turn red when the aircraft is low.
   const papi=[];for(let i=0;i<4;i++){const m=box(root,2,1,2,new T.MeshBasicMaterial({color:'#ed514d'}),-65-i*4,.7,1100);papi.push(m);}root.userData.papi=papi;
-  box(root,300,21,110,metal,370,10.5,1450);box(root,305,12,114,glass,370,13,1450);box(root,320,2,125,white,370,22,1450);
-  const mullions=[];for(let i=0;i<28;i++)mullions.push({p:[225+i*11,13,1508],s:[.8,13,1]});instanced(new T.BoxGeometry(1,1,1),metal,mullions,root);
-  for(let i=0;i<4;i++){box(root,13,8,55,glass,270+i*50,8,1370);box(root,15,2,60,metal,270+i*50,12,1370);box(root,9,8,9,metal,270+i*50,4,1340);}
-  box(root,15,50,15,metal,470,25,800);box(root,30,12,26,glass,470,53,800);box(root,34,2,30,white,470,60,800);const backSign=label(code+' · '+airport.city.toUpperCase(),210,25,370,30,1516,root),frontSign=label(code+' · '+airport.city.toUpperCase(),210,25,370,30,1384,root);backSign.material.side=frontSign.material.side=T.FrontSide;frontSign.rotation.y=Math.PI;
-  for(let i=0;i<2;i++){const hangar=box(root,120,32,85,metal,500,16,-350-i*180);box(root,100,22,2,dark,500,11,-306-i*180);}
-  for(let i=0;i<6;i++){const p=box(root,1,24,1,metal,210+i*50,12,650);box(root,10,1,3,white,p.position.x,24,650);}
+  addAirportBuildings(root,{code,city:airport.city,night:WEATHER[plan.weather].night});
   root.userData.stands=[];
   for(const [job,stand] of Object.entries(SERVICE_STANDS)){
    const paint=new T.MeshBasicMaterial({color:stand.color}),fill=new T.MeshBasicMaterial({color:stand.color,transparent:true,opacity:.09,depthWrite:false});
@@ -59,8 +56,6 @@ export function createWorld(scene){
    const arrow=new T.Mesh(new T.ConeGeometry(3.5,8,4),paint);arrow.rotation.z=Math.PI;arrow.position.set(stand.x,23,stand.z);arrow.visible=false;root.add(arrow);
    const sign=standSign(stand.label,stand.color,stand.x,stand.z,root);root.userData.stands.push({job,fill,sign,arrow,x:stand.x,z:stand.z});
   }
-  box(root,160,24,100,metal,550,12,700);box(root,162,2,102,white,550,25,700);box(root,2,17,65,dark,469,8.5,700);label('CARGO',110,19,550,33,752,root);
-  for(let i=0;i<8;i++)box(root,8,6,8,material(i%2?'#c7a47b':'#8a9da6'),440+(i%2)*11,3+Math.floor(i/4)*6,760+Math.floor(i%4/2)*13);
   // Apron vehicles and luggage carts have real wheel and body geometry.
   for(let i=0;i<3;i++){const van=new T.Group();root.add(van);van.position.set(285+i*38,0,1150);box(van,4,3,8,i===0?white:yellow,0,2,0);box(van,3.8,1.5,3,glass,0,3,-2);for(const x of [-2.1,2.1])for(const zz of [-2.4,2.4]){const tyre=new T.Mesh(new T.CylinderGeometry(.65,.65,.5,10),dark);tyre.rotation.z=Math.PI/2;tyre.position.set(x,.7,zz);van.add(tyre);}vehicles.push({root:van,z,baseX:van.position.x,baseZ:van.position.z});}
   const people=new T.Group();root.add(people);for(let i=0;i<18;i++){const person=new T.Group();people.add(person);box(person,.65,1.05,.4,material(['#cc7446','#456882','#7c627e'][i%3]),0,1,0);const head=new T.Mesh(new T.SphereGeometry(.22,8,6),material('#d3ab8b'));head.position.y=1.76;person.add(head);box(person,.19,.65,.21,dark,-.17,.3,0);box(person,.19,.65,.21,dark,.17,.3,0);passengers.push({root:person,z,index:i});}
@@ -72,6 +67,7 @@ export function createWorld(scene){
   const airportInfo=AIRPORTS[plan.from],weather=WEATHER[plan.weather],grassTexture=surface('grass');grassTexture.repeat.set(750,750);const groundMat=material(airportInfo.color);groundMat.map=grassTexture;const ground=new T.Mesh(new T.PlaneGeometry(100000,100000),groundMat);ground.rotation.x=-Math.PI/2;ground.position.set(0,-.14,-plan.distance*.5);ground.receiveShadow=true;group.add(ground);terrain=ground;
   const skyColors=weather.night?['#071325','#1b3046']:plan.weather==='sunset'?['#32608b','#efb087']:weather.rain?['#536675','#9caeb8']:['#367db5','#c5dce7'];
   sky=new T.Mesh(new T.SphereGeometry(47000,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color(skyColors[0])},bottom:{value:new T.Color(skyColors[1])}},vertexShader:'varying vec3 v;void main(){v=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 v;uniform vec3 top;uniform vec3 bottom;void main(){gl_FragColor=vec4(mix(bottom,top,pow(max(normalize(v).y,0.),.5)),1.);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}'}));group.add(sky);
+  lakes=addLakes(group,{distance:plan.distance,night:weather.night});
   const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;
   routeGuide=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:'#68d9ff',transparent:true,opacity:.85,depthWrite:false}),8);routeGuide.count=0;routeGuide.frustumCulled=false;group.add(routeGuide);
   let seed=plan.from.charCodeAt(0)*81+plan.to.charCodeAt(0);const random=()=>{seed=seed*16807%2147483647;return seed/2147483647;};
@@ -105,7 +101,7 @@ export function createWorld(scene){
   beacon=new T.Mesh(new T.SphereGeometry(.5,8,6),new T.MeshBasicMaterial({color:'#ff5450'}));group.add(beacon);
   return group;
  }
- function update(dt,flight,aircraft){time+=dt;for(const c of clouds)c.position.x+=dt*8;if(sky&&flight)sky.position.set(flight.x,0,flight.z);
+ function update(dt,flight,aircraft){time+=dt;lakes?.update(dt);for(const c of clouds)c.position.x+=dt*8;if(sky&&flight)sky.position.set(flight.x,0,flight.z);
   if(flight?.plan.mode==='free'&&terrain)for(const axis of ['x','z']){const offset=flight[axis]-terrain.position[axis];if(Math.abs(offset)>20000)terrain.position[axis]+=Math.round(offset/20000)*20000;}
   const onDeparture=!flight||['toService','boarding','prep','taxi','hold','lineup','takeoff'].includes(flight.stage),service=flight?.serviceActive,serviceProgress=flight?.serviceProgress||0,serviceZ=onDeparture?0:flight?.targetZ;
   for(const p of passengers){p.root.visible=!!service&&plan.job==='passengers'&&p.z===serviceZ;const t=(serviceProgress+p.index/18)%1;p.root.position.set(290-t*75,0,1245+(p.index%3)*2);}
