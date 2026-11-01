@@ -20,7 +20,7 @@ assert(inNeighborhood(HOME_LANDMARK.x+REGION_LANDMARKS.school.x,HOME_LANDMARK.z+
 for(const night of [false,true]){
  const scene=new T.Group(),region=addLocalRegion(scene,{night});scene.updateMatrixWorld(true);
  const school=region.root.userData.school;assert(school.userData.features.includes('three-storey-white-building'));assert(school.userData.features.includes('multisport-court'));
- const bounds=new T.Box3().setFromObject(school),size=bounds.getSize(new T.Vector3());assert(size.y>=11&&size.y<=14&&size.x>70&&size.z>60);
+ const bounds=new T.Box3().setFromObject(school),size=bounds.getSize(new T.Vector3());assert(size.y>=11&&size.y<=14&&size.x>70&&size.z>60);const court=school.localToWorld(new T.Vector3(-60,.3,-3)),ray=new T.Raycaster(new T.Vector3(court.x,80,court.z),new T.Vector3(0,-1,0));assert.equal(ray.intersectObject(region.root,true)[0]?.object.material.color.getHexString(),'cd9c57','Sport court remains above grass and surrounding terrain');
  let water;region.root.traverse(o=>{if(o.name==='Pogoria IV')water=o;});assert(water?.isMesh&&water.geometry.attributes.position.count>100);
  const before=water.material.normalMap.offset.x;region.update(1);assert(water.material.normalMap.offset.x>before,'Animated water in day and night');
  let disposed=false;water.geometry.addEventListener('dispose',()=>disposed=true);disposeScenery(region.root);assert(disposed);
