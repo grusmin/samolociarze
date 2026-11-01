@@ -1,4 +1,4 @@
-# Materiały domu — 1.0.10
+# Materiały domu — 1.0.11
 
 Wygenerowane 1 listopada 2026 wbudowanym narzędziem Imagegen, bez trybu CLI/API. Są to nowe, syntetyczne materiały. Nie użyto prywatnych zdjęć domu jako tekstur, panoramy prawdziwego miejsca ani adresu. Geometria domu została odtworzona osobno ze zdjęć użytkownika; pokazane wnętrze jest schematyczne.
 

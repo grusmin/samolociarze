@@ -172,7 +172,7 @@ function render(now){requestAnimationFrame(render);const dt=Math.min((now-last)/
   if(angle>=6&&active.airborne)angle=0;
   if(cockpit){offset.set(-.7,4,-active.spec.length*.37).applyEuler(aircraft.rotation);camera.position.copy(aircraft.position).add(offset);target.set(-.7,active.airborne?4:-15,-650).applyEuler(aircraft.rotation).add(aircraft.position);camera.lookAt(target);camera.rotateZ(active.roll*.3);}
   else{
-   if(angle>=7){target.set(HOME_LANDMARK.x+(angle===9?4:angle===10?6.2:-1),angle===8?0:angle===10?3:2.6,HOME_LANDMARK.z+(angle===8?90:angle===9?-8:0));offset.set(...(angle===8?[-130,230,300]:angle===9?[-17,6,-35]:angle===10?[10,1.5,14]:[15,5.2,32]));if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
+   if(angle>=7){target.set(HOME_LANDMARK.x+(angle===9?4:angle===10?6.2:-1),angle===8?0:angle===10?3:2.6,HOME_LANDMARK.z+(angle===8?90:angle===9?-8:0));offset.set(...(angle===8?[-130,230,300]:angle===9?[-15,6,-17]:angle===10?[10,1.5,14]:[15,5.2,32]));if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
    else if(angle===6){const airportZ=active.nearestAirport.z;target.set(370,20,airportZ+1400);offset.set(-310,155,-400);if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
    else{
    const groundApproach=['toService','boarding','taxi','hold','lineup','taxiin','unloading'].includes(active.stage);

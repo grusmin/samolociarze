@@ -33,7 +33,7 @@ export function createHome({night=false}={}){
  const root=new T.Group();root.name='samolociarze-home';const {add,box,beam,face,finish}=batch(root);
  const white=material('#ece8dd',.86),grey=material('#666763'),tile=material('#3e464b',.7),seam=material('#283338'),trim=material('#d1d0c4'),frame=material('#242e30',.4,.35),paving=material('#a1a5a2'),grass=material('#6f8853'),wood=material('#8c8069');
  const stone=material('#ffffff');stone.map=stoneTexture();stone.bumpMap=stone.map;stone.bumpScale=.025;
- const glass=new T.MeshPhysicalMaterial({color:'#d1d8d3',roughness:.055,metalness:.32,transparent:true,opacity:.68,clearcoat:1,clearcoatRoughness:.03,envMapIntensity:1.8,side:T.DoubleSide});glass.emissive.set(night?'#b09261':'#000000');glass.emissiveIntensity=night?.2:0;
+ const glass=new T.MeshPhysicalMaterial({color:'#a6b9c1',roughness:.045,metalness:.6,transparent:true,opacity:.82,clearcoat:1,clearcoatRoughness:.03,envMapIntensity:1.8,side:T.DoubleSide});glass.emissive.set(night?'#b09261':'#000000');glass.emissiveIntensity=night?.2:0;
  if(typeof window!=='undefined'){
   let live=true;stone.addEventListener('dispose',()=>live=false);const loader=new T.TextureLoader();const stoneUrl=new URL('./textures/home-stone.png',import.meta.url);stoneUrl.searchParams.set('v',GAME_VERSION);
   loader.load(stoneUrl.href,t=>{if(!live){t.dispose();return;}t.colorSpace=T.SRGBColorSpace;t.wrapS=t.wrapT=T.RepeatWrapping;t.anisotropy=4;const old=stone.map;stone.map=stone.bumpMap=t;stone.bumpScale=.035;stone.needsUpdate=true;old.dispose();});
@@ -56,7 +56,7 @@ export function createHome({night=false}={}){
  for(const x of [7.35,10.45])for(let i=0;i<8;i++)box(.05,3.4,.11,curtain,x+(i-4)*.035,2.05,2.18);
  box(.15,2.8,2.9,curtain,10.4,1.95,-7.2);
  // Garage, recessed entrance and the deep white horizontal canopy.
- box(13.2,3.1,.55,grey,-5,1.8,.2);box(7,2.65,.13,garage,-5.5,1.67,.52);
+ box(2.6,3.1,.55,grey,-10.3,1.8,.2);box(2,3.1,.55,grey,-1,1.8,.2);box(13.2,.35,.55,grey,-5,3.18,.2);box(7,2.65,.13,garage,-5.5,1.67,.52);
  for(let y=.45;y<2.95;y+=.45)box(6.93,.018,.025,seam,-5.5,y,.6);
  box(3.2,2.6,.1,trim,-11.85,1.65,-.78);for(let y=.55;y<2.8;y+=.45)box(3.15,.018,.02,grey,-11.85,y,-.71);
  box(1.65,2.82,.17,frame,.7,1.58,-.24);box(1.35,2.6,.12,garage,.7,1.6,-.12);box(.04,.3,.09,trim,1.12,1.45,-.1);box(.45,2.4,.1,glass,1.65,1.6,-.18);
@@ -128,7 +128,7 @@ export function addNeighborhood(parent,{night=false}={}){
  for(let i=0;i<18;i++){const z=-300+i*35,x=275+Math.sin(i*.35)*16;box(7,.045,39,water,x,.025,z,0,.1*Math.cos(i*.35),0);for(const side of [-1,1])box(4,.08,39,reed,x+side*6,.03,z);}
  const dummy=new T.Object3D(),treePositions=[];
  for(let i=0;i<170;i++){const row=i<80,x=row?-270+Math.sin(i*.9)*14:-145+(i%5)*16,z=row?-290+i*8:140+Math.floor((i-80)/5)*11;treePositions.push([x,z]);}
- for(let i=0;i<11;i++)treePositions.push([-16+i*3.1,-27]);
+
  const crowns=new T.InstancedMesh(new T.IcosahedronGeometry(1,1),leaf,treePositions.length),stems=new T.InstancedMesh(new T.CylinderGeometry(.18,.3,3,5),trunk,treePositions.length);
  treePositions.forEach(([x,z],i)=>{const h=i>=170?1.65+(i%3)*.18:2.8+(i%5)*.55;dummy.position.set(x,h+1.5,z);dummy.scale.set(2.3,h,2.3);dummy.updateMatrix();crowns.setMatrixAt(i,dummy.matrix);dummy.position.y=1.5;dummy.scale.set(1,1,1);dummy.updateMatrix();stems.setMatrixAt(i,dummy.matrix);});crowns.castShadow=stems.castShadow=true;root.add(crowns,stems);
  for(let i=0;i<9;i++){const x=-190+i*45;box(.16,7,.16,kerb,x,3.5,17);if(i<8)for(const dz of [-.2,.2])beam([x,6.8,17+dz],[x+45,6.8,17+dz],.013,dark);}

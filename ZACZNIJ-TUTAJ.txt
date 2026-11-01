@@ -1,4 +1,4 @@
-SAMOLOCIARZE 1.0.10 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.11 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
