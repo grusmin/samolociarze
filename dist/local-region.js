@@ -10,6 +10,7 @@ function nearLine(x,z,points,width){return points.some(p=>Math.hypot(x-p.x,z-p.z
 export function addLocalRegion(parent,{night=false}={}){
  const root=new T.Group();root.name='mapped-local-region';parent.add(root);const {add,box,beam,finish}=geometryBatch(root);
  const asphalt=sceneMaterial('#626768'),edge=sceneMaterial('#d2d3c4'),concrete=sceneMaterial('#a8ada4'),steel=sceneMaterial('#778587',.5,.5),dark=sceneMaterial('#29383c'),sand=sceneMaterial('#b2ad8d'),green=sceneMaterial('#60815b'),trunk=sceneMaterial('#726451'),wall=sceneMaterial('#d0c8b4'),roof=sceneMaterial('#786e64');
+ for(const [m,units] of [[asphalt,-2],[edge,-4],[sand,-4]]){m.polygonOffset=true;m.polygonOffsetFactor=-1;m.polygonOffsetUnits=units;}
  const roadTexture=surface('asphalt');roadTexture.repeat.set(1,1);asphalt.map=roadTexture;
  const meadow=sceneMaterial('#b5b7a0');meadow.map=surface('grass');meadow.map.repeat.set(100,120);
  box(5800,.08,7500,meadow,600,-.025,450);
@@ -42,6 +43,7 @@ export function addLocalRegion(parent,{night=false}={}){
  for(const z of [-2210,-2190])beam([1300,7.2,z],[1480,7.2,z],.12,steel);
  // Large irregular lake, shoreline and sand spits, rather than circular ponds.
  const lakeCurve=new T.CatmullRomCurve3(LAKE_OUTLINE.map(([x,z])=>new T.Vector3(x,0,z)),true,'centripetal'),outline=lakeCurve.getPoints(240).slice(0,-1).map(p=>new T.Vector2(p.x,-p.z)),shape=new T.Shape(outline),waterMat=new T.MeshPhysicalMaterial({color:night?'#123c4b':'#2a7182',roughness:.22,metalness:.48,clearcoat:.9,envMapIntensity:1.15});
+ waterMat.polygonOffset=true;waterMat.polygonOffsetFactor=-1;waterMat.polygonOffsetUnits=-4;
  const waveCanvas=document.createElement('canvas');waveCanvas.width=waveCanvas.height=128;const wc=waveCanvas.getContext('2d');wc.fillStyle='#8080ff';wc.fillRect(0,0,128,128);for(let i=0;i<64;i++){wc.strokeStyle=`rgb(${120+i%15},${120+i%12},250)`;wc.beginPath();wc.moveTo(0,i*2);wc.bezierCurveTo(36,i*2-4,88,i*2+4,128,i*2);wc.stroke();}
  const wave=new T.CanvasTexture(waveCanvas);wave.wrapS=wave.wrapT=T.RepeatWrapping;wave.repeat.set(100,180);waterMat.normalMap=wave;waterMat.normalScale.set(.2,.2);
  const lake=new T.Mesh(new T.ShapeGeometry(shape),waterMat);lake.rotation.x=-Math.PI/2;lake.position.y=.075;lake.name='Pogoria IV';root.add(lake);
@@ -52,7 +54,7 @@ export function addLocalRegion(parent,{night=false}={}){
  for(let i=0;i<7;i++){const boat=new T.Mesh(new T.ConeGeometry(1,1,4),sceneMaterial(i%2?'#e9dfcc':'#d7e6e5'));boat.geometry.rotateX(Math.PI);boat.geometry.rotateY(Math.PI/4);boat.scale.set(2,.7,5);boat.position.set(1160+i%3*42,.5,-700+Math.floor(i/3)*70);boat.rotation.y=i*.7;root.add(boat);}
  // Fields use distinct strips with farm tracks; roads and water remain clear.
  const fields=[[-1600,-1400,900,450],[-1100,-900,650,340],[-1250,-300,950,600],[-900,370,800,600],[-1600,1000,950,480],[-1400,1600,700,420],[-1550,-2200,650,500],[-650,-1700,900,370],[1900,-500,260,500],[1950,400,260,700],[2060,1100,220,500]];
- const cropMats=['#829164','#9b9f72','#a0a27c'].map(c=>sceneMaterial(c));
+ const cropMats=['#829164','#9b9f72','#a0a27c'].map(c=>{const m=sceneMaterial(c);m.polygonOffset=true;m.polygonOffsetFactor=-1;m.polygonOffsetUnits=-2;return m;});
  fields.forEach(([x,z,w,d],i)=>{box(w,.045,d,cropMats[i%3],x,.035,z);for(let strip=0;strip<5;strip++)box(w,.015,.5,sand,x,.063,z-d/2+strip*d/5);});
  // Houses follow the actual street corridors instead of a regular town grid.
  const houses=[],crowns=[],treeStems=[];let seed=1831;const random=()=>{seed=seed*16807%2147483647;return seed/2147483647;};

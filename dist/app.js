@@ -163,7 +163,7 @@ window.addEventListener('blur',()=>{clearInput();if(active&&!paused&&!active.fin
 const offset=new T.Vector3(),target=new T.Vector3(),desired=new T.Vector3(),axis=new T.Vector3(0,1,0);let last=performance.now(),lastHud=0,inspectionState=-1;
 function render(now){requestAnimationFrame(render);const dt=Math.min((now-last)/1000,.1);last=now;
  const inspecting=!!active&&angle>=7&&!cockpit;const inspectionView=inspecting?angle:-1;if(inspectionView!==inspectionState){inspectionState=inspectionView;document.body.classList.toggle('inspectingHome',inspecting);configureQuality();}
- scene.fog=inspecting&&(angle===8||angle===11)?null:flightFog;const desiredFov=cockpit?68:inspecting&&(angle===8||angle>=11)?60:48;if(camera.fov!==desiredFov){camera.fov=desiredFov;camera.updateProjectionMatrix();}
+ scene.fog=inspecting&&(angle===8||angle===11)?null:flightFog;const desiredFov=cockpit?68:inspecting&&(angle===8||angle>=11)?60:48;const desiredNear=cockpit?.3:inspecting?(angle===8?350:angle===11?180:angle===13?20:angle===12?1:.3):angle<4?Math.min(8,Math.max(.3,(active?.y||0)/160)):.3;if(camera.fov!==desiredFov||camera.near!==desiredNear){camera.fov=desiredFov;camera.near=desiredNear;camera.updateProjectionMatrix();}
  if(active){
   const input=currentInput();if(!paused&&!active.finished&&angle<7){for(let n=0,steps=Math.max(1,Math.ceil(dt/.025));n<steps;n++)active.update(dt/steps,input);syncAircraft();smoke.update(dt,{aircraft,failed:active.engineFault,airborne:active.airborne,brake:active.brake,gear:active.gear,speed:active.velocity,engineSide:active.failureSide});if(active.elapsed-lastSaved>4)saveFlight();}
   $('brakeIndicator').classList.toggle('hidden',paused||!input.brake);

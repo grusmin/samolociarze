@@ -1,4 +1,4 @@
-# Samolociarze 1.0.12 — kariera pilota
+# Samolociarze 1.0.13 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
