@@ -1,4 +1,4 @@
-# Samolociarze 1.0.9 — kariera pilota
+# Samolociarze 1.0.10 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -115,3 +115,5 @@ Gdy stoisz na ziemi, otwórz Kamery i wybierz „Lotnisko 3D”. Po starcie wido
 Po lewej stronie lotniska startowego stoi dom odtworzony z rodzinnych zdjęć: biała elewacja, kamienny szczyt, wysokie asymetryczne przeszklenie, dwa garaże, żaluzje, grafitowe krzyżujące się dachy, rynny, podjazd, brama i ogrodzenie. Z tyłu jest taras oraz duże przeszklenia do ogrodu. Wokół są pola, wiejskie skrzyżowanie, sąsiednie domy i mały ciek wodny. Układ jest przybliżeniem otoczenia, przeniesionym do fikcyjnego świata gry; model nie zawiera prawdziwej lokalizacji, numeru domu ani prywatnych zdjęć. Niewidoczne na zdjęciach detale i wymiary są szacowane.
 
 Na ziemi wybierz Kamery → Dom i okolica lub Osiedle z góry. Te dwa widoki zatrzymują symulację lotu podczas oglądania. Aby wrócić do pilotowania, wybierz Za samolotem lub Fotel kapitana.
+
+Dopracowanie domu 1.0.10: refleksy i częściowo przezroczyste szkło, otwory okienne, wnęki, dodatkowe detale i materiały. W trybie oglądania domu są przyciski Przód domu, Detale, Taras i ogród, Okolica z góry oraz Wróć do samolotu / Menu gry. Zobacz [ZMIANY-1.0.10.md](ZMIANY-1.0.10.md).
