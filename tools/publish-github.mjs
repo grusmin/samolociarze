@@ -160,7 +160,7 @@ async function publish(){
   await sleep(5000);
  }
  if(!ready)throw Error('Actions zakończyły się poprawnie, ale strona nie zwróciła jeszcze aktualnego index.html. Odczekaj kilka minut.');
- for(const name of ['app.js','career.css','three.module.js','models/a380.gltf','models/a380.bin','models/b747.gltf','models/b747.bin','models/an225.gltf','models/an225.bin','models/conc.gltf','models/conc.bin','airport-fence.js','crash-effect.js','airport-buildings.js','lakes.js','landing-assist.js']){
+ for(const name of ['app.js','career.css','three.module.js','models/a380.gltf','models/a380.bin','models/b747.gltf','models/b747.bin','models/an225.gltf','models/an225.bin','models/conc.gltf','models/conc.bin','airport-fence.js','crash-effect.js','airport-buildings.js','lakes.js','aerodynamics.js','neighborhood.js']){
   const url=new URL(name,site);url.searchParams.set('v',commit);
   const response=await fetch(url,{signal:AbortSignal.timeout(60000)});
   if(!response.ok||!publishedMatches(name,Buffer.from(await response.arrayBuffer())))throw Error(`Nie udało się zweryfikować opublikowanego pliku: ${name}`);

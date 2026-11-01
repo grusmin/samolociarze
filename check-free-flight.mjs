@@ -17,7 +17,7 @@ for(const plane of Object.keys(PLANES))for(const weather of Object.keys(WEATHER)
  assert.notEqual(plan.from,plan.to);assert.equal(plan.payload,0);assert.equal(plan.reward,0);
  assert.equal(f.stage,'takeoff');assert(!f.airborne&&f.engines&&f.gear&&f.cleared);assert.equal(f.y,7);assert.equal(f.velocity,0);assert.equal(f.throttle,0);assert.equal(f.flaps,1);assert.equal(f.x,f.departureRunway.start.x);assert.equal(f.z,f.departureRunway.start.z);assert.equal(f.yaw,0);assert.equal(f.taxiPath.length,0);f.action('tower');assert(f.events.at(-1).includes('zgoda na start'));takeoff(f);const altitude=f.y;
  for(let i=0;i<1200;i++)f.update(.05);
- assert(!f.finished&&!f.failed);assert.equal(f.fuel,100);assert.equal(f.y,altitude);assert.equal(f.stage,'cruise','Flying near a destination does not force a mission or approach');
+ assert(!f.finished&&!f.failed);assert.equal(f.fuel,100);assert(Math.abs(f.y-altitude)<1e-5);assert.equal(f.stage,'cruise','Flying near a destination does not force a mission or approach');
  const restored=Flight.restore(f.snapshot());assert.equal(restored.stage,'cruise');assert.equal(restored.x,f.x);assert.equal(restored.velocity,f.velocity);tested++;
 }
 for(const from of Object.keys(AIRPORTS)){const f=new Flight(makePlan({from,mode:'free',weather:'sun'}));assert.equal(f.plan.from,from);assert.equal(f.stage,'takeoff');assert.equal(f.z,1510);assert(f.departureRunway.number.startsWith(AIRPORTS[from].runway));}
@@ -31,7 +31,7 @@ const profile=freshProfile(),career=new Flight(makePlan({}));assert(saveCurrentF
 assert(!saveCurrentFlight(profile,controls));assert.equal(profile.current,savedCareer);assert.equal(JSON.stringify(profile),before);
 for(const airport of ['WAW','LHR'])for(const direction of [1,-1]){
  const f=new Flight(makePlan({mode:'free',weather:'sun'})),airportZ=airport==='WAW'?0:-f.plan.distance,seed=[...airport].reduce((n,c)=>n+c.charCodeAt(0),0);
- Object.assign(f,{airborne:true,stage:'cruise',x:0,y:7.02,z:airportZ+direction*1250,yaw:direction===1?0:Math.PI,pitch:-.02,roll:0,velocity:f.spec.stall+14,throttle:.4,gear:true,flaps:2,elapsed:(90-seed%90)%90+40});
+ Object.assign(f,{airborne:true,stage:'cruise',x:0,y:7.02,z:airportZ+direction*1250,yaw:direction===1?0:Math.PI,pitch:.08,angleOfAttack:.1,roll:0,velocity:f.spec.stall+14,throttle:.4,gear:true,flaps:2,elapsed:(90-seed%90)%90+40});
  f.action('tower');assert.equal(f.arrivedAirport,airport,'Tower picks the nearest airport');assert(f.landingClearance);f.update(.05);assert.equal(f.stage,'rollout');
  for(let i=0;i<500&&!f.finished;i++)f.update(.05,{brake:true});assert(f.finished&&f.won);assert.equal(f.stage,'complete','No unloading or ground mission after a free landing');assert.equal(completeContract(profile,f),null);assert.equal(JSON.stringify(profile),before,'Landing does not overwrite career or award coins');
 }

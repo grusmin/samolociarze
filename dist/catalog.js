@@ -1,4 +1,4 @@
-export const GAME_VERSION='1.0.8';
+export const GAME_VERSION='1.0.9';
 export const AIRPORTS={
  WAW:{name:'Warszawa Okęcie',city:'Warszawa',country:'Polska',lat:52.17,lon:20.97,biome:'fields',runway:'33',color:'#81966a'},
  LHR:{name:'Londyn Heathrow',city:'Londyn',country:'Wielka Brytania',lat:51.47,lon:-.45,biome:'river',runway:'27',color:'#75956f'},
@@ -27,7 +27,7 @@ export const PLANES={
  a359:{name:'Airbus A350-900',livery:'Malowanie modelu FlightGear',engines:2,span:64.75,length:66.8,range:15000,seats:325,cargo:75,rotate:67,stall:51,cruise:165,price:12000,level:4}
 };
 export const WEATHER={sun:{name:'Słoneczny dzień',icon:'☀',wind:1,fog:26000,night:false,rain:false},wind:{name:'Wiatr boczny',icon:'➜',wind:1.7,fog:24000,night:false,rain:false},rain:{name:'Deszcz i turbulencje',icon:'☂',wind:1.4,fog:11500,night:false,rain:true},sunset:{name:'Zachód słońca',icon:'◐',wind:.85,fog:22000,night:false,rain:false},night:{name:'Lot nocny',icon:'☾',wind:1.1,fog:17000,night:true,rain:false}};
-export const DIFFICULTY={rookie:{name:'Trening',wind:1.5,sink:6.5,roll:.22,ring:360,multiplier:1,assist:true},captain:{name:'Kapitan',wind:6,sink:4,roll:.15,ring:300,multiplier:1.4,assist:false},expert:{name:'Ekspert',wind:10,sink:2.8,roll:.11,ring:250,multiplier:1.8,assist:false}};
+export const DIFFICULTY={rookie:{name:'Trening',wind:1.5,sink:6.5,roll:.22,ring:360,multiplier:1},captain:{name:'Kapitan',wind:6,sink:4,roll:.15,ring:300,multiplier:1.4},expert:{name:'Ekspert',wind:10,sink:2.8,roll:.11,ring:250,multiplier:1.8}};
 export const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 export function distanceKm(from,to){const a=AIRPORTS[from],b=AIRPORTS[to],r=Math.PI/180,dLat=(b.lat-a.lat)*r,dLon=(b.lon-a.lon)*r;return Math.round(6371*2*Math.asin(Math.sqrt(Math.sin(dLat/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dLon/2)**2)));}
 export function makePlan({from='WAW',to='LHR',plane='a380',job='passengers',weather='wind',difficulty='captain',mode='career'}={}){

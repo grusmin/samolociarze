@@ -8,6 +8,7 @@ import {disposeScenery} from './scene-resources.js';
 import {addAirportFence} from './airport-fence.js';
 import {addAirportBuildings} from './airport-buildings.js';
 import {addLakes} from './lakes.js';
+import {addNeighborhood,inNeighborhood} from './neighborhood.js';
 
 export function createWorld(scene){
  let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain,lakes;
@@ -68,11 +69,11 @@ export function createWorld(scene){
   const skyColors=weather.night?['#071325','#1b3046']:plan.weather==='sunset'?['#32608b','#efb087']:weather.rain?['#536675','#9caeb8']:['#367db5','#c5dce7'];
   sky=new T.Mesh(new T.SphereGeometry(47000,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color(skyColors[0])},bottom:{value:new T.Color(skyColors[1])}},vertexShader:'varying vec3 v;void main(){v=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 v;uniform vec3 top;uniform vec3 bottom;void main(){gl_FragColor=vec4(mix(bottom,top,pow(max(normalize(v).y,0.),.5)),1.);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}'}));group.add(sky);
   lakes=addLakes(group,{distance:plan.distance,night:weather.night});
-  const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;
+  const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;addNeighborhood(group,{night:weather.night});
   routeGuide=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:'#68d9ff',transparent:true,opacity:.85,depthWrite:false}),8);routeGuide.count=0;routeGuide.frustumCulled=false;group.add(routeGuide);
   let seed=plan.from.charCodeAt(0)*81+plan.to.charCodeAt(0);const random=()=>{seed=seed*16807%2147483647;return seed/2147483647;};
-  const trees=[];for(let i=0;i<1800;i++){const x=(random()-.5)*26000,z=5000-random()*(plan.distance+10000);if(Math.abs(x)<650)continue;trees.push({p:[x,9,z],s:[7+random()*8,8+random()*12,7+random()*8],color:random()>.5?'#416944':'#526f48'});}instanced(new T.IcosahedronGeometry(1,1),material('#4b6b45'),trees);
-  const fields=[];for(let i=0;i<80;i++){const x=(random()-.5)*24000;if(Math.abs(x)<650)continue;fields.push({p:[x,0,5000-random()*(plan.distance+10000)],s:[500+random()*900,.1,700+random()*1300],color:['#8c9369','#a5a17a','#6f805e','#9a9e72'][i%4]});}instanced(new T.BoxGeometry(1,1,1),material('#8b9472'),fields);
+  const trees=[];for(let i=0;i<1800;i++){const x=(random()-.5)*26000,z=5000-random()*(plan.distance+10000);if(Math.abs(x)<650||inNeighborhood(x,z,12))continue;trees.push({p:[x,9,z],s:[7+random()*8,8+random()*12,7+random()*8],color:random()>.5?'#416944':'#526f48'});}instanced(new T.IcosahedronGeometry(1,1),material('#4b6b45'),trees);
+  const fields=[];for(let i=0;i<80;i++){const x=(random()-.5)*24000;if(Math.abs(x)<650||Math.abs(x+1050)<1700)continue;fields.push({p:[x,0,5000-random()*(plan.distance+10000)],s:[500+random()*900,.1,700+random()*1300],color:['#8c9369','#a5a17a','#6f805e','#9a9e72'][i%4]});}instanced(new T.BoxGeometry(1,1,1),material('#8b9472'),fields);
   for(const [code,z] of [[plan.from,0],[plan.to,-plan.distance]]){
    const info=AIRPORTS[code],blocks=[];for(let i=0;i<180;i++){const x=1300+random()*4500,h=15+random()*(code==='JFK'||code==='HND'?200:70);blocks.push({p:[x,h/2,z+(random()-.5)*6000],s:[20+random()*60,h,25+random()*60],color:weather.night?'#334252':['#c0b9a8','#a8b1b0','#a3aa9b'][i%3]});}instanced(new T.BoxGeometry(1,1,1),material('#a6b0ad'),blocks);
    // Distinct skyline silhouettes for the destinations, built from light geometry.

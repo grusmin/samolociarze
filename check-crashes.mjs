@@ -4,7 +4,7 @@ import {makePlan} from './dist/catalog.js';
 
 function touchdown(overrides={}){
  const f=new Flight(makePlan({mode:'free',weather:'sun',difficulty:'captain'}));
- Object.assign(f,{airborne:true,stage:'approach',x:0,y:7.02,z:f.targetZ+500,yaw:0,pitch:-.02,roll:0,velocity:70,throttle:.4,gear:true,flaps:2,landingClearance:true,windX:0,windZ:0,...overrides});
+ Object.assign(f,{airborne:true,stage:'approach',x:0,y:7.02,z:f.targetZ+500,yaw:0,pitch:.08,angleOfAttack:.1,roll:0,velocity:70,throttle:.4,gear:true,flaps:2,landingClearance:true,windX:0,windZ:0,...overrides});
  f.update(.05);return f;
 }
 const good=touchdown();assert.equal(good.stage,'rollout');assert(!good.crashed&&!good.finished,'Normal landing has no explosion');

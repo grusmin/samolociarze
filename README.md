@@ -1,4 +1,4 @@
-# Samolociarze 1.0.8 — kariera pilota
+# Samolociarze 1.0.9 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -11,7 +11,7 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
-Najnowsze: przestrzenne lotniska, jeziora i asysta lądowania L. Szczegóły: [ZMIANY-1.0.8.md](ZMIANY-1.0.8.md).
+Najnowsze: ręczne lądowanie z lekko uniesionym nosem podczas opadania, bez automatycznej asysty. Szczegóły: [ZMIANY-1.0.9.md](ZMIANY-1.0.9.md). Lotniska 3D i jeziora z wersji 1.0.8 pozostają w grze.
 
 Wersja 1.0.7: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
 
@@ -104,8 +104,14 @@ Test przeglądarkowy: uruchom `node server.cjs`, a następnie `node check-mobile
 
 Wysłanie zmian na `main` uruchamia publikację gry przez GitHub Pages.
 
-## Łatwiejsze lądowanie i oglądanie lotniska
+## Lądowanie ręczne i oglądanie okolicy
 
-Po ukończeniu przelotu poproś wieżę T o zgodę. Po jej uzyskaniu kliknij „Pomóż w lądowaniu” albo naciśnij L. Asysta ustawia samolot na osi pasa, reguluje moc, wysuwa podwozie i klapy, a po przyziemieniu hamuje. Użycie sterów lub zmiana mocy wyłącza pomoc. Asysta może najpierw wykonać dodatkowy krąg, jeżeli samolot jest za blisko pasa lub leci w niewłaściwym kierunku.
+Po ukończeniu przelotu poproś wieżę T o zgodę. Lądujesz samodzielnie: wysuń podwozie i klapy 2, zwolnij do prędkości podanej przez wieżę. Utrzymuj nos lekko ponad horyzontem (około 3° przy podejściu), a mocą reguluj opadanie. Tuż nad pasem lekko zwiększ pochylenie nosa w górę, aby zmniejszyć opadanie. Po przyziemieniu hamuj H. Nie ma automatycznego lądowania, wyrównania ani hamowania; asysta kołowania działa nadal na ziemi. Model aerodynamiki jest uproszczeniem do gry, a nie danymi rzeczywistych samolotów.
 
 Gdy stoisz na ziemi, otwórz Kamery i wybierz „Lotnisko 3D”. Po starcie widok wróci za samolot.
+
+## Dom Samolociarzy
+
+Po lewej stronie lotniska startowego stoi dom odtworzony z rodzinnych zdjęć: biała elewacja, kamienny szczyt, wysokie asymetryczne przeszklenie, dwa garaże, żaluzje, grafitowe krzyżujące się dachy, rynny, podjazd, brama i ogrodzenie. Z tyłu jest taras oraz duże przeszklenia do ogrodu. Wokół są pola, wiejskie skrzyżowanie, sąsiednie domy i mały ciek wodny. Układ jest przybliżeniem otoczenia, przeniesionym do fikcyjnego świata gry; model nie zawiera prawdziwej lokalizacji, numeru domu ani prywatnych zdjęć. Niewidoczne na zdjęciach detale i wymiary są szacowane.
+
+Na ziemi wybierz Kamery → Dom i okolica lub Osiedle z góry. Te dwa widoki zatrzymują symulację lotu podczas oglądania. Aby wrócić do pilotowania, wybierz Za samolotem lub Fotel kapitana.

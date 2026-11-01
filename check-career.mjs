@@ -32,7 +32,7 @@ for(;frames<35000&&!g.finished;frames++){
   const diff=Math.atan2(Math.sin(desiredYaw-g.yaw),Math.cos(desiredYaw-g.yaw));input.steer=Math.max(-1,Math.min(1,diff*8));
   let desiredPitch=Math.max(-.16,Math.min(.22,Math.atan2(target.y-g.y,dist)));
   if(g.stage==='approach'&&g.y<23)desiredPitch=-.022;
-  input.elev=Math.max(-1,Math.min(1,(desiredPitch-g.pitch)*18));g.throttle=g.stage==='approach'?.52:.72;
+  input.elev=Math.max(-1,Math.min(1,(desiredPitch+g.angleOfAttack-g.pitch)*18));g.throttle=g.stage==='approach'?.52:.72;
  }else if(g.stage==='rollout')input.brake=true;
  else if(g.stage==='taxiin'&&!g.autotaxi)g.action('service');
  else if(g.stage==='unloading'&&!g.serviceActive)g.action('service');

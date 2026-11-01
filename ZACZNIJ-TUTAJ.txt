@@ -1,4 +1,4 @@
-SAMOLOCIARZE 1.0.8 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.9 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
@@ -22,5 +22,7 @@ Postępy zapisują się w tej przeglądarce. Korzystaj zawsze z tego samego adre
 Kody: Ustawienia → Kody do gry. SAMOLOCIARZE odblokowuje wszystkie poziomy i samoloty. MONETY daje co najmniej 100 000 monet. Jest przycisk przywrócenia postępów sprzed użycia kodów.
 Gra lokalna, bez publikacji. Więcej informacji: README.md.
 
-ŁATWIEJSZE LĄDOWANIE: po zgodzie wieży T kliknij Pomóż w lądowaniu albo naciśnij L. Asysta ląduje i hamuje. Sterowanie strzałkami/WASD lub zmiana mocy wyłącza pomoc.
+LĄDOWANIE RĘCZNE: zgoda wieży T, podwozie G, klapy 2 F, prędkość podana przez wieżę. Trzymaj nos lekko w górze, mocą reguluj opadanie. Tuż nad pasem lekko podnieś nos, potem hamuj H. Automatyczna asysta lądowania została usunięta.
 LOTNISKO 3D: gdy stoisz na ziemi, w menu kamer wybierz Lotnisko 3D.
+
+DOM: na ziemi otwórz Kamery → Dom i okolica lub Osiedle z góry. Podczas oglądania lot jest wstrzymany. Dom jest po lewej stronie lotniska startowego; zaznaczono go na mapie lotu.
