@@ -1,4 +1,4 @@
-# Samolociarze 1.0.11 — kariera pilota
+# Samolociarze 1.0.12 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -11,7 +11,7 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
-Najnowsze: ręczne lądowanie z lekko uniesionym nosem podczas opadania, bez automatycznej asysty. Szczegóły: [ZMIANY-1.0.9.md](ZMIANY-1.0.9.md). Lotniska 3D i jeziora z wersji 1.0.8 pozostają w grze.
+Najnowsze: okolica sprawdzona na Mapach Google — Pogoria IV, DK86, S1, węzeł Podwarpie i szkoła z boiskiem. Szczegóły: [ZMIANY-1.0.12.md](ZMIANY-1.0.12.md).
 
 Wersja 1.0.7: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
 
@@ -118,4 +118,10 @@ Na ziemi wybierz Kamery → Dom i okolica lub Osiedle z góry. Te dwa widoki zat
 
 Dopracowanie domu 1.0.10: refleksy i częściowo przezroczyste szkło, otwory okienne, wnęki, dodatkowe detale i materiały. W trybie oglądania domu są przyciski Przód domu, Detale, Taras i ogród, Okolica z góry oraz Wróć do samolotu / Menu gry. Zobacz [ZMIANY-1.0.10.md](ZMIANY-1.0.10.md).
 
-Wersja 1.0.11 poprawia widoczność wnęki wejściowej, odcień odbić w szybach oraz widok tarasu bez zasłaniających go drzew.
+Wersja 1.0.12 poprawia widoczność wnęki wejściowej, odcień odbić w szybach oraz widok tarasu bez zasłaniających go drzew.
+
+## Jezioro, główne drogi i szkoła
+
+Wersja 1.0.12 dodaje rozległą okolicę sprawdzoną na Mapach Google: Pogorię IV z nieregularnym brzegiem, Czarną Przemszę, DK86, S1, węzeł Podwarpie, lokalne ulice i szkołę w Wojkowicach Kościelnych z boiskiem. To ręcznie uproszczona rekonstrukcja; źródła i zakres: [OKOLICA-ZRODLA.md](OKOLICA-ZRODLA.md). Dom wraz z otoczeniem przeniesiono na zachodnią stronę świata gry, dalej od pasów.
+
+W trybie oglądania wybierz Okolica z góry, Jezioro Pogoria IV, Szkoła lub Drogi i węzeł. Widok okolicy można też otworzyć parametrem view=region w adresie strony; view=lake, view=school i view=junction pokazują poszczególne punkty. Oglądanie nie zmienia postępów kariery.

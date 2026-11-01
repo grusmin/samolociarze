@@ -7,7 +7,7 @@ export function addLakes(parent,{distance,night=false}){
  const normal=new T.CanvasTexture(canvas);normal.wrapS=normal.wrapT=T.RepeatWrapping;normal.repeat.set(24,24);
  const water=new T.MeshPhysicalMaterial({color:night?'#163e53':'#3a8293',roughness:.22,metalness:.45,clearcoat:.8,normalMap:normal,normalScale:new T.Vector2(.3,.3),envMapIntensity:1.3});
  const sand=new T.MeshStandardMaterial({color:'#a8a080',roughness:1}),stone=new T.MeshStandardMaterial({color:'#858f82',roughness:.95}),green=new T.MeshStandardMaterial({color:'#687c40',roughness:.95});
- const definitions=[{x:-1600,z:-2500,r:550,stretch:.72},{x:1100,z:-distance*.48,r:650,stretch:.85},{x:-1550,z:-distance+3400,r:580,stretch:.65}];
+ const definitions=[{x:1100,z:-distance*.48,r:650,stretch:.85},{x:-1550,z:-distance+3400,r:580,stretch:.65}];
  const rocks=[],reeds=[];const segments=72;
  for(const [index,lake] of definitions.entries()){
   const outline=[];

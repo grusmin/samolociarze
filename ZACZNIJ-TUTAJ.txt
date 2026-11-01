@@ -1,4 +1,4 @@
-SAMOLOCIARZE 1.0.11 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.12 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
@@ -26,3 +26,5 @@ LĄDOWANIE RĘCZNE: zgoda wieży T, podwozie G, klapy 2 F, prędkość podana pr
 LOTNISKO 3D: gdy stoisz na ziemi, w menu kamer wybierz Lotnisko 3D.
 
 DOM: na ziemi otwórz Kamery → Dom i okolica lub Osiedle z góry. Podczas oglądania lot jest wstrzymany. Dom jest po lewej stronie lotniska startowego; zaznaczono go na mapie lotu.
+
+OKOLICA: Kamery → Dom i okolica, potem przyciski Okolica z góry / Jezioro Pogoria IV / Szkoła / Drogi i węzeł. Dom i odwzorowana okolica są na zachód od lotniska; mapa lotu obejmuje nowe punkty.

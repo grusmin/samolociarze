@@ -1,27 +1,14 @@
 import * as T from './three.module.js';
 import {GAME_VERSION} from './catalog.js';
 import {surface} from './scenery.js';
-import {mergeGeometries} from './vendor/BufferGeometryUtils.js';
+import {geometryBatch as batch,sceneMaterial as material} from './scene-batch.js';
+import {addLocalRegion,REGION_BOUNDS} from './local-region.js';
 
 // Fictional placement in game metres. No address, map coordinates or source
 // photographs are shipped. Dimensions are estimated from the supplied views.
-export const HOME_LANDMARK=Object.freeze({x:-1050,z:-650,label:'Dom Samolociarzy'});
-export function inNeighborhood(x,z,margin=0){return Math.abs(x-HOME_LANDMARK.x)<420+margin&&Math.abs(z-HOME_LANDMARK.z-70)<380+margin;}
+export const HOME_LANDMARK=Object.freeze({x:-4700,z:-650,label:'Dom Samolociarzy'});
+export function inNeighborhood(x,z,margin=0){x-=HOME_LANDMARK.x;z-=HOME_LANDMARK.z;return x>REGION_BOUNDS.minX-margin&&x<REGION_BOUNDS.maxX+margin&&z>REGION_BOUNDS.minZ-margin&&z<REGION_BOUNDS.maxZ+margin;}
 
-function batch(parent){
- const buckets=new Map(),dummy=new T.Object3D();
- function add(g,m,x,y,z,rx=0,ry=0,rz=0){
-  dummy.position.set(x,y,z);dummy.rotation.set(rx,ry,rz);dummy.scale.set(1,1,1);dummy.updateMatrix();g.applyMatrix4(dummy.matrix);
-  if(!g.attributes.normal)g.computeVertexNormals();if(!g.attributes.uv)g.setAttribute('uv',new T.Float32BufferAttribute(new Float32Array(g.attributes.position.count*2),2));
-  if(!buckets.has(m))buckets.set(m,[]);buckets.get(m).push(g.index?g.toNonIndexed():g);if(g.index)g.dispose();
- }
- const box=(w,h,d,m,x,y,z,rx=0,ry=0,rz=0)=>add(new T.BoxGeometry(w,h,d),m,x,y,z,rx,ry,rz);
- function beam(a,b,r,m){const direction=new T.Vector3(...b).sub(new T.Vector3(...a)),g=new T.CylinderGeometry(r,r,direction.length(),5);g.applyQuaternion(new T.Quaternion().setFromUnitVectors(new T.Vector3(0,1,0),direction.normalize()));add(g,m,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);}
- function face(points,m,holes=[]){const shape=new T.Shape();points.forEach((p,i)=>i?shape.lineTo(p[0],p[1]):shape.moveTo(p[0],p[1]));shape.closePath();for(const hole of holes){const path=new T.Path();hole.forEach((p,i)=>i?path.lineTo(p[0],p[1]):path.moveTo(p[0],p[1]));path.closePath();shape.holes.push(path);}const g=new T.ShapeGeometry(shape);for(let i=0;i<g.attributes.uv.count;i++)g.attributes.uv.setXY(i,g.attributes.position.getX(i)*.65,g.attributes.position.getY(i)*.65);add(g,m,0,0,points[0][2]);}
- function finish(){for(const [m,parts] of buckets){const g=mergeGeometries(parts,false),mesh=new T.Mesh(g,m);g.computeBoundingSphere();mesh.castShadow=mesh.receiveShadow=true;parent.add(mesh);parts.forEach(p=>p.dispose());}}
- return {add,box,beam,face,finish};
-}
-const material=(color,roughness=.8,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
 function stoneTexture(){
  const canvas=document.createElement('canvas');canvas.width=canvas.height=512;const c=canvas.getContext('2d');c.fillStyle='#9a9484';c.fillRect(0,0,512,512);
  let seed=182;const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
@@ -110,27 +97,5 @@ export function createHome({night=false}={}){
 
 export function addNeighborhood(parent,{night=false}={}){
  const root=new T.Group();root.name='home-neighborhood';root.position.set(HOME_LANDMARK.x,0,HOME_LANDMARK.z);parent.add(root);
- const home=createHome({night});root.add(home);const {add,box,beam,finish}=batch(root);
- const asphalt=material('#626762'),gravel=material('#b3ac97'),kerb=material('#b0b5aa'),grass=material('#80916a'),wall=material('#d0c9b4'),dark=material('#3b4446'),roof=material('#756757'),redRoof=material('#9b6651'),leaf=material('#4f7047'),trunk=material('#71654b'),water=material('#426f74',.3,.2),reed=material('#89916a');
- // Approximate rural T-junction and an access road to the fictional airport.
- box(790,.12,6.5,asphalt,0,.11,23);box(6.5,.12,310,asphalt,30,.11,181);box(790,.11,1,gravel,0,.08,27.2);box(790,.11,1,gravel,0,.08,18.8);
- for(const x of [-370,370])box(1,.1,330,gravel,x,.05,186);
- box(580,.12,11,asphalt,-256,.12,-90,0,-.9,0);
- for(let i=0;i<12;i++){
-  const side=i%2?1:-1,z=56+Math.floor(i/2)*46,x=30+side*(30+i%3*7),w=12+i%3*2,d=11+i%2*3,h=4+i%3;
-  box(40,.08,40,grass,x,.04,z);box(w,h,d,wall,x,h/2,z);box(w+1,.28,d+1,i%3?roof:redRoof,x,h+.16,z);
-  const top=new T.ConeGeometry(1,1,4);top.rotateY(Math.PI/4);top.scale((w+1)/Math.SQRT2,3,(d+1)/Math.SQRT2);add(top,i%3?roof:redRoof,x,h+1.5,z);
-  box(w*.65,1.45,.1,dark,x,h*.56,z+d/2+.06);box(Math.abs(x-30),.09,3,gravel,(x+30)/2,.14,z);
-  box(w*.7,2.8,7,wall,x+side*8,1.4,z-13);box(w*.7+.3,.3,7.4,dark,x+side*8,2.95,z-13);
- }
- // Open plots, meadows, hedgerows and the small drainage stream seen on the map.
- for(let i=0;i<9;i++)box(90+i%3*13,.06,90,material(['#879368','#9b9e77','#92976c'][i%3]),-230+(i%3)*120,.02,-80-Math.floor(i/3)*110);
- for(let i=0;i<18;i++){const z=-300+i*35,x=275+Math.sin(i*.35)*16;box(7,.045,39,water,x,.025,z,0,.1*Math.cos(i*.35),0);for(const side of [-1,1])box(4,.08,39,reed,x+side*6,.03,z);}
- const dummy=new T.Object3D(),treePositions=[];
- for(let i=0;i<170;i++){const row=i<80,x=row?-270+Math.sin(i*.9)*14:-145+(i%5)*16,z=row?-290+i*8:140+Math.floor((i-80)/5)*11;treePositions.push([x,z]);}
-
- const crowns=new T.InstancedMesh(new T.IcosahedronGeometry(1,1),leaf,treePositions.length),stems=new T.InstancedMesh(new T.CylinderGeometry(.18,.3,3,5),trunk,treePositions.length);
- treePositions.forEach(([x,z],i)=>{const h=i>=170?1.65+(i%3)*.18:2.8+(i%5)*.55;dummy.position.set(x,h+1.5,z);dummy.scale.set(2.3,h,2.3);dummy.updateMatrix();crowns.setMatrixAt(i,dummy.matrix);dummy.position.y=1.5;dummy.scale.set(1,1,1);dummy.updateMatrix();stems.setMatrixAt(i,dummy.matrix);});crowns.castShadow=stems.castShadow=true;root.add(crowns,stems);
- for(let i=0;i<9;i++){const x=-190+i*45;box(.16,7,.16,kerb,x,3.5,17);if(i<8)for(const dz of [-.2,.2])beam([x,6.8,17+dz],[x+45,6.8,17+dz],.013,dark);}
- finish();root.userData.house=home;root.userData.features=['rural-junction','neighbor-houses','gardens','farm-outbuildings','fields','hedgerows','stream','power-poles'];return root;
+ const home=createHome({night});root.add(home);const region=addLocalRegion(root,{night});root.userData.house=home;root.userData.features=region.root.userData.features;root.userData.region=region;return root;
 }

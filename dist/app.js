@@ -1,6 +1,7 @@
 import * as T from './three.module.js';
 import {AIRPORTS,PLANES,WEATHER,DIFFICULTY,makePlan,clamp} from './catalog.js';
 import {HOME_LANDMARK} from './neighborhood.js';
+import {REGION_LANDMARKS} from './region-layout.js';
 import {Flight,STAGES,FAILURE_TYPES} from './flight.js';
 import {readProfile,saveProfile,saveCurrentFlight,purchase,completeContract,levelFor,rankFor,BADGES,sanitizeProfile,applyCheat,restoreCheatBackup,hasCheatBackup} from './career.js';
 import {loadFleet,fleetAircraft} from './fleet.js';
@@ -16,7 +17,7 @@ import {bindFlightControls} from './controls.js';
 
 const $=id=>document.getElementById(id),fmt=n=>Math.round(n).toLocaleString('pl-PL');
 let storage;try{storage=localStorage;}catch{storage={getItem(){return null},setItem(){throw Error('Brak zapisu')}};}
-let profile=readProfile(storage),selected='a380',job='passengers',active=null,paused=false,cockpit=false,angle=0,previewAngle=0,modelSequence=0,planeLoading=false,resultsShown=false,lastSaved=0,radioUntil=0,toastTimer,crashStarted=false;
+let profile=readProfile(storage),selected='a380',job='passengers',active=null,paused=false,cockpit=false,angle=0,previewAngle=0,modelSequence=0,planeLoading=false,flightFog=null,resultsShown=false,lastSaved=0,radioUntil=0,toastTimer,crashStarted=false;
 const keys=new Set(),controlKey=code=>({KeyW:'ArrowUp',KeyS:'ArrowDown',KeyA:'ArrowLeft',KeyD:'ArrowRight'}[code]||code);
 const touchControls=bindFlightControls({enabled:()=>!!active&&!paused&&!active.finished,onEngage:()=>sound.unlock()});
 function clearInput(){keys.clear();touchControls.clear();}
@@ -31,9 +32,9 @@ function persist(){const ok=saveProfile(storage,profile);if(!ok&&!persist.warned
 function showTab(tab){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('[data-page]').forEach(p=>p.classList.toggle('hidden',p.dataset.page!==tab));if(tab==='log')renderProfile();}
 function populateAirports(){const options=Object.entries(AIRPORTS).map(([id,a])=>`<option value="${id}">${a.city} · ${id}</option>`).join('');$('airport').innerHTML=$('destination').innerHTML=options;$('airport').value='WAW';$('destination').value='LHR';}
 function readPlan(mode='career'){return makePlan({from:$('airport').value,to:$('destination').value,plane:selected,job,weather:$('weather').value,difficulty:$('difficulty').value,mode});}
-function setLighting(plan){const wx=WEATHER[plan.weather];hemi.intensity=wx.night?.28:wx.rain?.95:1.6;sun.intensity=wx.night?.28:wx.rain?1:plan.weather==='sunset'?1.9:2.6;sun.color.set(plan.weather==='sunset'?'#ffd1a0':wx.night?'#b6d2ff':'#fff0dc');renderer.toneMappingExposure=wx.night?1.25:.95;scene.fog=new T.Fog(wx.night?'#172c42':wx.rain?'#9cacb5':plan.weather==='sunset'?'#d8b8a6':'#bcd4df',wx.rain?1500:5500,wx.fog);}
+function setLighting(plan){const wx=WEATHER[plan.weather];hemi.intensity=wx.night?.28:wx.rain?.95:1.6;sun.intensity=wx.night?.28:wx.rain?1:plan.weather==='sunset'?1.9:2.6;sun.color.set(plan.weather==='sunset'?'#ffd1a0':wx.night?'#b6d2ff':'#fff0dc');renderer.toneMappingExposure=wx.night?1.25:.95;scene.fog=new T.Fog(wx.night?'#172c42':wx.rain?'#9cacb5':plan.weather==='sunset'?'#d8b8a6':'#bcd4df',wx.rain?1500:5500,wx.fog);flightFog=scene.fog;}
 const phoneLayout=()=>innerWidth<=1100||matchMedia('(any-pointer: coarse)').matches;
-function configureQuality(){const q=profile.settings.quality,low=q==='low'||q==='auto'&&phoneLayout();renderer.setPixelRatio(Math.min(devicePixelRatio,low?1.1:q==='high'?2:1.5));const inspecting=!!active&&angle>=7;renderer.shadowMap.enabled=inspecting||!low;sun.shadow.mapSize.set(inspecting?1024:low?512:2048,inspecting?1024:low?512:2048);const extent=inspecting?48:145;Object.assign(sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});sun.shadow.camera.updateProjectionMatrix();sound.enabled=profile.settings.sound;}
+function configureQuality(){const q=profile.settings.quality,low=q==='low'||q==='auto'&&phoneLayout();renderer.setPixelRatio(Math.min(devicePixelRatio,low?1.1:q==='high'?2:1.5));const inspecting=!!active&&angle>=7;renderer.shadowMap.enabled=inspecting?angle!==8:!low;sun.shadow.mapSize.set(inspecting?1024:low?512:2048,inspecting?1024:low?512:2048);const extent=inspecting?(angle===12?140:angle>=11?320:48):145;Object.assign(sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});sun.shadow.camera.updateProjectionMatrix();sound.enabled=profile.settings.sound;}
 function resize(){const mobileMenu=!active&&phoneLayout();renderer.setSize(innerWidth,mobileMenu?470:innerHeight,false);camera.aspect=innerWidth/(mobileMenu?470:innerHeight);camera.updateProjectionMatrix();configureQuality();}
 function renderProfile(){
  $('credits').textContent=fmt(profile.credits);$('flights').textContent=fmt(profile.flights);$('pilotRank').textContent=`${rankFor(profile.xp)} · poziom ${levelFor(profile.xp)}`;$('xpInfo').textContent=fmt(profile.xp)+' XP';
@@ -83,7 +84,7 @@ function readMenuWorld(){try{return readPlan();}catch{return makePlan({plane:'a3
 function syncAircraft(){if(!active||!aircraft)return;aircraft.position.set(active.x,active.y,active.z);aircraft.rotation.set(active.pitch,active.yaw,active.roll,'YXZ');gearParts.forEach(g=>g.visible=active.gear);}
 function currentInput(){const held=code=>keys.has(code)||touchControls.has(code);return {steer:(held('ArrowLeft')?1:0)-(held('ArrowRight')?1:0),elev:(held('ArrowDown')?1:0)-(held('ArrowUp')?1:0),power:(held('Equal')||held('NumpadAdd')?1:0)-(held('Minus')||held('NumpadSubtract')?1:0),brake:held('Brake')||held('KeyH')||held('Space')};}
 function objective(f){const stage=f.stage,pct=Math.round(f.serviceProgress*100);let title='',text='';
- if(angle>=7)return {title:angle===8?'Okolica domu z góry':angle===9?'Taras i ogród':angle===10?'Detale elewacji':'Dom Samolociarzy',text:'Oglądasz dom i okolicę. Lot jest wstrzymany. W menu kamer wybierz Za samolotem lub Fotel kapitana, aby wrócić do sterowania.'};
+ if(angle>=7)return {title:angle===8?'Okolica · jezioro, drogi i szkoła':angle===11?'Pogoria IV · Kuźnica Warężyńska':angle===12?'Szkoła · Wojkowice Kościelne':angle===13?'Podwarpie · S1 i DK86':angle===9?'Taras i ogród':angle===10?'Detale elewacji':'Dom Samolociarzy',text:'Oglądasz dom i okolicę. Lot jest wstrzymany. W menu kamer wybierz Za samolotem lub Fotel kapitana, aby wrócić do sterowania.'};
  if(f.plan.mode==='free'&&f.airborne&&stage!=='approach')return {title:'Po prostu leć',text:phoneLayout()?'Lataj, gdzie chcesz. Przytrzymuj stery pod prawym kciukiem. Moc i hamulec są po lewej. Wieża wybiera lotnisko do lądowania. Przesuwaj pasek pod parametrami, aby znaleźć podwozie, klapy i zmianę pasa. Więcej otwiera kamery i awarie.':'Lataj, gdzie chcesz. WASD / strzałki sterują, + / − zmienia moc, C pokazuje kokpit. T wybiera najbliższe lotnisko do lądowania, M otwiera mapę. Bez misji i bez kończącego się paliwa.'};
  if(f.plan.mode==='free'&&stage==='rollout')return {title:'Hamuj [H]',text:'Zatrzymaj samolot. Potem możesz od razu rozpocząć kolejny lot z pasa.'};
  if(stage==='toService'){title=(f.plan.job==='cargo'?'Podjedź do strefy cargo':'Podjedź do terminalu')+' · '+Math.round(f.serviceDistance)+' m';text='Uruchom silniki [E], jedź z mocą 20–30%. Wjedź w oznaczony okrąg i zatrzymaj się hamulcem [H]. Mapa [M] pokazuje stanowisko. Możesz użyć asysty dojazdu.';}
@@ -110,7 +111,7 @@ function updateHud(){if(!active)return;const f=active,o=objective(f);$('phase').
 }
 function drawMap(f){
  const c=$('navMap').getContext('2d'),w=460,h=420,ground=['toService','boarding','prep','taxi','hold','lineup','taxiin','unloading'].includes(f.stage),origin=['taxiin','unloading'].includes(f.stage)?f.targetZ:0,departing=['taxi','hold','lineup'].includes(f.stage);
- const px=x=>ground?(x+380)/1040*w:w*.5+x/8000*w,py=z=>ground?h-20-(z-origin+350)/2400*(h-40):35-z/f.plan.distance*(h-70);
+ const px=x=>ground?(x+380)/1040*w:w*.5+x/14000*w,py=z=>ground?h-20-(z-origin+350)/2400*(h-40):35+(5000-z)/(f.plan.distance+5000)*(h-70);
  c.fillStyle='#102b3e';c.fillRect(0,0,w,h);c.strokeStyle='#ffffff0c';c.lineWidth=1;
  for(let i=0;i<8;i++){c.beginPath();c.moveTo(i*w/8,0);c.lineTo(i*w/8,h);c.moveTo(0,i*h/8);c.lineTo(w,i*h/8);c.stroke();}
  c.font='20px system-ui';c.textAlign='left';
@@ -123,6 +124,7 @@ function drawMap(f){
   for(const [job,stand] of Object.entries(SERVICE_STANDS)){const x=px(stand.x),y=py(origin+stand.z);c.strokeStyle=stand.color;c.fillStyle=stand.color;c.lineWidth=job===f.plan.job?4:2;c.strokeRect(x-22,y-16,44,32);c.fillText(stand.short,x-35,y-25);}
  }else{
   if(f.plan.mode==='career'){c.strokeStyle='#63c8a0';c.setLineDash([8,7]);c.lineWidth=3;c.beginPath();c.moveTo(px(0),py(0));for(const p of f.waypoints)c.lineTo(px(p.x),py(p.z));c.lineTo(px(0),py(-f.plan.distance));c.stroke();c.setLineDash([]);}
+  for(const k of ['lake','school']){const p=REGION_LANDMARKS[k],xx=px(HOME_LANDMARK.x+p.x),yy=py(HOME_LANDMARK.z+p.z);c.fillStyle=k==='lake'?'#62c8de':'#f0d28e';c.fillRect(xx-3,yy-3,6,6);c.font='bold 10px system-ui';c.fillText(k==='lake'?'Pogoria IV':'Szkoła',xx+7,yy+3);}
   c.fillStyle='#e5c579';c.font='bold 13px system-ui';c.fillText('⌂ DOM',px(HOME_LANDMARK.x)-48,py(HOME_LANDMARK.z));c.fillRect(px(HOME_LANDMARK.x)-3,py(HOME_LANDMARK.z)-3,6,6);c.font='20px system-ui';
   c.fillStyle='#dceff0';c.fillText(f.plan.from,px(0)+15,py(0)+8);c.fillText(f.plan.to,px(0)+15,py(-f.plan.distance)+7);
   for(const p of [{x:0,z:0},{x:0,z:-f.plan.distance}]){c.fillStyle='#e4ebce';c.fillRect(px(p.x)-4,py(p.z)-12,8,24);}
@@ -155,12 +157,13 @@ function syncSettings(){$('soundEnabled').checked=profile.settings.sound;$('ring
 function cheatMessage(text,error=false){$('cheatMessage').textContent=text;$('cheatMessage').className='fine '+(error?'error':'success');}
 $('cheatForm').onsubmit=event=>{event.preventDefault();try{const message=applyCheat(storage,profile,$('cheatCode').value);renderProfile();updatePlan();cheatMessage(message);$('cheatCode').value='';}catch(error){cheatMessage(error.message,true);}};
 $('restoreCheats').onclick=()=>{try{profile=restoreCheatBackup(storage);renderProfile();updatePlan();syncSettings();cheatMessage('Przywrócono Twoje postępy sprzed użycia kodów.');}catch(error){cheatMessage(error.message,true);}};
-document.addEventListener('keydown',event=>{if(!active)return;const code=controlKey(event.code);if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Equal','Minus','Space','KeyH'].includes(code))event.preventDefault();if(paused){if(event.code==='Escape'&&!active.finished)$('resume').click();return;}keys.add(code);if(event.repeat)return;({KeyE:()=>action('engine'),KeyT:()=>action('tower'),KeyG:()=>action('gear'),KeyF:()=>action('flaps'),KeyC:()=>$('camera').click(),KeyV:()=>{setCockpit(false);angle=(angle+1)%11;},KeyR:()=>action('runway'),KeyM:()=>$('map').click(),Escape:pause})[event.code]?.();});document.addEventListener('keyup',event=>keys.delete(controlKey(event.code)));
+document.addEventListener('keydown',event=>{if(!active)return;const code=controlKey(event.code);if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Equal','Minus','Space','KeyH'].includes(code))event.preventDefault();if(paused){if(event.code==='Escape'&&!active.finished)$('resume').click();return;}keys.add(code);if(event.repeat)return;({KeyE:()=>action('engine'),KeyT:()=>action('tower'),KeyG:()=>action('gear'),KeyF:()=>action('flaps'),KeyC:()=>$('camera').click(),KeyV:()=>{setCockpit(false);angle=(angle+1)%14;},KeyR:()=>action('runway'),KeyM:()=>$('map').click(),Escape:pause})[event.code]?.();});document.addEventListener('keyup',event=>keys.delete(controlKey(event.code)));
 window.addEventListener('blur',()=>{clearInput();if(active&&!paused&&!active.finished&&angle<7)pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&active&&!paused&&!active.finished&&angle<7)pause();});window.addEventListener('beforeunload',saveFlight);window.addEventListener('resize',resize);window.visualViewport?.addEventListener('resize',resize);screen.orientation?.addEventListener('change',clearInput);
 
-const offset=new T.Vector3(),target=new T.Vector3(),desired=new T.Vector3(),axis=new T.Vector3(0,1,0);let last=performance.now(),lastHud=0,inspectionState=false;
+const offset=new T.Vector3(),target=new T.Vector3(),desired=new T.Vector3(),axis=new T.Vector3(0,1,0);let last=performance.now(),lastHud=0,inspectionState=-1;
 function render(now){requestAnimationFrame(render);const dt=Math.min((now-last)/1000,.1);last=now;
- const inspecting=!!active&&angle>=7&&!cockpit;if(inspecting!==inspectionState){inspectionState=inspecting;document.body.classList.toggle('inspectingHome',inspecting);configureQuality();}
+ const inspecting=!!active&&angle>=7&&!cockpit;const inspectionView=inspecting?angle:-1;if(inspectionView!==inspectionState){inspectionState=inspectionView;document.body.classList.toggle('inspectingHome',inspecting);configureQuality();}
+ scene.fog=inspecting&&(angle===8||angle===11)?null:flightFog;const desiredFov=cockpit?68:inspecting&&(angle===8||angle>=11)?60:48;if(camera.fov!==desiredFov){camera.fov=desiredFov;camera.updateProjectionMatrix();}
  if(active){
   const input=currentInput();if(!paused&&!active.finished&&angle<7){for(let n=0,steps=Math.max(1,Math.ceil(dt/.025));n<steps;n++)active.update(dt/steps,input);syncAircraft();smoke.update(dt,{aircraft,failed:active.engineFault,airborne:active.airborne,brake:active.brake,gear:active.gear,speed:active.velocity,engineSide:active.failureSide});if(active.elapsed-lastSaved>4)saveFlight();}
   $('brakeIndicator').classList.toggle('hidden',paused||!input.brake);
@@ -172,7 +175,7 @@ function render(now){requestAnimationFrame(render);const dt=Math.min((now-last)/
   if(angle>=6&&active.airborne)angle=0;
   if(cockpit){offset.set(-.7,4,-active.spec.length*.37).applyEuler(aircraft.rotation);camera.position.copy(aircraft.position).add(offset);target.set(-.7,active.airborne?4:-15,-650).applyEuler(aircraft.rotation).add(aircraft.position);camera.lookAt(target);camera.rotateZ(active.roll*.3);}
   else{
-   if(angle>=7){target.set(HOME_LANDMARK.x+(angle===9?4:angle===10?6.2:-1),angle===8?0:angle===10?3:2.6,HOME_LANDMARK.z+(angle===8?90:angle===9?-8:0));offset.set(...(angle===8?[-130,230,300]:angle===9?[-15,6,-17]:angle===10?[10,1.5,14]:[15,5.2,32]));if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
+   if(angle>=7){const landmark=angle===11?REGION_LANDMARKS.lake:angle===12?REGION_LANDMARKS.school:angle===13?REGION_LANDMARKS.junction:null;target.set(HOME_LANDMARK.x+(landmark?landmark.x:angle===8?600:angle===9?4:angle===10?6.2:-1),angle===12?5:angle===13?3:angle===8||angle===11?0:angle===10?3:2.6,HOME_LANDMARK.z+(landmark?landmark.z:angle===8?450:angle===9?-8:0));offset.set(...(angle===8?[-900,6400,3900]:angle===11?[-600,3300,4000]:angle===12?[-105,65,115]:angle===13?[-460,560,650]:angle===9?[-15,6,-17]:angle===10?[10,1.5,14]:[15,5.2,32]));if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
    else if(angle===6){const airportZ=active.nearestAirport.z;target.set(370,20,airportZ+1400);offset.set(-310,155,-400);if(camera.aspect<1)offset.multiplyScalar(1/camera.aspect);desired.copy(target).add(offset);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(target);}
    else{
    const groundApproach=['toService','boarding','taxi','hold','lineup','taxiin','unloading'].includes(active.stage);
@@ -184,9 +187,9 @@ function render(now){requestAnimationFrame(render);const dt=Math.min((now-last)/
  }else if(aircraft){
   aircraft.visible=true;const scale=Math.max(.65,PLANES[selected].span/80),mobile=phoneLayout();offset.fromArray([[83,29,78],[110,20,0],[67,28,-80],[-105,25,0]][previewAngle]).multiplyScalar(scale);if(mobile)offset.multiplyScalar(1.2/camera.aspect);camera.position.copy(aircraft.position).add(offset);target.copy(aircraft.position);target.x+=mobile?0:26;target.y+=mobile?2:5;camera.lookAt(target);world.update(dt,null,aircraft);sound.update(null,true);
  }
- if(aircraft){const lightAnchor=active&&angle>=7?new T.Vector3(HOME_LANDMARK.x,0,HOME_LANDMARK.z):aircraft.position;sun.position.copy(lightAnchor).add(new T.Vector3(-500,900,400));sun.target.position.copy(lightAnchor);}if(now>radioUntil)$('radioText').classList.remove('show');
+ if(aircraft){const lightAnchor=active&&angle>=7?target:aircraft.position;sun.position.copy(lightAnchor).add(new T.Vector3(-500,900,400));sun.target.position.copy(lightAnchor);}if(now>radioUntil)$('radioText').classList.remove('show');
  renderer.autoClear=true;renderer.render(scene,camera);if(active&&cockpit){const input=currentInput();flightdeck.resize(camera.aspect);flightdeck.update({speed:active.velocity*1.944,altitude:active.y-7,pitch:active.pitch,roll:active.roll,yaw:active.yaw,throttle:active.throttle,engines:active.engines,type:active.plan.plane,gear:active.gear,failed:active.failed,engineCount:active.spec.engines,planeName:active.spec.name,isAirbus:active.plan.plane.startsWith('a')&&active.plan.plane!=='an225',controlPitch:input.elev,controlRoll:input.steer,fuel:active.fuel,flaps:active.flaps,nav:active.target,position:active});renderer.autoClear=false;renderer.clearDepth();renderer.render(flightdeck.scene,flightdeck.camera);renderer.autoClear=true;}
 }
 populateAirports();syncSettings();renderProfile();updatePlan();
-try{await loadFleet(['a380',...AIRPORT_FLEET_TYPES]);replaceAircraft('a380');const p=readPlan();world.build(p);setLighting(p);resize();$('loading').classList.add('hidden');requestAnimationFrame(render);if(new URLSearchParams(location.search).get('view')==='home'){await enterFlight(new Flight(makePlan({mode:'free',weather:'sun'})));angle=7;updateHud();}}catch(error){$('loadingText').textContent='Nie udało się wczytać gry. Odśwież stronę lub uruchom URUCHOM-GRE.cmd.';console.error(error);}
+try{await loadFleet(['a380',...AIRPORT_FLEET_TYPES]);replaceAircraft('a380');const p=readPlan();world.build(p);setLighting(p);resize();$('loading').classList.add('hidden');requestAnimationFrame(render);const preview={home:7,region:8,lake:11,school:12,junction:13}[new URLSearchParams(location.search).get('view')];if(preview){await enterFlight(new Flight(makePlan({mode:'free',weather:'sun'})));angle=preview;updateHud();}}catch(error){$('loadingText').textContent='Nie udało się wczytać gry. Odśwież stronę lub uruchom URUCHOM-GRE.cmd.';console.error(error);}
 

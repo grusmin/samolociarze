@@ -11,7 +11,7 @@ import {addLakes} from './lakes.js';
 import {addNeighborhood,inNeighborhood} from './neighborhood.js';
 
 export function createWorld(scene){
- let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain,lakes;
+ let group=null,plan=null,passengers=[],vehicles=[],clouds=[],beacon=null,rain=null,water=null,time=0,sky,routeGuide,terrain,lakes,neighborhood;
  const guideDummy=new T.Object3D();
  const palette={white:'#e9eee9',dark:'#25323d',glass:'#345665',metal:'#a7b3b8',yellow:'#edc967',red:'#cb554d'};
  function material(color,roughness=.8){return new T.MeshStandardMaterial({color,roughness,metalness:roughness<.5?.25:.05});}
@@ -69,11 +69,11 @@ export function createWorld(scene){
   const skyColors=weather.night?['#071325','#1b3046']:plan.weather==='sunset'?['#32608b','#efb087']:weather.rain?['#536675','#9caeb8']:['#367db5','#c5dce7'];
   sky=new T.Mesh(new T.SphereGeometry(47000,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color(skyColors[0])},bottom:{value:new T.Color(skyColors[1])}},vertexShader:'varying vec3 v;void main(){v=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 v;uniform vec3 top;uniform vec3 bottom;void main(){gl_FragColor=vec4(mix(bottom,top,pow(max(normalize(v).y,0.),.5)),1.);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}'}));group.add(sky);
   lakes=addLakes(group,{distance:plan.distance,night:weather.night});
-  const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;addNeighborhood(group,{night:weather.night});
+  const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;neighborhood=addNeighborhood(group,{night:weather.night});
   routeGuide=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:'#68d9ff',transparent:true,opacity:.85,depthWrite:false}),8);routeGuide.count=0;routeGuide.frustumCulled=false;group.add(routeGuide);
   let seed=plan.from.charCodeAt(0)*81+plan.to.charCodeAt(0);const random=()=>{seed=seed*16807%2147483647;return seed/2147483647;};
   const trees=[];for(let i=0;i<1800;i++){const x=(random()-.5)*26000,z=5000-random()*(plan.distance+10000);if(Math.abs(x)<650||inNeighborhood(x,z,12))continue;trees.push({p:[x,9,z],s:[7+random()*8,8+random()*12,7+random()*8],color:random()>.5?'#416944':'#526f48'});}instanced(new T.IcosahedronGeometry(1,1),material('#4b6b45'),trees);
-  const fields=[];for(let i=0;i<80;i++){const x=(random()-.5)*24000;if(Math.abs(x)<650||Math.abs(x+1050)<1700)continue;fields.push({p:[x,0,5000-random()*(plan.distance+10000)],s:[500+random()*900,.1,700+random()*1300],color:['#8c9369','#a5a17a','#6f805e','#9a9e72'][i%4]});}instanced(new T.BoxGeometry(1,1,1),material('#8b9472'),fields);
+  const fields=[];for(let i=0;i<80;i++){const x=(random()-.5)*24000,z=5000-random()*(plan.distance+10000);if(Math.abs(x)<650||inNeighborhood(x,z,1100))continue;fields.push({p:[x,0,z],s:[500+random()*900,.1,700+random()*1300],color:['#8c9369','#a5a17a','#6f805e','#9a9e72'][i%4]});}instanced(new T.BoxGeometry(1,1,1),material('#8b9472'),fields);
   for(const [code,z] of [[plan.from,0],[plan.to,-plan.distance]]){
    const info=AIRPORTS[code],blocks=[];for(let i=0;i<180;i++){const x=1300+random()*4500,h=15+random()*(code==='JFK'||code==='HND'?200:70);blocks.push({p:[x,h/2,z+(random()-.5)*6000],s:[20+random()*60,h,25+random()*60],color:weather.night?'#334252':['#c0b9a8','#a8b1b0','#a3aa9b'][i%3]});}instanced(new T.BoxGeometry(1,1,1),material('#a6b0ad'),blocks);
    // Distinct skyline silhouettes for the destinations, built from light geometry.
@@ -81,7 +81,7 @@ export function createWorld(scene){
    if(code==='CDG'){const tower=new T.Mesh(new T.ConeGeometry(65,270,4,12,true),new T.MeshStandardMaterial({color:'#7f796b',wireframe:true}));tower.position.set(2200,135,z-1200);group.add(tower);}
    if(code==='LHR'){const wheel=new T.Mesh(new T.TorusGeometry(75,3,6,48),stone);wheel.position.set(2200,85,z-900);group.add(wheel);box(group,25,110,25,stone,2500,55,z-1100);}
    if(['HND','ICN','PEK','BOG'].includes(code)||info.biome==='mountains'){const hills=[];for(let i=0;i<12;i++)hills.push({p:[-6000-i*500,100,z-5000+i*900],s:[800+random()*500,650+random()*1000,1000+random()*700]});instanced(new T.ConeGeometry(1,1,7),material('#70836f'),hills);}
-   if(info.biome==='coast'||info.biome==='river'){const mat=new T.MeshStandardMaterial({color:weather.night?'#173b50':'#4c93a4',roughness:.25,metalness:.28});const river=box(group,info.biome==='coast'?12000:500,.04,13000,mat,-(info.biome==='coast'?9000:2500),-.05,z-3500);water=river;}
+   if(z!==0&&(info.biome==='coast'||info.biome==='river')){const mat=new T.MeshStandardMaterial({color:weather.night?'#173b50':'#4c93a4',roughness:.25,metalness:.28});const river=box(group,info.biome==='coast'?12000:500,.04,13000,mat,-(info.biome==='coast'?9000:2500),-.05,z-3500);water=river;}
   }
   // Three additional towns with connected streets and houses along the route.
   const roadMat=material('#5b666a'),roofMat=material('#a06a54'),wallMat=material('#d0c4a8'),windowsMat=new T.MeshStandardMaterial({color:weather.night?'#ffdc95':'#8faeba',emissive:weather.night?'#e4a75a':'#000000',emissiveIntensity:weather.night?1.3:0});
@@ -102,7 +102,7 @@ export function createWorld(scene){
   beacon=new T.Mesh(new T.SphereGeometry(.5,8,6),new T.MeshBasicMaterial({color:'#ff5450'}));group.add(beacon);
   return group;
  }
- function update(dt,flight,aircraft){time+=dt;lakes?.update(dt);for(const c of clouds)c.position.x+=dt*8;if(sky&&flight)sky.position.set(flight.x,0,flight.z);
+ function update(dt,flight,aircraft){time+=dt;lakes?.update(dt);neighborhood?.userData.region.update(dt);for(const c of clouds)c.position.x+=dt*8;if(sky&&flight)sky.position.set(flight.x,0,flight.z);
   if(flight?.plan.mode==='free'&&terrain)for(const axis of ['x','z']){const offset=flight[axis]-terrain.position[axis];if(Math.abs(offset)>20000)terrain.position[axis]+=Math.round(offset/20000)*20000;}
   const onDeparture=!flight||['toService','boarding','prep','taxi','hold','lineup','takeoff'].includes(flight.stage),service=flight?.serviceActive,serviceProgress=flight?.serviceProgress||0,serviceZ=onDeparture?0:flight?.targetZ;
   for(const p of passengers){p.root.visible=!!service&&plan.job==='passengers'&&p.z===serviceZ;const t=(serviceProgress+p.index/18)%1;p.root.position.set(290-t*75,0,1245+(p.index%3)*2);}
