@@ -1,4 +1,4 @@
-SAMOLOCIARZE 1.0.15 — KARIERA PILOTA
+SAMOLOCIARZE 1.0.16 — KARIERA PILOTA
 
 Uruchom URUCHOM-GRE.cmd. Adres: http://127.0.0.1:4174/
 Nie zamykaj okna serwera, gdy grasz.
@@ -8,13 +8,13 @@ PO PROSTU LEĆ: złoty przycisk pod nazwą samolotu w menu. Zaczynasz na począt
 Wybierz samolot, trasę, pogodę i trudność. Przyjmij kontrakt.
 Silniki E → Dojazd do terminalu (pasażerowie) lub strefy cargo (towary) → Zatrzymaj H i moc 0% → Obsługa → Wieża T → Trasa A za tyłem pasa → STOP → Wieża T → Strzałka START na początku pasa → Start.
 Wieża podaje numer prawego pasa do startu, np. 33R w Warszawie. Mapa M i niebieska linia pokazują drogę. Przy STOP poczekaj na zgodę. Po zgodzie podjedź na początek pasa; asysta pomaga w obu etapach. Moc 100% dopiero po ustawieniu nosa prosto na początku pasa.
-M pokazuje mapę stanowisk. Asysta dojazdu może podprowadzić i zatrzymać samolot.
+Przycisk Mapa pokazuje stanowiska. Asysta dojazdu może podprowadzić i zatrzymać samolot.
 Po punktach trasy: Wieża T, podwozie G, klapy F do 2. W razie zajętego pasa wybierz drugi R.
 Po lądowaniu hamuj H, jedź do właściwego stanowiska (terminal lub cargo), rozładuj samolot.
 Towary załadowuje się i rozładowuje w około 2 sekundy.
 Wsiadanie pasażerów trwa 20 sekund; na ekranie zobaczysz pozostały czas.
 
-S/↓ nos w górę, W/↑ w dół, A/D skręt, +/− moc, H hamulec, C kokpit, V kamery, M mapa, Esc pauza.
+S/↓ nos w górę, W/↑ w dół, A/D skręt, +/− moc, H hamulec, C kokpit, V kamery, M MAYDAY, Esc pauza.
 Na telefonie używaj przycisków na ekranie. Podczas hamowania pojawia się ikonka HAMUJESZ.
 Kokpit: fotel kapitana bliżej szyb i w lewo, widoczny pas, poruszający się ster, procenty mocy silników.
 

@@ -65,7 +65,8 @@ export class Flight{
   }
   if(name==='wingStrike'){if(this.airborne)this.strikeWing(value,wingProbe(this,value),'trening');else this.message('Ćwiczenie uszkodzenia skrzydła włącz po starcie.');}
   if(name==='failure')this.triggerFailure(value);
-  if(name==='emergency'&&this.airborne){this.emergencyLanding=true;this.autotaxi=false;this.message('MAYDAY: możesz lądować natychmiast w terenie lub wodować bez zgody wieży. Wybierz wolną, płaską przestrzeń. Ziemia: podwozie wysunięte. Woda: podwozie schowane. Klapy 2, małe opadanie, skrzydła poziomo. Sterujesz sam.');}
+  if(name==='emergency'&&!this.airborne)return this.message('MAYDAY, MAYDAY, MAYDAY! Samolociarze 01 zgłasza awarię na ziemi. Wieża: zgłoszenie odebrane. Zatrzymaj samolot hamulcem [H]; pomoc jest w drodze.');
+  if(name==='emergency'&&this.airborne){this.emergencyLanding=true;this.autotaxi=false;this.message('MAYDAY, MAYDAY, MAYDAY! Samolociarze 01. Wieża: zgłoszenie przyjęte. Możesz lądować natychmiast w terenie lub wodować bez zgody wieży. Wybierz wolną, płaską przestrzeń. Ziemia: podwozie wysunięte. Woda: podwozie schowane. Klapy 2, małe opadanie, skrzydła poziomo. Sterujesz sam.');}
   if(name==='repair')this.repair();
   if(name==='runway'&&this.airborne){this.runwayIndex=1-this.runwayIndex;this.runwayX=RUNWAY_X[this.runwayIndex];this.landingClearance=false;this.reservedUntil=0;this.message('Wybrany pas '+(this.runwayIndex===0?'prawy':'lewy')+'. Sprawdź mapę i ponownie poproś wieżę [T] o zgodę.');}
   if(name==='divert'&&this.airborne){

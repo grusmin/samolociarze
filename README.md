@@ -1,4 +1,4 @@
-# Samolociarze 1.0.15 — kariera pilota
+# Samolociarze 1.0.16 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -11,7 +11,7 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
-Najnowsze: uszkodzenia skrzydeł, wodowanie, lądowanie awaryjne w terenie i trzy pasma górskie. Szczegóły: [ZMIANY-1.0.15.md](ZMIANY-1.0.15.md).
+Najnowsze: uszkodzenia skrzydeł, wodowanie, lądowanie awaryjne w terenie i trzy pasma górskie. Szczegóły: [ZMIANY-1.0.16.md](ZMIANY-1.0.16.md).
 
 Poprzednio: okolica sprawdzona na Mapach Google — Pogoria IV, DK86, S1, węzeł Podwarpie i szkoła z boiskiem. Szczegóły: [ZMIANY-1.0.12.md](ZMIANY-1.0.12.md).
 
@@ -34,7 +34,7 @@ Wersja 1.0.7: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy 
 ## Sterowanie
 
 S lub ↓: nos w górę, drążek/wolant do siebie. W lub ↑: nos w dół. A/D lub ←/→: skręt. Po puszczeniu steru nos utrzymuje kąt.
-+ / −: moc. H: hamulec (spacja również działa). E: silniki. T: wieża. G: podwozie. F: klapy 0/1/2. R: drugi pas do lądowania. C: kokpit. V: kolejna kamera. M: mapa. Esc: pauza.
++ / −: moc. H: hamulec (spacja również działa). E: silniki. T: wieża. G: podwozie. F: klapy 0/1/2. R: drugi pas do lądowania. C: kokpit. V: kolejna kamera. M: komunikat MAYDAY i lądowanie awaryjne. Mapę otwiera przycisk Mapa. Esc: pauza.
 Podczas hamowania świeci pomarańczowa ikona HAMUJESZ. Na telefonie służą do tego przyciski ekranowe.
 
 Asysta kołowania jest opcjonalna i działa tylko na ziemi. Na poziomie Kapitan i Ekspert samodzielnie koryguj wiatr, prędkość i opadanie. Przy awarii silnika zmniejsz moc do 35% i zabezpiecz silnik; dalsza moc pozostaje ograniczona. Przed awaryjnym wysunięciem podwozia zwolnij poniżej 190 kt.
@@ -61,7 +61,7 @@ Postępy są w localStorage tej przeglądarki, osobno dla każdego adresu. Korzy
 
 ## Dojazd do załadunku
 
-Nowy lot zaczyna się na płycie postojowej, poza stanowiskiem. Uruchom silniki E. Pasażerów zabierasz w zielonym okręgu przy terminalu, towary w żółtym okręgu strefy cargo. Kolorowa strzałka 3D wskazuje dokładne miejsce, a napis nad stanowiskiem pozwala rozpoznać je z daleka. Jedź z mocą około 20–30%, zatrzymaj się H i ustaw moc na 0%. Przycisk „Obsługa · załaduj” włączy się dopiero przy właściwym stanowisku. „Asysta dojazdu” może poprowadzić samolot i zatrzymać go na miejscu. Mapa M przybliża lotnisko i pokazuje oba miejsca oraz drogę dojazdu.
+Nowy lot zaczyna się na płycie postojowej, poza stanowiskiem. Uruchom silniki E. Pasażerów zabierasz w zielonym okręgu przy terminalu, towary w żółtym okręgu strefy cargo. Kolorowa strzałka 3D wskazuje dokładne miejsce, a napis nad stanowiskiem pozwala rozpoznać je z daleka. Jedź z mocą około 20–30%, zatrzymaj się H i ustaw moc na 0%. Przycisk „Obsługa · załaduj” włączy się dopiero przy właściwym stanowisku. „Asysta dojazdu” może poprowadzić samolot i zatrzymać go na miejscu. Przycisk Mapa przybliża lotnisko i pokazuje oba miejsca oraz drogę dojazdu.
 
 Po lądowaniu rozładunek również odbywa się przy odpowiednim stanowisku lotniska docelowego. Towary nadal ładują się i rozładowują w około 2 sekundy. Starsze zapisane loty zachowują pozycję; cargo zaparkowane wcześniej przy terminalu dostaje wskazanie do nowej strefy.
 
@@ -78,7 +78,7 @@ Kody nie obniżają już zdobytych XP ani monet. Dziennik lotów i odznaki nadal
 
 ## Kołowanie i wybór pasa do startu
 
-Po załadunku zgłoś się do wieży T. Wieża przydziela prawy pas i podaje numer, np. 33R w Warszawie lub 27R w Londynie. Trasa A prowadzi do niego bez przekraczania drugiego pasa. Niebieska linia na ziemi i mapa M prowadzą za tyłem pasa do pomarańczowego STOP, gdzie cały samolot pozostaje poza pasem. Zatrzymaj się i ponownie wywołaj wieżę T. Gdy pas jest zajęty, czekaj na zgodę.
+Po załadunku zgłoś się do wieży T. Wieża przydziela prawy pas i podaje numer, np. 33R w Warszawie lub 27R w Londynie. Trasa A prowadzi do niego bez przekraczania drugiego pasa. Niebieska linia na ziemi i mapa prowadzą za tyłem pasa do pomarańczowego STOP, gdzie cały samolot pozostaje poza pasem. Zatrzymaj się i ponownie wywołaj wieżę T. Gdy pas jest zajęty, czekaj na zgodę.
 
 Po zgodzie podjedź niebieską linią do strzałki START z numerem pasa, ustawiając nos wzdłuż białej linii. Asysta kołowania obsługuje oba etapy. Dopiero na początku pasa zwiększ moc do 100% i rozpocznij rozbieg; przed samolotem jest około 3,1 km pasa. Komunikaty i mapa przypominają przydzielony numer oraz właściwy wjazd.
 
