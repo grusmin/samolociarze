@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import * as T from './dist/three.module.js';
 import {GLTFLoader} from './dist/vendor/GLTFLoader.js';
-import {prepareAircraft} from './dist/fleet.js';
+import {prepareAircraft,splitAircraftWings} from './dist/fleet.js';
 import {PLANES} from './dist/catalog.js';
 globalThis.ProgressEvent=class{constructor(type,init){Object.assign(this,init)}};
 const assert=(condition,message)=>{if(!condition)throw Error(message);};
@@ -20,6 +20,7 @@ for(const [type,{span,engines}] of Object.entries(PLANES)){
  assert(triangles>4000,'Detailed imported geometry: '+type);assert(draws<160,'Batched geometry for mobile: '+type);
  const engineNodes=j.nodes.filter(n=>type==='an225'?/^Engine-[LR][IMO]-Casing$/.test(n.name):type==='b747'?/^Blades(_\d+)?$/.test(n.name):/^fan_[1-4]$/.test(n.name));
  if(['a380','b747','an225'].includes(type))assert(engineNodes.length===engines,'Correct engine count: '+type);
+ const damaged=splitAircraftWings(root.clone(true),type);let splitTriangles=0;damaged.traverse(o=>{if(o.isMesh)splitTriangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3;});assert(splitTriangles===triangles,'Wing separation preserves all geometry');for(const side of ['left','right']){const wing=damaged.getObjectByName('outer-wing-'+side);assert(wing.children.length>0,'Both wings can detach');wing.visible=false;}assert(damaged.children.some(o=>o.isMesh&&o.visible),'Fuselage remains visible');damaged.traverse(o=>{if(o.userData.ownedWingGeometry)o.geometry.dispose();});
  const gear=root.children[0];assert(gear.children.length>0,'Landing gear exists: '+type);
  console.log(`PASS: ${type}, ${engines} engines, ${Math.round(triangles)} triangles, ${draws} batches, wheels on ground`);
 }

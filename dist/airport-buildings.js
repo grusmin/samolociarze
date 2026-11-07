@@ -115,6 +115,11 @@ export function addAirportBuildings(parent,{code,city,night=false}){
  for(const [material,parts] of buckets){
   const geometry=mergeGeometries(parts,false);const mesh=new T.Mesh(geometry,material);mesh.castShadow=mesh.receiveShadow=true;root.add(mesh);parts.forEach(part=>part.dispose());
  }
- root.userData.terminal={x:370,z:1450,width:300,depth:108};root.userData.features=['vaulted-terminal','jet-bridges','control-tower','open-hangars','cargo-docks','service-vehicles','parking'];
+ root.userData.collisionBoxes=[
+ {min:{x:220,y:0,z:1396},max:{x:520,y:30,z:1504}},
+ {min:{x:452,y:0,z:782},max:{x:488,y:65,z:818}},
+ {min:{x:470,y:0,z:650},max:{x:630,y:30,z:750}},
+ ...[-350,-530].map(z=>({min:{x:434,y:0,z:z-49},max:{x:566,y:39,z:z+49}}))
+ ];root.userData.terminal={x:370,z:1450,width:300,depth:108};root.userData.features=['vaulted-terminal','jet-bridges','control-tower','open-hangars','cargo-docks','service-vehicles','parking'];
  return root;
 }

@@ -19,11 +19,11 @@ export function createCrashEffect(scene,{capacity=160,random=Math.random}={}){
  const pool=Array.from({length:capacity},()=>({p:new T.Vector3(),v:new T.Vector3(),size:1,life:1,delay:0,smoke:false}));
  const debris=Array.from({length:18},()=>({p:new T.Vector3(),v:new T.Vector3(),spin:new T.Vector3(),r:new T.Euler(),s:new T.Vector3()}));
  const center=new T.Vector3(),dummy=new T.Object3D(),color=new T.Color();let active=false,age=0,radius=10;
- function trigger(aircraft){
-  clear();active=true;center.copy(aircraft.position);center.y=Math.max(4,center.y);radius=Math.max(6,Math.min(15,(aircraft.userData.span||60)*.16));
+ function trigger(aircraft,{point=null,scale=1,velocity=null}={}){
+  clear();active=true;center.copy(point||aircraft.position);center.y=Math.max(.5,center.y);radius=Math.max(6,Math.min(15,(aircraft.userData.span||60)*.16))*scale;
   pool.forEach((p,i)=>{p.smoke=i>=capacity*.4;p.delay=p.smoke?random()*.75:0;p.life=p.smoke?4.5+random()*1.7:.65+random()*.7;p.size=p.smoke?radius*.55:radius*.45;p.p.copy(center).add(new T.Vector3((random()-.5)*radius,.5+random()*radius*.35,(random()-.5)*radius));p.v.set((random()-.5)*radius*(p.smoke?.5:2),p.smoke?7+random()*8:3+random()*15,(random()-.5)*radius*(p.smoke?.5:2));});
   debris.forEach(p=>{p.p.copy(center);p.v.set((random()-.5)*34,8+random()*19,(random()-.5)*34);p.spin.set(random()*4,random()*4,random()*4);p.r.set(random()*3,random()*3,random()*3);p.s.set(1+random()*2,.25+random()*.5,1+random()*3);});
-  flash.position.copy(center);light.position.copy(center);points.visible=fragments.visible=flash.visible=true;update(0);
+  if(velocity){pool.forEach(p=>p.v.add(velocity));debris.forEach(p=>p.v.add(velocity));}flash.position.copy(center);light.position.copy(center);points.visible=fragments.visible=flash.visible=true;update(0);
  }
  function update(dt){
   if(!active)return;dt=Math.min(.1,Math.max(0,dt));age+=dt;

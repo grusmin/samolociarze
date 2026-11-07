@@ -1,17 +1,19 @@
+import {landingSurface} from './terrain.js';
+import {groundWingContacts,obstacleWingContacts,localToWorld,wingProbe} from './wing-contact.js';
 import {PLANES,DIFFICULTY,WEATHER,clamp,makePlan} from './catalog.js';
 import {approachAngleOfAttack} from './aerodynamics.js';
 import {RUNWAY_X,trafficState} from './traffic.js';
 import {APRON_SPAWN,serviceStand,TAXI_LAYOUT,departureRunway,airportGroundAllowed} from './ground.js';
 const wrap=n=>Math.atan2(Math.sin(n),Math.cos(n));
 const hypot=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
-export const STAGES={toService:'Dojazd do załadunku',boarding:'Załadunek',prep:'Przygotowanie',taxi:'Kołowanie do pasa',hold:'Punkt oczekiwania',lineup:'Zajęcie pasa',takeoff:'Start',climb:'Wznoszenie',cruise:'Na trasie',approach:'Podejście',rollout:'Hamowanie',taxiin:'Kołowanie do rozładunku',unloading:'Rozładunek',complete:'Misja zakończona',failed:'Koniec lotu'};
+export const STAGES={toService:'Dojazd do załadunku',boarding:'Załadunek',prep:'Przygotowanie',taxi:'Kołowanie do pasa',hold:'Punkt oczekiwania',lineup:'Zajęcie pasa',takeoff:'Start',climb:'Wznoszenie',cruise:'Na trasie',approach:'Podejście',rollout:'Hamowanie',taxiin:'Kołowanie do rozładunku',unloading:'Rozładunek',complete:'Misja zakończona',emergencyRollout:'Lądowanie awaryjne',failed:'Koniec lotu'};
 export const FAILURE_TYPES={left:'Awaria lewego silnika',right:'Awaria prawego silnika',bird:'Ptak w silniku',panel:'Awaria panelu sterowania',gear:'Zacięte podwozie'};
 export class Flight{
  constructor(plan){
   this.plan=makePlan(plan);this.id='flight-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);this.spec=PLANES[this.plan.plane];this.rules=DIFFICULTY[this.plan.difficulty];
   Object.assign(this,{x:220,y:7,z:1250,yaw:Math.PI/2,pitch:0,roll:0,velocity:0,throttle:0,fuel:100,flaps:0,gear:true,engines:false,airborne:false,stage:'boarding',elapsed:0,wp:0,cleared:false,landingClearance:false,serviceProgress:0,serviceActive:false,autotaxi:false,taxiIndex:0,brake:false,finished:false,won:false,crashed:false,angleOfAttack:0,landingScore:null,landingSink:0,handledFailures:0,damagedEngine:false,diverted:false,arrivedAirport:plan.to,failure:null,comfort:100,verticalSpeed:0,navDistance:0,autoFailureTriggered:false});
   this.runwayIndex=0;this.runwayX=0;this.reservedUntil=0;this.departureReservedUntil=0;this.targetZ=-this.plan.distance;this.windX=this.rules.wind*WEATHER[plan.weather].wind;this.windZ=-this.rules.wind*.35;this.events=[];
-  this.taxiLayoutVersion=TAXI_LAYOUT.version;this.airTime=0;
+  this.taxiLayoutVersion=TAXI_LAYOUT.version;this.airTime=0;this.wingDamage={left:false,right:false};this.wingImpacts=[];this.emergencyLanding=false;this.emergencyTouchdown=null;
   this.waypoints=[{x:0,y:420,z:-3500},{x:700,y:850,z:-this.plan.distance*.45},{x:-400,y:550,z:this.targetZ+6500},{x:0,y:145,z:this.targetZ+2500}];
   Object.assign(this,APRON_SPAWN,{stage:'toService',yaw:this.plan.job==='cargo'?0:Math.PI});this.arrivedAirport=this.plan.to;
   this.serviceRoute();this.message('Witaj, Samolociarze 01. Uruchom silniki [E] i podjedź do '+this.serviceZone.name+'. Zatrzymaj się w oznaczonym polu; możesz użyć asysty kołowania.');
@@ -20,6 +22,8 @@ export class Flight{
    this.events=[];this.message('Po prostu leć! Jesteś na początku pasa '+this.departureRunway.number+'. Silniki pracują, klapy 1, zgoda na start jest wydana. Dodaj moc do 100%, potem S / ↓ przy '+Math.round(this.spec.rotate*1.944)+' kt. Po locie T wybiera lotnisko do lądowania.');
   }
  }
+ get hasWingDamage(){return this.wingDamage.left||this.wingDamage.right;}
+ get emergency(){return this.emergencyLanding||this.hasWingDamage||this.failed||this.damagedEngine||!this.engines&&this.airborne;}
  get failed(){return !!this.failure?.active;}
  get engineFault(){return this.failed&&['left','right','bird'].includes(this.failure.type);}
  get failureSide(){return this.failure?.type==='right'?-1:1;}
@@ -59,7 +63,9 @@ export class Flight{
    if(this.velocity>105)return this.message('Za duża prędkość na klapy. Zwolnij poniżej 200 kt.');
    this.flaps=(this.flaps+1)%3;
   }
+  if(name==='wingStrike'){if(this.airborne)this.strikeWing(value,wingProbe(this,value),'trening');else this.message('Ćwiczenie uszkodzenia skrzydła włącz po starcie.');}
   if(name==='failure')this.triggerFailure(value);
+  if(name==='emergency'&&this.airborne){this.emergencyLanding=true;this.autotaxi=false;this.message('MAYDAY: możesz lądować natychmiast w terenie lub wodować bez zgody wieży. Wybierz wolną, płaską przestrzeń. Ziemia: podwozie wysunięte. Woda: podwozie schowane. Klapy 2, małe opadanie, skrzydła poziomo. Sterujesz sam.');}
   if(name==='repair')this.repair();
   if(name==='runway'&&this.airborne){this.runwayIndex=1-this.runwayIndex;this.runwayX=RUNWAY_X[this.runwayIndex];this.landingClearance=false;this.reservedUntil=0;this.message('Wybrany pas '+(this.runwayIndex===0?'prawy':'lewy')+'. Sprawdź mapę i ponownie poproś wieżę [T] o zgodę.');}
   if(name==='divert'&&this.airborne){
@@ -90,6 +96,7 @@ export class Flight{
   this.message(FAILURE_TYPES[type]+'. '+(type==='panel'?'Stery reagują słabiej. Włącz zasilanie zapasowe.':type==='gear'?'Zwolnij poniżej 190 kt i użyj awaryjnego wysunięcia.':'Silnik dymi, samolot ściąga na jego stronę. Zmniejsz moc poniżej 35%, potem zabezpiecz silnik.'));
  }
  repair(){
+  if(this.hasWingDamage&&!this.failed)return this.message('Uszkodzonego skrzydła nie naprawisz w locie. Kontruj przechylenie i ląduj awaryjnie.');
   if(!this.failed)return;
   const type=this.failure.type;
   if(['left','right','bird'].includes(type)&&this.throttle>.35)return this.message('Procedura: najpierw zmniejsz moc do 35% lub mniej, następnie zabezpiecz silnik.');
@@ -98,22 +105,27 @@ export class Flight{
   if(['left','right','bird'].includes(type))this.damagedEngine=true;
   this.failure.active=false;this.handledFailures++;this.message(this.damagedEngine?'Silnik zabezpieczony. Dym zanika. Pozostałe silniki pracują, dostępna moc ograniczona. Możesz poprosić o lądowanie awaryjne.':'Procedura zakończona. System wrócił do działania.');
  }
+ strikeWing(side,point,source='ziemia'){
+  if(this.finished||!['left','right'].includes(side)||this.wingDamage[side])return false;
+  this.wingDamage[side]=true;this.emergencyLanding=true;this.comfort=Math.max(0,this.comfort-20);this.wingImpacts.push({side,point:{...point},source});
+  this.message('⚠ '+(side==='left'?'LEWE':'PRAWE')+' SKRZYDŁO USZKODZONE! Kontruj '+(side==='left'?'D / →':'A / ←')+'. Bardzo silny przechył, słabe stery i większe opadanie. Skrzydła nie da się naprawić w locie. Szukaj miejsca do natychmiastowego lądowania.');return true;
+ }
  finish(won,message,crashed=false){if(this.finished)return;this.finished=true;this.won=won;this.crashed=!won&&crashed;if(this.crashed){this.impactSpeed=this.velocity;this.velocity=0;this.engines=false;this.airborne=false;}this.resultMessage=message;this.stage=won?'complete':'failed';this.throttle=0;this.message(message);}
  groundAllowed(){return [0,-this.plan.distance].some(z=>airportGroundAllowed(this.x,this.z-z));}
- update(dt,input={}){
-  if(this.finished)return;dt=clamp(dt,0,.05);this.elapsed+=dt;if(this.airborne)this.airTime+=dt;
+ update(dt,input={},collisionBoxes=[]){
+  if(this.finished)return;const previous={plan:this.plan,velocity:this.velocity,wingDamage:this.wingDamage,x:this.x,y:this.y,z:this.z,pitch:this.pitch,roll:this.roll,yaw:this.yaw};dt=clamp(dt,0,.05);this.elapsed+=dt;if(this.airborne)this.airTime+=dt;
   this.throttle=clamp(this.throttle+(input.power||0)*dt*.25,0,1);this.brake=!!input.brake;
   if(this.serviceActive){if(!this.canService){this.serviceActive=false;this.serviceProgress=0;this.message('Obsługa przerwana. Zatrzymaj się w oznaczonym polu i ustaw moc na 0%.');}else{this.velocity=0;this.serviceProgress+=dt/this.serviceDuration;if(this.serviceProgress>=1){this.serviceActive=false;this.serviceProgress=0;if(this.stage==='boarding'){this.stage='prep';this.message('Załadunek zakończony. Skontaktuj się z wieżą [T] przed kołowaniem do pasa.');}else if(this.stage==='unloading')this.finish(true,'Rozładunek zakończony. Kontrakt wykonany!');}return;}}
   if(['unloading','prep'].includes(this.stage)){this.velocity=0;return;}
-  const onTaxi=['toService','boarding','taxi','lineup','taxiin','hold'].includes(this.stage),onRollout=this.stage==='rollout';
-  const factor=this.engineFault?.64:this.damagedEngine?.78:1;
+  const onTaxi=['toService','boarding','taxi','lineup','taxiin','hold'].includes(this.stage),onRollout=['rollout','emergencyRollout'].includes(this.stage);
+  const factor=(this.engineFault?.64:this.damagedEngine?.78:1)*(this.hasWingDamage?.79:1);
   const max=onTaxi?24:this.spec.cruise*(this.gear&&this.airborne?.9:1)*(1-this.flaps*.06);
-  const target=this.engines?this.throttle*max*factor:0;
+  const target=this.engines&&this.stage!=='emergencyRollout'?this.throttle*max*factor:0;
   this.velocity+=(target-this.velocity)*dt*(this.airborne?.14:.12);
   if(this.brake)this.velocity=Math.max(0,this.velocity-dt*(this.airborne?4:WEATHER[this.plan.weather].rain?12:17));
   if(this.stage==='hold'){this.velocity=0;this.throttle=0;return;}
   if(this.engines&&this.plan.mode==='career')this.fuel=Math.max(0,this.fuel-dt*(.012+this.throttle*.035));if(!this.fuel){this.engines=false;this.message('Brak paliwa. Szybuj do najbliższego lotniska.');}
-  const authority=this.failed?(this.failure.type==='panel'?.35:.55):1,steer=input.steer||0,elev=input.elev||0;
+  const authority=(this.failed?(this.failure.type==='panel'?.35:.55):1)*(this.hasWingDamage?.55:1),steer=input.steer||0,elev=input.elev||0;
   if(onTaxi&&this.autotaxi&&this.engines){
    if(this.brake){this.velocity=0;this.throttle=0;return;}
    const point=this.taxiPath[this.taxiIndex];if(point){const dist=hypot(this,point),desired=Math.atan2(this.x-point.x,this.z-point.z);this.yaw+=clamp(wrap(desired-this.yaw),-dt*.7,dt*.7);this.velocity=Math.min(8,Math.max(3,dist));this.throttle=.2;if(dist<5)this.taxiIndex++;}
@@ -121,29 +133,45 @@ export class Flight{
   }else this.yaw+=steer*dt*(this.airborne?.15:.65)*authority*clamp(this.velocity/(this.airborne?35:5),0,1);
   if(this.engineFault)this.yaw+=dt*this.failureSide*(.011+Math.sin(this.elapsed*1.9)*.004);
   const turbulence=WEATHER[this.plan.weather].rain?Math.sin(this.elapsed*3.3)*.035:Math.sin(this.elapsed*1.4)*.006;
-  const rollTarget=this.airborne?steer*.32+(this.engineFault?.09*this.failureSide:0)+turbulence:0;this.roll+=(rollTarget-this.roll)*(1-Math.exp(-dt*3));
+  const rollTarget=this.airborne?steer*.32+(this.engineFault?.09*this.failureSide:0)+turbulence:0;if(this.airborne&&this.hasWingDamage){const direction=(this.wingDamage.left?1:0)-(this.wingDamage.right?1:0);this.roll=clamp(this.roll+dt*(direction*(.27+.035*Math.sin(this.elapsed*2.7))+steer*.75*authority+Math.sin(this.elapsed*4.1)*.025),-1.3,1.3);this.yaw+=dt*(direction*.018+this.roll*.045);this.pitch+=dt*Math.sin(this.elapsed*2.2)*.009;}else this.roll+=(rollTarget-this.roll)*(1-Math.exp(-dt*3));
   this.pitch=clamp(this.pitch+elev*dt*.16*authority,-.22,.28);
   if(!this.airborne){if(onRollout)this.pitch=Math.max(0,this.pitch-dt*.055);else if(this.velocity<this.spec.rotate)this.pitch=0;}
   const desiredAngle=this.airborne||this.stage==='takeoff'?approachAngleOfAttack(this.spec,this.velocity,this.flaps):0;
   this.angleOfAttack+=(desiredAngle-this.angleOfAttack)*(1-Math.exp(-dt*2));
   let climb=this.velocity*Math.sin(this.pitch-this.angleOfAttack);const stall=this.spec.stall-this.flaps*3;
+  if(this.airborne&&this.hasWingDamage)climb-=3.8+Math.abs(Math.sin(this.elapsed*2))*.8+18*(1-Math.cos(this.roll))+(this.wingDamage.left&&this.wingDamage.right?5:0);
   if(this.airborne&&this.velocity<stall+7)climb-=Math.min(18,(stall+7-this.velocity)*.7);
   if(this.stage==='takeoff'&&climb>2&&this.velocity>this.spec.rotate){this.airborne=true;this.stage=this.plan.mode==='free'?'cruise':'climb';this.message('Wieża: udanego lotu! Schowaj podwozie [G], schowaj klapy [F], leć trasą GPS.');}
   const wind=this.airborne?this.windX*(1+Math.sin(this.elapsed*.37)*.15):0;
   this.x+=(-Math.sin(this.yaw)*this.velocity+wind)*dt;this.z+=(-Math.cos(this.yaw)*this.velocity+(this.airborne?this.windZ:0))*dt;
   if(this.airborne)this.y+=climb*dt;this.verticalSpeed=this.airborne?climb:0;
+  if(this.velocity>12){for(const hit of [...groundWingContacts(previous),...groundWingContacts(this),...obstacleWingContacts(previous,this,collisionBoxes)])this.strikeWing(hit.side,hit.point,hit.source);}
+  if(collisionBoxes.length&&this.velocity>12){const nose=localToWorld(this,[0,0,-this.spec.length*.35]);if(collisionBoxes.some(b=>[this,nose].some(p=>['x','y','z'].every(a=>p[a]>b.min[a]&&p[a]<b.max[a])))){this.finish(false,'Kadłub uderzył w przeszkodę.',true);return;}}
+  if(this.stage==='emergencyRollout'){
+   const surface=landingSurface(this.plan,this.x,this.z),water=this.emergencyTouchdown==='water';
+   if(water&&surface.kind!=='water'&&this.velocity>12||!water&&surface.slope>.35&&this.velocity>12){this.finish(false,water?'Uderzenie w brzeg podczas wodowania.':'Przeszkoda na zboczu podczas dobiegu.',true);return;}
+   this.throttle=0;this.velocity=Math.max(0,this.velocity-dt*(water?7:2.3));this.y=surface.height+(water?4:7);this.pitch=Math.max(0,this.pitch-dt*.055);this.roll*=Math.exp(-dt*2);this.verticalSpeed=0;
+   if(this.velocity<1.5){this.velocity=0;this.finish(true,water?'Udane wodowanie! Samolot zatrzymany na wodzie. Pomoc jest w drodze.':'Udane lądowanie awaryjne poza lotniskiem! Samolot zatrzymany, pomoc jest w drodze.');}return;
+  }
   if(this.stage==='taxi'&&!this.autotaxi&&hypot(this,this.departureRunway.hold)<15&&this.velocity<2){this.stage='hold';this.velocity=0;this.throttle=0;this.message('STOP przed pasem '+this.departureRunway.number+'. Poproś wieżę [T] o zgodę.');}
   if(this.stage==='lineup'&&!this.autotaxi&&this.cleared&&hypot(this,this.departureRunway.start)<20&&Math.abs(wrap(this.yaw))<.045&&this.velocity<3){this.stage='takeoff';this.velocity=0;this.throttle=0;this.message('Początek pasa '+this.departureRunway.number+'. Moc 100%, klapy 1 [F]. Zgoda na start jest wydana.');}
   if(this.failed)this.failure.time+=dt;
   if(this.airborne&&this.plan.difficulty==='expert'&&this.plan.mode==='career'&&this.airTime>170&&!this.autoFailureTriggered){this.autoFailureTriggered=true;this.triggerFailure('bird');}
-  if(this.airborne&&this.y<=7){
-   this.y=7;const onRunway=Math.abs(this.x-this.runwayX)<43&&Math.abs(this.z-this.targetZ)<1530,alignment=this.diverted||this.plan.mode==='free'?Math.abs(Math.cos(this.yaw))>.95:Math.cos(this.yaw)>.95;
+  const surface=landingSurface(this.plan,this.x,this.z),contactHeight=surface.height+(surface.kind==='water'?4:7);
+  if(this.airborne&&this.y<=contactHeight){
+   const onAnyRunway=surface.kind==='land'&&[0,-this.plan.distance].some(z=>[0,-260].some(x=>Math.abs(this.x-x)<43&&Math.abs(this.z-z)<1530));
+   if(this.emergency&&(!onAnyRunway||this.hasWingDamage||this.emergencyLanding)){
+    const water=surface.kind==='water',safeGear=water?!this.gear:this.gear,safe=climb>-(water?4.2:5)&&Math.abs(this.roll)<.38&&this.pitch>-.04&&this.velocity>stall-5&&this.velocity<this.spec.stall+40&&(water||surface.slope<.22);
+    if(!safeGear||!safe){this.finish(false,!safeGear?(water?'Wodowanie z wysuniętym podwoziem. Schowaj je przed kontaktem z wodą.':'Lądowanie w terenie bez wysuniętego podwozia.'):'Zbyt mocne uderzenie podczas lądowania awaryjnego. Wyrównaj skrzydła i zmniejsz opadanie.',true);return;}
+    this.y=contactHeight;this.airborne=false;this.stage='emergencyRollout';this.emergencyLanding=true;this.emergencyTouchdown=water?'water':'land';this.landingSink=Math.abs(climb);this.landingScore=Math.round(clamp(100-Math.abs(climb)*12-Math.abs(this.roll)*60,10,100));this.throttle=0;this.verticalSpeed=0;this.message(water?'Kontakt z wodą! Trzymaj kierunek, samolot wyhamowuje w wodzie.':'Przyziemienie awaryjne! Hamuj [H], trzymaj kierunek do zatrzymania.');return;
+   }
+   this.y=contactHeight;const onRunway=Math.abs(this.x-this.runwayX)<43&&Math.abs(this.z-this.targetZ)<1530,alignment=this.diverted||this.plan.mode==='free'?Math.abs(Math.cos(this.yaw))>.95:Math.cos(this.yaw)>.95;
    const ready=(this.wp>=4||this.plan.mode==='free'||this.diverted)&&this.landingClearance;
    if(onRunway&&ready&&this.gear&&this.velocity>stall-2&&this.velocity<this.spec.stall+34&&climb>-this.rules.sink&&Math.abs(this.roll)<this.rules.roll&&alignment){
     this.airborne=false;this.stage='rollout';this.throttle=0;this.verticalSpeed=0;this.landingSink=Math.abs(climb);this.landingScore=Math.round(clamp(100-this.landingSink*9-Math.abs(this.x-this.runwayX)*.5-Math.abs(this.roll)*75-(100-this.comfort)*.2,10,100));this.message(`Przyziemienie ${this.landingSink.toFixed(1)} m/s. Hamuj [H]. Ocena: ${this.landingScore}/100.`);
    }else{this.finish(false,!onRunway?'Przyziemienie poza pasem. Sprawdź mapę i wróć na podejście.':!this.gear?'Podwozie nie było wysunięte.':!ready?'Brak zgody lub nieukończona trasa. Poproś wieżę o lądowanie.':!alignment?'Samolot był ustawiony bokiem do pasa.':Math.abs(this.roll)>=this.rules.roll?'Wyrównaj skrzydła tuż przed przyziemieniem.':climb<=-this.rules.sink?'Za twarde przyziemienie. Wyrównaj lot bliżej pasa i zmniejsz opadanie.':'Nieprawidłowa prędkość lądowania. Podejdź z klapami 2 i mocą około 40–50%.',!onRunway||!this.gear||!alignment||Math.abs(this.roll)>=this.rules.roll||climb<=-this.rules.sink||this.velocity<=stall-2||this.velocity>=this.spec.stall+34);return;}
   }
-  if(!this.airborne&&this.velocity>15&&!this.groundAllowed()){this.finish(false,'Samolot opuścił pas lub drogę kołowania. Na ziemi jedź wolniej.',true);return;}
+  if(!this.airborne&&this.stage!=='emergencyRollout'&&this.velocity>15&&!this.groundAllowed()){this.finish(false,'Samolot opuścił pas lub drogę kołowania. Na ziemi jedź wolniej.',true);return;}
   if(onRollout&&this.velocity<2){if(this.plan.mode==='free')return this.finish(true,'Udane lądowanie! Możesz od razu rozpocząć kolejny swobodny lot.');this.stage='taxiin';this.arrivalRoute();this.message('Samolot zatrzymany. Kołuj do '+this.serviceZone.name+'; możesz włączyć asystę naziemną.');}
   if(this.stage==='toService'&&!this.autotaxi&&this.atServiceZone&&this.velocity<.5){this.stage='boarding';this.throttle=0;this.message('Jesteś przy stanowisku. Rozpocznij załadunek.');}
   if(this.stage==='boarding'&&!this.atServiceZone){this.stage='toService';this.serviceRoute();}
@@ -154,8 +182,9 @@ export class Flight{
   if(this.plan.mode==='career'&&(Math.abs(this.x)>22000||this.z>14000||this.z< -this.plan.distance-16000))this.finish(false,'Opuściłeś obszar tej misji. Mapa pokazuje trasę i dwa lotniska.');
   this.navDistance=Math.hypot(this.target.x-this.x,this.target.z-this.z);
  }
- snapshot(){const state={};for(const key of ['id','x','y','z','yaw','pitch','roll','velocity','throttle','fuel','flaps','gear','engines','airborne','stage','elapsed','airTime','wp','cleared','landingClearance','serviceProgress','serviceActive','autotaxi','taxiIndex','taxiPath','taxiLayoutVersion','landingScore','landingSink','handledFailures','damagedEngine','diverted','arrivedAirport','failure','comfort','targetZ','autoFailureTriggered','runwayIndex','runwayX','reservedUntil','departureReservedUntil','angleOfAttack'])state[key]=this[key];return {plan:this.plan,state};}
- static restore(saved){const f=new Flight(saved.plan),s=saved.state;if(!s||!STAGES[s.stage]||['complete','failed'].includes(s.stage)||!['x','y','z','yaw','pitch','roll','velocity','elapsed'].every(k=>Number.isFinite(s[k])))throw Error('Nieprawidłowy zapis lotu.');if(Math.abs(s.x)>22000||s.y<7||s.y>4000||Math.abs(s.z)>70000||s.velocity<0||s.velocity>300)throw Error('Nieprawidłowa pozycja samolotu.');for(const key of Object.keys(f.snapshot().state))if(s[key]!==undefined)f[key]=s[key];
+ snapshot(){const state={};for(const key of ['id','x','y','z','yaw','pitch','roll','velocity','throttle','fuel','flaps','gear','engines','airborne','stage','elapsed','airTime','wp','cleared','landingClearance','serviceProgress','serviceActive','autotaxi','taxiIndex','taxiPath','taxiLayoutVersion','landingScore','landingSink','handledFailures','damagedEngine','diverted','arrivedAirport','failure','comfort','targetZ','autoFailureTriggered','runwayIndex','runwayX','reservedUntil','departureReservedUntil','angleOfAttack','wingDamage','emergencyLanding','emergencyTouchdown'])state[key]=key==='wingDamage'?{...this.wingDamage}:this[key];return {plan:this.plan,state};}
+ static restore(saved){const f=new Flight(saved.plan),s=saved.state;if(!s||!STAGES[s.stage]||['complete','failed'].includes(s.stage)||!['x','y','z','yaw','pitch','roll','velocity','elapsed'].every(k=>Number.isFinite(s[k])))throw Error('Nieprawidłowy zapis lotu.');if(Math.abs(s.x)>22000||s.y<(s.emergencyTouchdown==='water'?4:7)||s.y>4000||Math.abs(s.z)>70000||s.velocity<0||s.velocity>300)throw Error('Nieprawidłowa pozycja samolotu.');for(const key of Object.keys(f.snapshot().state))if(s[key]!==undefined)f[key]=s[key];
+  if(!f.wingDamage||typeof f.wingDamage.left!=='boolean'||typeof f.wingDamage.right!=='boolean'||typeof f.emergencyLanding!=='boolean'||![null,'water','land'].includes(f.emergencyTouchdown))throw Error('Nieprawidłowy zapis uszkodzeń.');f.wingDamage={...f.wingDamage};f.wingImpacts=[];
   // Preserve the descent/climb path of saves from before the attitude change.
   // Removed autopilot fields are deliberately not part of the restored state.
   if(s.angleOfAttack===undefined&&f.airborne){f.angleOfAttack=approachAngleOfAttack(f.spec,f.velocity,f.flaps);f.pitch=clamp(f.pitch+f.angleOfAttack,-.22,.28);}

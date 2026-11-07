@@ -58,14 +58,15 @@ export function prepareAircraft(imported,type){
  });
  for(const group of groups.values()){
   const geometry=mergeGeometries(group.geometries,false),mesh=new T.Mesh(geometry,group.material);
-  mesh.castShadow=true;mesh.receiveShadow=true;group.parent.add(mesh);
+  mesh.castShadow=true;mesh.receiveShadow=true;
+  group.parent.add(mesh);
   group.geometries.forEach(g=>g.dispose());
  }
  if(type!=='an225')addGear(gear,type);
  root.position.set(0,7,380);
  // Particle origins are in the same local coordinates as the normalized aircraft.
  const engine=type==='a380'?[-25.5,2.6+dy,9.4-center.z]:type==='b747'?[-21.2,-2+dy,9.94-center.z]:type==='an225'?[-24.8,.41+dy,9.9-center.z]:type==='conc'?[-5.9,-3.3,11]:[-specs[type].span*.2,-3.3,-specs[type].length*.04];
- root.userData.engineSmoke=engine;
+ root.userData.engineSmoke=engine;root.userData.wingSmoke={left:[-specs[type].span*.29,0,specs[type].length*.1],right:[specs[type].span*.29,0,specs[type].length*.1]};
  root.userData.brakeWheels=type==='conc'?[[-3.2,-6.65,7.8],[3.2,-6.65,7.8]]:type==='an225'?[[-4,-6.65,4],[4,-6.65,4]]:[[-4.3,-6.65,3],[4.3,-6.65,3]];
  return root;
 }
@@ -78,7 +79,17 @@ function addGear(parent,type){
  for(const part of parts){part.updateMatrix();const g=part.geometry.clone().applyMatrix4(part.matrix);if(!batches.has(part.material))batches.set(part.material,[]);batches.get(part.material).push(g);parent.remove(part);part.geometry.dispose();}
  for(const [mat,geometries] of batches){const mesh=new T.Mesh(mergeGeometries(geometries,false),mat);mesh.castShadow=true;parent.add(mesh);geometries.forEach(g=>g.dispose());}
 }
-export function fleetAircraft(type){
+export function splitAircraftWings(root,type){
+ const wings={};for(const side of ['left','right']){const g=new T.Group();g.name='outer-wing-'+side;root.add(g);wings[side]=g;}
+ // Only the player's clone needs separable wings. NPCs retain their compact shared batches.
+ for(const mesh of [...root.children].filter(o=>o.isMesh)){
+  const original=mesh.geometry,source=original.index?original.toNonIndexed():original,p=source.attributes.position,buckets={body:[],left:[],right:[]},cut=specs[type].span*.28;
+  for(let i=0;i<p.count;i+=3){const x=(p.getX(i)+p.getX(i+1)+p.getX(i+2))/3;buckets[x< -cut?'left':x>cut?'right':'body'].push(i,i+1,i+2);}
+  for(const [part,vertices] of Object.entries(buckets)){if(!vertices.length)continue;const g=new T.BufferGeometry();for(const [name,a] of Object.entries(source.attributes)){const data=new Float32Array(vertices.length*a.itemSize);vertices.forEach((v,i)=>{for(let k=0;k<a.itemSize;k++)data[i*a.itemSize+k]=a.array[v*a.itemSize+k];});g.setAttribute(name,new T.BufferAttribute(data,a.itemSize));}const m=new T.Mesh(g,mesh.material);m.castShadow=m.receiveShadow=true;m.userData.ownedWingGeometry=true;(part==='body'?root:wings[part]).add(m);}
+  root.remove(mesh);if(source!==original)source.dispose();
+ }return root;
+}
+export function fleetAircraft(type,{damageable=false}={}){
  const template=templates.get(type);if(!template)throw Error('Brak modelu '+type);
- const root=template.clone(true);return {root,gear:[root.children[0]],fans:[]};
+ const root=template.clone(true);if(damageable)splitAircraftWings(root,type);return {root,gear:[root.children[0]],fans:[]};
 }

@@ -28,3 +28,5 @@
 .inspectingHome #inspectionTools{flex-wrap:wrap;width:max-content}.inspectingHome #objective{line-height:1.35}
 
 @media(max-width:700px){.inspectingHome #inspectionTools{width:96%;grid-template-columns:repeat(3,minmax(0,1fr));}.inspectingHome #inspectionTools button{white-space:normal;min-width:0;}}
+
+#failurePanel{max-height:calc(100dvh - 150px);overflow-y:auto;overscroll-behavior:contain}

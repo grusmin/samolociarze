@@ -45,7 +45,7 @@ export function saveCurrentFlight(profile,flight){if(!flight||flight.finished||f
 export function purchase(p,id){const plane=PLANES[id];if(!plane)throw Error('Nie ma takiego samolotu.');if(p.owned.includes(id))return false;if(levelFor(p.xp)<plane.level)throw Error(`Najpierw zdobądź poziom ${plane.level}.`);if(p.credits<plane.price)throw Error('Potrzebujesz więcej monet z ukończonych lotów.');p.credits-=plane.price;p.owned.push(id);return true;}
 export const BADGES={first:'Pierwszy kontrakt',smooth:'Miękkie lądowanie',cargo:'Mistrz transportu',night:'Nocny pilot',rain:'Pilot każdej pogody',explorer:'Odkrywca lotnisk',veteran:'10 udanych lotów',engine:'Spokojnie podczas awarii'};
 export function completeContract(p,flight){
- if(!flight.finished||!flight.won||flight.plan.mode!=='career')return null;
+ if(!flight.finished||!flight.won||flight.emergencyTouchdown||flight.plan.mode!=='career')return null;
  if(p.history.some(h=>h.id===flight.id))return null;
  const score=flight.landingScore??50,reward=Math.round(flight.plan.reward*(.6+score/125)*(flight.diverted?.65:1)),xp=Math.round(120+score*2+(flight.handledFailures?70:0));
  p.credits+=reward;p.xp+=xp;p.flights++;p.visited=[...new Set([...p.visited,flight.plan.from,flight.arrivedAirport])];

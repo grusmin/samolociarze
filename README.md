@@ -1,4 +1,4 @@
-# Samolociarze 1.0.14 — kariera pilota
+# Samolociarze 1.0.15 — kariera pilota
 
 **Gra w przeglądarce:** [grusmin.github.io/samolociarze](https://grusmin.github.io/samolociarze/).
 
@@ -11,7 +11,9 @@ Lokalna gra 3D na komputer i telefon, rozwijana z pomysłów Samolociarzy.
 Dwuklik URUCHOM-GRE.cmd lub polecenie node server.cjs. Otwórz http://127.0.0.1:4174/ .
 Nie trzeba instalować pakietów do grania. Serwer wymaga Node.js, dostępnego na tym komputerze. Okno serwera pozostaw otwarte podczas gry.
 
-Najnowsze: okolica sprawdzona na Mapach Google — Pogoria IV, DK86, S1, węzeł Podwarpie i szkoła z boiskiem. Szczegóły: [ZMIANY-1.0.12.md](ZMIANY-1.0.12.md).
+Najnowsze: uszkodzenia skrzydeł, wodowanie, lądowanie awaryjne w terenie i trzy pasma górskie. Szczegóły: [ZMIANY-1.0.15.md](ZMIANY-1.0.15.md).
+
+Poprzednio: okolica sprawdzona na Mapach Google — Pogoria IV, DK86, S1, węzeł Podwarpie i szkoła z boiskiem. Szczegóły: [ZMIANY-1.0.12.md](ZMIANY-1.0.12.md).
 
 Wersja 1.0.7: ogrodzenie lotnisk, Concorde Air France, Ryanair 737, wybuch przy rozbiciu i start „Po prostu leć” z pasa. Szczegóły: [ZMIANY-1.0.7.md](ZMIANY-1.0.7.md).
 

@@ -14,17 +14,19 @@ export function createSmoke(scene,{capacity=192,random=Math.random}={}){
  }`});
  const points=new T.Points(geometry,material);points.frustumCulled=false;points.renderOrder=4;scene.add(points);
  const pool=Array.from({length:capacity},()=>({position:new T.Vector3(),velocity:new T.Vector3(),life:0,maxLife:1,size:1,engine:false,color:new T.Color()}));
- let cursor=0,brakeTime=0,engineTime=0;
+ let cursor=0,brakeTime=0,engineTime=0,wingTime=0,waterTime=0;
  function emit(origin,aircraft,engine){
   const p=pool[cursor++%capacity];p.position.fromArray(origin).applyEuler(aircraft.rotation).add(aircraft.position);p.engine=engine;p.maxLife=engine?2.2:2.1;p.life=p.maxLife;p.size=engine?2.8:1.4;
-  p.velocity.set((random()-.5)*2,engine?2:1.1,(random()-.5)*2+(engine?6:0)).applyEuler(aircraft.rotation);p.color.set(engine?'#3e4248':'#c4c8cc');
+  p.velocity.set((random()-.5)*2,engine?2:1.1,(random()-.5)*2+(engine?6:0)).applyEuler(aircraft.rotation);p.color.set(engine?'#3e4248':'#c4c8cc');return p;
  }
- function update(dt,{aircraft,failed=false,airborne=false,brake=false,gear=true,speed=0,active=true,engineSide=1}){
+ function update(dt,{aircraft,failed=false,airborne=false,brake=false,gear=true,speed=0,active=true,engineSide=1,wingDamage={},ditching=false}){
   if(active&&brake&&!airborne&&gear&&speed>8){brakeTime+=dt;while(brakeTime>=.045){for(const wheel of aircraft.userData.brakeWheels||[[-4,-6.65,4],[4,-6.65,4]])emit(wheel,aircraft,false);brakeTime-=.045;}}else brakeTime=0;
   if(active&&failed&&airborne){engineTime+=dt;while(engineTime>=.012){const origin=[...(aircraft.userData.engineSmoke||[-15,-1,2])];origin[0]*=engineSide;emit(origin,aircraft,true);engineTime-=.012;}}else engineTime=0;
+  if(active&&(wingDamage.left||wingDamage.right)){wingTime+=dt;while(wingTime>=.035){for(const side of ['left','right'])if(wingDamage[side])emit(aircraft.userData.wingSmoke[side],aircraft,true);wingTime-=.035;}}else wingTime=0;
+  if(active&&ditching&&speed>2){waterTime+=dt;while(waterTime>=.025){for(const side of [-1,1]){const p=emit([side*3,-3,-8],aircraft,false);p.color.set('#e8faff');p.size=3;p.velocity.y=1+random()*3;p.velocity.x+=side*4;}waterTime-=.025;}}else waterTime=0;
   for(let i=0;i<capacity;i++){const p=pool[i];p.life=Math.max(0,p.life-dt);alphas[i]=p.life>0?(p.engine?.7:.5)*p.life/p.maxLife:0;if(!p.life)continue;const age=p.maxLife-p.life;p.position.addScaledVector(p.velocity,dt);p.position.toArray(positions,i*3);p.color.toArray(colors,i*3);sizes[i]=p.size+age*(p.engine?5:2.8);}
   material.uniforms.viewportHeight.value=innerHeight*Math.min(devicePixelRatio,1.6);for(const a of Object.values(geometry.attributes))a.needsUpdate=true;
  }
- function clear(){for(const p of pool)p.life=0;alphas.fill(0);geometry.attributes.smokeAlpha.needsUpdate=true;brakeTime=engineTime=0;}
+ function clear(){for(const p of pool)p.life=0;alphas.fill(0);geometry.attributes.smokeAlpha.needsUpdate=true;brakeTime=engineTime=wingTime=waterTime=0;}
  return {update,clear,get liveCount(){return pool.filter(p=>p.life>0).length;},get engineCount(){return pool.filter(p=>p.life>0&&p.engine).length;}};
 }

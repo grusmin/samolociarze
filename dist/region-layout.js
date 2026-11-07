@@ -1,3 +1,4 @@
+export const REGION_ORIGIN={x:-4700,z:-650};
 // Hand-simplified, relative game metres from public map observations.
 // North is -Z. This fictional airport-side placement has no GPS reference.
 export const REGION_BOUNDS={minX:-2300,maxX:3500,minZ:-3300,maxZ:4200};

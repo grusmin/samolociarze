@@ -1,3 +1,4 @@
+import {REGION_ORIGIN} from './region-layout.js';
 import * as T from './three.module.js';
 import {GAME_VERSION} from './catalog.js';
 import {surface} from './scenery.js';
@@ -6,7 +7,7 @@ import {addLocalRegion,REGION_BOUNDS} from './local-region.js';
 
 // Fictional placement in game metres. No address, map coordinates or source
 // photographs are shipped. Dimensions are estimated from the supplied views.
-export const HOME_LANDMARK=Object.freeze({x:-4700,z:-650,label:'Dom Samolociarzy'});
+export const HOME_LANDMARK=Object.freeze({...REGION_ORIGIN,label:'Dom Samolociarzy'});
 export function inNeighborhood(x,z,margin=0){x-=HOME_LANDMARK.x;z-=HOME_LANDMARK.z;return x>REGION_BOUNDS.minX-margin&&x<REGION_BOUNDS.maxX+margin&&z>REGION_BOUNDS.minZ-margin&&z<REGION_BOUNDS.maxZ+margin;}
 
 function stoneTexture(){

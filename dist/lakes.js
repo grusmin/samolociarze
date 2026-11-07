@@ -1,3 +1,4 @@
+import {lakeDefinitions,lakePolygon} from './terrain.js';
 import * as T from './three.module.js';
 
 export function addLakes(parent,{distance,night=false}){
@@ -7,11 +8,11 @@ export function addLakes(parent,{distance,night=false}){
  const normal=new T.CanvasTexture(canvas);normal.wrapS=normal.wrapT=T.RepeatWrapping;normal.repeat.set(24,24);
  const water=new T.MeshPhysicalMaterial({color:night?'#163e53':'#3a8293',roughness:.22,metalness:.45,clearcoat:.8,normalMap:normal,normalScale:new T.Vector2(.3,.3),envMapIntensity:1.3});
  const sand=new T.MeshStandardMaterial({color:'#a8a080',roughness:1}),stone=new T.MeshStandardMaterial({color:'#858f82',roughness:.95}),green=new T.MeshStandardMaterial({color:'#687c40',roughness:.95});
- const definitions=[{x:1100,z:-distance*.48,r:650,stretch:.85},{x:-1550,z:-distance+3400,r:580,stretch:.65}];
+ const definitions=lakeDefinitions(distance);
  const rocks=[],reeds=[];const segments=72;
  for(const [index,lake] of definitions.entries()){
   const outline=[];
-  for(let i=0;i<segments;i++){const a=i/segments*Math.PI*2,r=lake.r*(1+.1*Math.sin(a*3+index)+.07*Math.cos(a*5-index));outline.push(new T.Vector2(Math.cos(a)*r,Math.sin(a)*r*lake.stretch));}
+  for(const [x,z] of lakePolygon(lake,index))outline.push(new T.Vector2(x-lake.x,lake.z-z));
   const shape=new T.Shape(outline),surface=new T.Mesh(new T.ShapeGeometry(shape),water);surface.rotation.x=-Math.PI/2;surface.position.set(lake.x,.01,lake.z);root.add(surface);
   const shore=new T.Shape(outline.map(p=>p.clone().multiplyScalar(1.055)));shore.holes.push(new T.Path([...outline].reverse()));const bank=new T.Mesh(new T.ShapeGeometry(shore),sand);bank.rotation.x=-Math.PI/2;bank.position.set(lake.x,.035,lake.z);root.add(bank);
   for(let i=0;i<segments;i++){

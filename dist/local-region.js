@@ -1,3 +1,4 @@
+import {smoothPath} from './terrain.js';
 import * as T from './three.module.js';
 import {geometryBatch,sceneMaterial} from './scene-batch.js';
 import {surface} from './scenery.js';
@@ -42,7 +43,7 @@ export function addLocalRegion(parent,{night=false}={}){
  for(const x of [1320,1380,1440])for(const z of [-2214,-2188])box(2,6,2,concrete,x,3,z);
  for(const z of [-2210,-2190])beam([1300,7.2,z],[1480,7.2,z],.12,steel);
  // Large irregular lake, shoreline and sand spits, rather than circular ponds.
- const lakeCurve=new T.CatmullRomCurve3(LAKE_OUTLINE.map(([x,z])=>new T.Vector3(x,0,z)),true,'centripetal'),outline=lakeCurve.getPoints(240).slice(0,-1).map(p=>new T.Vector2(p.x,-p.z)),shape=new T.Shape(outline),waterMat=new T.MeshPhysicalMaterial({color:night?'#123c4b':'#2a7182',roughness:.22,metalness:.48,clearcoat:.9,envMapIntensity:1.15});
+ const outline=smoothPath(LAKE_OUTLINE,240,true).slice(0,-1).map(([x,z])=>new T.Vector2(x,-z)),shape=new T.Shape(outline),waterMat=new T.MeshPhysicalMaterial({color:night?'#123c4b':'#2a7182',roughness:.22,metalness:.48,clearcoat:.9,envMapIntensity:1.15});
  waterMat.polygonOffset=true;waterMat.polygonOffsetFactor=-1;waterMat.polygonOffsetUnits=-4;
  const waveCanvas=document.createElement('canvas');waveCanvas.width=waveCanvas.height=128;const wc=waveCanvas.getContext('2d');wc.fillStyle='#8080ff';wc.fillRect(0,0,128,128);for(let i=0;i<64;i++){wc.strokeStyle=`rgb(${120+i%15},${120+i%12},250)`;wc.beginPath();wc.moveTo(0,i*2);wc.bezierCurveTo(36,i*2-4,88,i*2+4,128,i*2);wc.stroke();}
  const wave=new T.CanvasTexture(waveCanvas);wave.wrapS=wave.wrapT=T.RepeatWrapping;wave.repeat.set(100,180);waterMat.normalMap=wave;waterMat.normalScale.set(.2,.2);

@@ -1,3 +1,4 @@
+import {addMountains} from './mountains.js';
 import * as T from './three.module.js';
 import {AIRPORTS,WEATHER} from './catalog.js';
 import {surface} from './scenery.js';
@@ -45,7 +46,7 @@ export function createWorld(scene){
   instanced(new T.BoxGeometry(1,1,1),lightMat,lights,second);
   // Runway approach indicator: four lamps turn red when the aircraft is low.
   const papi=[];for(let i=0;i<4;i++){const m=box(root,2,1,2,new T.MeshBasicMaterial({color:'#ed514d'}),-65-i*4,.7,1100);papi.push(m);}root.userData.papi=papi;
-  addAirportBuildings(root,{code,city:airport.city,night:WEATHER[plan.weather].night});
+  const buildings=addAirportBuildings(root,{code,city:airport.city,night:WEATHER[plan.weather].night});root.userData.collisionBoxes=buildings.userData.collisionBoxes.map(b=>({min:{...b.min,z:b.min.z+z},max:{...b.max,z:b.max.z+z}}));
   root.userData.stands=[];
   for(const [job,stand] of Object.entries(SERVICE_STANDS)){
    const paint=new T.MeshBasicMaterial({color:stand.color}),fill=new T.MeshBasicMaterial({color:stand.color,transparent:true,opacity:.09,depthWrite:false});
@@ -68,7 +69,7 @@ export function createWorld(scene){
   const airportInfo=AIRPORTS[plan.from],weather=WEATHER[plan.weather],grassTexture=surface('grass');grassTexture.repeat.set(750,750);const groundMat=material(airportInfo.color);groundMat.map=grassTexture;const ground=new T.Mesh(new T.PlaneGeometry(100000,100000),groundMat);ground.rotation.x=-Math.PI/2;ground.position.set(0,-.14,-plan.distance*.5);ground.receiveShadow=true;group.add(ground);terrain=ground;
   const skyColors=weather.night?['#071325','#1b3046']:plan.weather==='sunset'?['#32608b','#efb087']:weather.rain?['#536675','#9caeb8']:['#367db5','#c5dce7'];
   sky=new T.Mesh(new T.SphereGeometry(47000,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color(skyColors[0])},bottom:{value:new T.Color(skyColors[1])}},vertexShader:'varying vec3 v;void main(){v=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 v;uniform vec3 top;uniform vec3 bottom;void main(){gl_FragColor=vec4(mix(bottom,top,pow(max(normalize(v).y,0.),.5)),1.);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}'}));group.add(sky);
-  lakes=addLakes(group,{distance:plan.distance,night:weather.night});
+  lakes=addLakes(group,{distance:plan.distance,night:weather.night});addMountains(group,{distance:plan.distance,night:weather.night});
   const airports=[airport(plan.from,0),airport(plan.to,-plan.distance)];group.userData.airports=airports;neighborhood=addNeighborhood(group,{night:weather.night});
   routeGuide=new T.InstancedMesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:'#68d9ff',transparent:true,opacity:.85,depthWrite:false}),8);routeGuide.count=0;routeGuide.frustumCulled=false;group.add(routeGuide);
   let seed=plan.from.charCodeAt(0)*81+plan.to.charCodeAt(0);const random=()=>{seed=seed*16807%2147483647;return seed/2147483647;};
@@ -115,5 +116,5 @@ export function createWorld(scene){
   if(flight)for(const airport of group.userData.airports){const distance=Math.max(1,Math.abs(flight.z-airport.position.z)-1000),slope=Math.atan2(flight.y-7,distance)*180/Math.PI,red=slope<2.5?4:slope<2.8?3:slope<3.2?2:slope<3.6?1:0;airport.userData.papi.forEach((lamp,i)=>lamp.material.color.set(i<red?'#ed514d':'#fff0d6'));}
   for(const airport of group.userData.airports)airport.userData.traffic.forEach((jet,i)=>{const reserved=!!flight&&(airport.userData.code===flight.arrivedAirport&&i===flight.runwayIndex&&flight.landingClearance&&flight.elapsed<flight.reservedUntil||airport.userData.code===flight.plan.from&&i===0&&flight.elapsed<flight.departureReservedUntil),traffic=trafficState(airport.userData.code,flight?.elapsed??time,i,reserved);jet.visible=traffic.busy;if(jet.visible){const t=traffic.phase/26;jet.position.set(RUNWAY_X[i],7+Math.max(0,(.42-t)*500),2500-t*4200);jet.rotation.set(t<.42?-.035:0,0,0);}});
  }
- return {build,update,dispose,get root(){return group;}};
+ return {build,update,dispose,get collisionBoxes(){return group?.userData.airports.flatMap(a=>a.userData.collisionBoxes)||[];},get root(){return group;}};
 }
